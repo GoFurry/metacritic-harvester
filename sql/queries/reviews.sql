@@ -310,6 +310,42 @@ WHERE (sqlc.arg(category) = '' OR category = sqlc.arg(category))
 ORDER BY category ASC, review_type ASC, platform_key ASC, last_crawled_at DESC, review_key ASC
 LIMIT CASE WHEN sqlc.arg(limit_rows) <= 0 THEN -1 ELSE sqlc.arg(limit_rows) END;
 
+-- name: ListReviewSnapshotsByRun :many
+SELECT
+    review_key,
+    crawl_run_id,
+    external_review_id,
+    work_href,
+    category,
+    review_type,
+    platform_key,
+    review_url,
+    review_date,
+    score,
+    quote,
+    publication_name,
+    publication_slug,
+    author_name,
+    author_slug,
+    season_label,
+    username,
+    user_slug,
+    thumbs_up,
+    thumbs_down,
+    version_label,
+    spoiler_flag,
+    source_payload_json,
+    crawled_at,
+    created_at
+FROM review_snapshots
+WHERE crawl_run_id = sqlc.arg(crawl_run_id)
+  AND (sqlc.arg(category) = '' OR category = sqlc.arg(category))
+  AND (sqlc.arg(review_type) = '' OR review_type = sqlc.arg(review_type))
+  AND (sqlc.arg(platform_key) = '' OR platform_key = sqlc.arg(platform_key))
+  AND (sqlc.arg(work_href) = '' OR RTRIM(work_href, '/') = RTRIM(sqlc.arg(work_href), '/'))
+ORDER BY category ASC, review_type ASC, platform_key ASC, crawled_at DESC, review_key ASC
+LIMIT CASE WHEN sqlc.arg(limit_rows) <= 0 THEN -1 ELSE sqlc.arg(limit_rows) END;
+
 -- name: CompareReviewSnapshots :many
 WITH
 from_reviews AS (

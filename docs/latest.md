@@ -43,6 +43,8 @@ go run ./cmd/metacritic-harvester latest query --db=output/metacritic.db --work-
 ```bash
 go run ./cmd/metacritic-harvester latest export --db=output/metacritic.db --format=csv --output=output/latest.csv
 go run ./cmd/metacritic-harvester latest export --db=output/metacritic.db --category=movie --metric=userscore --format=json --output=output/movie-userscore.json
+go run ./cmd/metacritic-harvester latest export --db=output/metacritic.db --run-id=<run-id> --format=json --output=output/run-snapshot.json
+go run ./cmd/metacritic-harvester latest export --db=output/metacritic.db --profile=summary --format=csv --output=output/latest-summary.csv
 ```
 
 输出字段：
@@ -57,6 +59,14 @@ go run ./cmd/metacritic-harvester latest export --db=output/metacritic.db --cate
 - `user_score`
 - `last_crawled_at`
 - `source_crawl_run_id`
+
+璇存槑锛?
+
+- 涓嶄紶 `--run-id` 鏃跺鍑哄綋鍓?`latest_list_entries`
+- 浼犲叆 `--run-id` 鏃跺鍑哄崟鎵规 `list_entries` 蹇収
+- `--profile=raw|flat|summary`锛岄粯璁?`raw`
+- `raw` 涓?`flat` 绛変环
+- `summary` 浼氳緭鍑?`run_id / category / metric / filter_key` 鐨勮仛鍚堟憳瑕?
 
 ## latest compare
 

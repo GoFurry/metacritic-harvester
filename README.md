@@ -11,6 +11,7 @@ Current features:
 
 - `crawl list`
 - `crawl detail`
+- `crawl reviews`
 - `crawl batch`
 - `crawl schedule`
 - `detail query`
@@ -19,6 +20,9 @@ Current features:
 - `latest query`
 - `latest export`
 - `latest compare`
+- `review query`
+- `review export`
+- `review compare`
 - filters for year, platform, network, genre, and release type
 - snapshot history in `list_entries`
 - current-state view in `latest_list_entries`
@@ -26,12 +30,16 @@ Current features:
 - current detail view in `work_details`
 - immutable detail history in `work_detail_snapshots`
 - detail fetch tracking in `detail_fetch_state`
+- current review view in `latest_reviews`
+- immutable review history in `review_snapshots`
+- review fetch tracking in `review_fetch_state`
 
 ## Quick start
 
 ```bash
 go run ./cmd/metacritic-harvester crawl list --category=game --metric=metascore --pages=1 --db=output/metacritic.db
 go run ./cmd/metacritic-harvester crawl detail --db=output/metacritic.db --category=game
+go run ./cmd/metacritic-harvester crawl reviews --db=output/metacritic.db --category=game --review-type=critic --limit=10
 go run ./cmd/metacritic-harvester detail query --db=output/metacritic.db --category=game
 ```
 
@@ -47,10 +55,28 @@ Latest compare example:
 go run ./cmd/metacritic-harvester latest compare --db=output/metacritic.db --from-run-id=<run-a> --to-run-id=<run-b>
 ```
 
+Latest summary export example:
+
+```bash
+go run ./cmd/metacritic-harvester latest export --db=output/metacritic.db --run-id=<run-a> --profile=summary --format=csv --output=output/latest-summary.csv
+```
+
 Detail compare example:
 
 ```bash
 go run ./cmd/metacritic-harvester detail compare --db=output/metacritic.db --from-run-id=<detail-run-a> --to-run-id=<detail-run-b>
+```
+
+Detail flat export example:
+
+```bash
+go run ./cmd/metacritic-harvester detail export --db=output/metacritic.db --run-id=<detail-run-a> --profile=flat --format=csv --output=output/detail-flat.csv
+```
+
+Review summary export example:
+
+```bash
+go run ./cmd/metacritic-harvester review export --db=output/metacritic.db --run-id=<review-run-a> --profile=summary --format=json --output=output/review-summary.json
 ```
 
 Docs:

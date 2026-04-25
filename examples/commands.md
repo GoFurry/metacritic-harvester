@@ -92,6 +92,18 @@ go run ./cmd/metacritic-harvester latest query --db=output/metacritic.db --categ
 go run ./cmd/metacritic-harvester latest export --db=output/metacritic.db --format=csv --output=output/latest.csv
 ```
 
+### Export one list snapshot by run id
+
+```bash
+go run ./cmd/metacritic-harvester latest export --db=output/metacritic.db --run-id=<run-id> --format=json --output=output/latest-run.json
+```
+
+### Export latest summary rows
+
+```bash
+go run ./cmd/metacritic-harvester latest export --db=output/metacritic.db --profile=summary --format=csv --output=output/latest-summary.csv
+```
+
 ### Compare two runs
 
 ```bash
@@ -114,9 +126,68 @@ go run ./cmd/metacritic-harvester detail export --db=output/metacritic.db --form
 go run ./cmd/metacritic-harvester detail export --db=output/metacritic.db --category=movie --format=json --output=output/movie-details.json
 ```
 
+### Export one detail snapshot by run id
+
+```bash
+go run ./cmd/metacritic-harvester detail export --db=output/metacritic.db --run-id=<detail-run-id> --format=json --output=output/detail-snapshot.json
+```
+
+### Export flattened detail rows
+
+```bash
+go run ./cmd/metacritic-harvester detail export --db=output/metacritic.db --profile=flat --format=csv --output=output/detail-flat.csv
+```
+
+### Export detail summary rows
+
+```bash
+go run ./cmd/metacritic-harvester detail export --db=output/metacritic.db --run-id=<detail-run-id> --profile=summary --format=json --output=output/detail-summary.json
+```
+
 ### Compare two detail runs
 
 ```bash
 go run ./cmd/metacritic-harvester detail compare --db=output/metacritic.db --from-run-id=<detail-run-a> --to-run-id=<detail-run-b>
 go run ./cmd/metacritic-harvester detail compare --db=output/metacritic.db --from-run-id=<detail-run-a> --to-run-id=<detail-run-b> --format=csv --include-unchanged
+```
+
+## Review read-side
+
+### Query current review rows
+
+```bash
+go run ./cmd/metacritic-harvester review query --db=output/metacritic.db --category=game --review-type=critic
+go run ./cmd/metacritic-harvester review query --db=output/metacritic.db --work-href=https://www.metacritic.com/movie/boyhood --format=json
+```
+
+### Export current review rows
+
+```bash
+go run ./cmd/metacritic-harvester review export --db=output/metacritic.db --category=game --review-type=user --format=csv --output=output/game-user-reviews.csv
+go run ./cmd/metacritic-harvester review export --db=output/metacritic.db --category=tv --format=json --output=output/tv-reviews.json
+```
+
+### Export one review snapshot by run id
+
+```bash
+go run ./cmd/metacritic-harvester review export --db=output/metacritic.db --run-id=<review-run-id> --format=json --output=output/review-snapshot.json
+```
+
+### Export flattened review rows
+
+```bash
+go run ./cmd/metacritic-harvester review export --db=output/metacritic.db --profile=flat --format=csv --output=output/review-flat.csv
+```
+
+### Export review summary rows
+
+```bash
+go run ./cmd/metacritic-harvester review export --db=output/metacritic.db --profile=summary --format=json --output=output/review-summary.json
+```
+
+### Compare two review runs
+
+```bash
+go run ./cmd/metacritic-harvester review compare --db=output/metacritic.db --from-run-id=<review-run-a> --to-run-id=<review-run-b>
+go run ./cmd/metacritic-harvester review compare --db=output/metacritic.db --from-run-id=<review-run-a> --to-run-id=<review-run-b> --platform=pc --include-unchanged --format=csv
 ```

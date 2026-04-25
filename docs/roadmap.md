@@ -117,7 +117,7 @@
 
 ## Phase 4：评论抓取
 
-状态：已完成（首版）
+状态：已完成
 
 已完成内容：
 
@@ -128,13 +128,11 @@
   - `composer` 页面接口拿上下文、summary、game 平台列表
   - `reviews/metacritic/...` 列表接口拿真实评论分页数据
 - game / movie / tv 均已接入评论抓取
-- 支持 `critic` 与 `user` 两类评论
-- game 支持按 `platform` 拆 scope 抓取；movie / tv 不区分平台
-- 支持 `offset / limit` 分页
+- 支持 `critic` 与 `user` 两类评论，以及 game 平台 scope
+- 支持 `offset / limit` 分页，以及 `sentiment`、排序等评论参数
 - 支持 `latest_reviews + review_snapshots` 双写
-- 支持 `review_fetch_state` scope 状态管理
-- 支持 `crawl_runs` 与 `run_id` 血缘
-- 支持 batch / schedule 接入 reviews 任务
+- 支持 `review_fetch_state` scope 状态管理与恢复
+- 支持 `crawl_runs` 与 `run_id` 血缘，以及 batch / schedule 接入 reviews 任务
 
 当前落库语义：
 
@@ -143,46 +141,40 @@
 - `review_fetch_state`：按 `work_href + review_type + platform_key` 维护 scope 状态
 - `crawl_runs`：为每次 `crawl reviews` 生成批次血缘
 
-Phase 4 待补强 checklist：
+补强完成内容：
 
-- [x] 为评论抓取补齐更多接口参数映射，至少覆盖 `sentiment`、排序和现有接口已支持但尚未暴露的过滤维度
-- [x] 系统整理 `critic` / `user` 评论异构字段，明确统一字段、可选字段和仅特定类型存在的字段语义
-- [x] 为 `internal/source/metacritic/api` 下的评论接口补齐更完整的 fixture / 样本测试，覆盖：
-  - 正常分页
-  - 空列表
-  - `critic` / `user` 差异载荷
-  - game 多平台 scope
-  - 字段缺失与接口响应变体
-- [x] 将 `review_fetch_state` 的恢复粒度从当前 scope 级继续评估到页级，明确是否需要支持更细粒度断点续抓
-- [ ] 为 review 读侧补齐更丰富的导出与分析视图；这部分与 Phase 5 联动推进，但需要在 Phase 4 明确 review 数据面的输出目标
-
-进入下一阶段前建议至少完成：
-
-- [x] 评论 API fixture 补强
-- [x] 评论字段标准化规则收口
-- [x] 是否需要页级恢复的结论与方案
+- 评论 API fixture 与样本测试已补强
+- `critic` / `user` 评论字段标准化规则已收口
+- 明确维持 scope 级恢复，不实现页级 checkpoint
 
 说明：
 
 - Phase 4 明确采用“后端接口优先”策略，因为评论天然具有类型、平台、分页和来源字段，直接解析前端页面会更脆弱、也更难做增量抓取
 - 样本已经表明 `composer` 页适合做“上下文 + summary + 平台枚举”，而不是直接当评论列表数据源
-- `review_fetch_state` 继续维持 scope 级恢复；评论列表属于 append-like 分页流，offset 会随新评论写入漂移，页级 checkpoint 的状态复杂度高于收益，而 `latest_reviews + review_snapshots` 已能保证 scope 重抓幂等
+- `review_fetch_state` 继续维持 scope 级恢复；评论列表属于 append-like 分页流，offset 会随新评论写入漂移，而 `latest_reviews + review_snapshots` 已能保证 scope 重抓幂等
+- 更丰富的 review 导出与分析视图转入 Phase 5 推进
 
 ## Phase 5：更完整的导出与分析
 
-状态：部分完成
+状态：已完成
 
 已完成：
 
-- `latest export` 当前视图导出
-- `detail export` 当前视图与详情快照导出
+- `latest / detail / review export` 已统一支持当前态导出与 `--run-id` 快照导出
+- 三条导出链路已统一支持 `--profile=raw|flat|summary`
+- `latest export` 已补齐按批次/范围聚合的摘要导出
+- `detail export` 已补齐扁平化导出与按批次/类别聚合的摘要导出
+- `review export` 已补齐当前态、快照、扁平化与摘要导出
+- review 读侧输出目标已收口为：
+  - Row export：一行一条评论，基于标准化字段输出
+  - Compare export：一行一条评论差异，基于 `review compare` 差异列输出
 
-待完成：
+说明：
 
-- 更丰富的导出范围
-- 按快照批次导出
-- 更适合 BI / 清洗的分析视图
-- review 读侧导出
+- Phase 5 只增强读侧与导出，不改抓取 schema 和抓取流程
+- `query` 继续专注当前态浏览；批次导出统一由 `export --run-id` 承担
+- `latest` 的 `raw / flat` 等价；`detail` 与 `review` 的 `flat` 更适合 BI / 清洗
+- `source_payload_json` 继续保留在 review `raw` 导出里，作为异构字段兜底
 
 ## Phase 5-1：列表与详情切换到后端 API 优先
 

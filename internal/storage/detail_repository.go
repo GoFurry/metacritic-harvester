@@ -184,6 +184,23 @@ func (r *Repository) ListWorkDetails(ctx context.Context, filter ListWorkDetails
 	})
 }
 
+func (r *Repository) ListWorkDetailsForExport(ctx context.Context, filter ListWorkDetailsFilter) ([]sqlcgen.ListWorkDetailsForExportRow, error) {
+	return r.queries.ListWorkDetailsForExport(ctx, sqlcgen.ListWorkDetailsForExportParams{
+		Category:  emptyString(filter.Category),
+		WorkHref:  emptyString(filter.WorkHref),
+		LimitRows: positiveLimit(filter.Limit),
+	})
+}
+
+func (r *Repository) ListWorkDetailSnapshotsByRun(ctx context.Context, runID string, filter ListWorkDetailsFilter) ([]sqlcgen.WorkDetailSnapshot, error) {
+	return r.queries.ListWorkDetailSnapshotsByRun(ctx, sqlcgen.ListWorkDetailSnapshotsByRunParams{
+		CrawlRunID: runID,
+		Category:   emptyString(filter.Category),
+		WorkHref:   emptyString(filter.WorkHref),
+		LimitRows:  positiveLimit(filter.Limit),
+	})
+}
+
 func (r *Repository) CompareWorkDetails(ctx context.Context, filter CompareWorkDetailsFilter) ([]sqlcgen.CompareWorkDetailSnapshotsRow, error) {
 	return r.queries.CompareWorkDetailSnapshots(ctx, sqlcgen.CompareWorkDetailSnapshotsParams{
 		IncludeUnchanged: boolAsInt(filter.IncludeUnchanged),

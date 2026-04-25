@@ -211,6 +211,17 @@ func (r *Repository) ListLatestEntries(ctx context.Context, filter ListLatestEnt
 	})
 }
 
+func (r *Repository) ListListEntriesByRun(ctx context.Context, runID string, filter ListLatestEntriesFilter) ([]sqlcgen.ListEntry, error) {
+	return r.queries.ListListEntriesByRun(ctx, sqlcgen.ListListEntriesByRunParams{
+		CrawlRunID: runID,
+		Category:   emptyString(filter.Category),
+		Metric:     emptyString(filter.Metric),
+		WorkHref:   emptyString(filter.WorkHref),
+		FilterKey:  emptyString(filter.FilterKey),
+		LimitRows:  positiveLimit(filter.Limit),
+	})
+}
+
 func (r *Repository) GetLatestEntryByWork(ctx context.Context, workHref string, category string, metric string) ([]sqlcgen.LatestListEntry, error) {
 	return r.queries.GetLatestEntryByWork(ctx, sqlcgen.GetLatestEntryByWorkParams{
 		WorkHref: workHref,

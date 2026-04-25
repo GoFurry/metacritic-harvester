@@ -79,6 +79,61 @@ WHERE (sqlc.arg(category) = '' OR category = sqlc.arg(category))
 ORDER BY category ASC, title ASC, work_href ASC
 LIMIT CASE WHEN sqlc.arg(limit_rows) <= 0 THEN -1 ELSE sqlc.arg(limit_rows) END;
 
+-- name: ListWorkDetailsForExport :many
+SELECT
+    wd.work_href,
+    wd.category,
+    wd.title,
+    wd.summary,
+    wd.release_date,
+    wd.metascore,
+    wd.metascore_sentiment,
+    wd.metascore_review_count,
+    wd.user_score,
+    wd.user_score_sentiment,
+    wd.user_score_count,
+    wd.rating,
+    wd.duration,
+    wd.tagline,
+    wd.details_json,
+    wd.last_fetched_at,
+    wd.created_at,
+    wd.updated_at,
+    COALESCE(dfs.last_run_id, '') AS source_run_id
+FROM work_details wd
+LEFT JOIN detail_fetch_state dfs ON dfs.work_href = wd.work_href
+WHERE (sqlc.arg(category) = '' OR wd.category = sqlc.arg(category))
+  AND (sqlc.arg(work_href) = '' OR RTRIM(wd.work_href, '/') = RTRIM(sqlc.arg(work_href), '/'))
+ORDER BY wd.category ASC, wd.title ASC, wd.work_href ASC
+LIMIT CASE WHEN sqlc.arg(limit_rows) <= 0 THEN -1 ELSE sqlc.arg(limit_rows) END;
+
+-- name: ListWorkDetailSnapshotsByRun :many
+SELECT
+    work_href,
+    crawl_run_id,
+    category,
+    title,
+    summary,
+    release_date,
+    metascore,
+    metascore_sentiment,
+    metascore_review_count,
+    user_score,
+    user_score_sentiment,
+    user_score_count,
+    rating,
+    duration,
+    tagline,
+    details_json,
+    fetched_at,
+    created_at
+FROM work_detail_snapshots
+WHERE crawl_run_id = sqlc.arg(crawl_run_id)
+  AND (sqlc.arg(category) = '' OR category = sqlc.arg(category))
+  AND (sqlc.arg(work_href) = '' OR RTRIM(work_href, '/') = RTRIM(sqlc.arg(work_href), '/'))
+ORDER BY category ASC, title ASC, work_href ASC
+LIMIT CASE WHEN sqlc.arg(limit_rows) <= 0 THEN -1 ELSE sqlc.arg(limit_rows) END;
+
 -- name: UpsertWorkDetail :exec
 INSERT INTO work_details (
     work_href,

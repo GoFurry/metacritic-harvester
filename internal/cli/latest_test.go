@@ -97,6 +97,42 @@ func TestLatestExportCommandJSON(t *testing.T) {
 	}
 }
 
+func TestLatestExportCommandRunIDAndSummaryProfile(t *testing.T) {
+	t.Parallel()
+
+	dbPath := seedLatestTestDB(t)
+
+	rawPath := filepath.Join(t.TempDir(), "latest-run.json")
+	rawCmd := newLatestExportCommand()
+	rawCmd.SetArgs([]string{"--db", dbPath, "--run-id=run-1", "--format=json", "--output", rawPath})
+	if err := rawCmd.Execute(); err != nil {
+		t.Fatalf("raw Execute() error = %v", err)
+	}
+	rawContent, err := os.ReadFile(rawPath)
+	if err != nil {
+		t.Fatalf("ReadFile(raw) error = %v", err)
+	}
+	rawOutput := string(rawContent)
+	if !strings.Contains(rawOutput, "\"source_crawl_run_id\":\"run-1\"") || !strings.Contains(rawOutput, "\"metascore\":\"91\"") {
+		t.Fatalf("expected run snapshot export to include run-1 payload, got %q", rawOutput)
+	}
+
+	summaryPath := filepath.Join(t.TempDir(), "latest-summary.csv")
+	summaryCmd := newLatestExportCommand()
+	summaryCmd.SetArgs([]string{"--db", dbPath, "--profile=summary", "--format=csv", "--output", summaryPath})
+	if err := summaryCmd.Execute(); err != nil {
+		t.Fatalf("summary Execute() error = %v", err)
+	}
+	summaryContent, err := os.ReadFile(summaryPath)
+	if err != nil {
+		t.Fatalf("ReadFile(summary) error = %v", err)
+	}
+	summaryOutput := string(summaryContent)
+	if !strings.Contains(summaryOutput, "distinct_work_count") || !strings.Contains(summaryOutput, "run-2") {
+		t.Fatalf("expected summary export to include run id and aggregate headers, got %q", summaryOutput)
+	}
+}
+
 func TestLatestCompareCommandCSV(t *testing.T) {
 	t.Parallel()
 

@@ -221,16 +221,20 @@ go run ./cmd/metacritic-harvester latest query --db=output/metacritic.db --work-
 
 ## latest export
 
-导出 `latest_list_entries` 当前视图：
+导出 `latest_list_entries` 当前视图，或通过 `--run-id` 导出单批次 `list_entries` 快照：
 
 ```bash
 go run ./cmd/metacritic-harvester latest export --db=output/metacritic.db --category=movie --metric=userscore --format=csv --output=output/movie-userscore.csv
 go run ./cmd/metacritic-harvester latest export --db=output/metacritic.db --format=json --output=output/latest.json
+go run ./cmd/metacritic-harvester latest export --db=output/metacritic.db --run-id=<run-id> --format=json --output=output/run-snapshot.json
+go run ./cmd/metacritic-harvester latest export --db=output/metacritic.db --profile=summary --format=csv --output=output/latest-summary.csv
 ```
 
 说明：
 
-- `csv` 适合数据分析
+- `--profile=raw|flat|summary`，默认 `raw`
+- `latest export` 的 `raw` 与 `flat` 等价
+- `summary` 会输出 `run_id / category / metric / filter_key` 维度的聚合摘要
 - `json` 使用 `github.com/bytedance/sonic` 序列化
 
 ## latest compare
@@ -262,17 +266,22 @@ go run ./cmd/metacritic-harvester detail query --db=output/metacritic.db --work-
 
 ## detail export
 
-导出当前 `work_details` 视图：
+导出当前 `work_details` 视图，或通过 `--run-id` 导出单批次 `work_detail_snapshots`：
 
 ```bash
 go run ./cmd/metacritic-harvester detail export --db=output/metacritic.db --format=csv --output=output/details.csv
 go run ./cmd/metacritic-harvester detail export --db=output/metacritic.db --category=movie --format=json --output=output/movie-details.json
+go run ./cmd/metacritic-harvester detail export --db=output/metacritic.db --run-id=<detail-run-id> --format=json --output=output/detail-snapshot.json
+go run ./cmd/metacritic-harvester detail export --db=output/metacritic.db --profile=flat --format=csv --output=output/detail-flat.csv
+go run ./cmd/metacritic-harvester detail export --db=output/metacritic.db --run-id=<detail-run-id> --profile=summary --format=json --output=output/detail-summary.json
 ```
 
 说明：
 
-- `json` 输出结构化详情
-- `csv` 输出核心列，并附带原始 `details_json`
+- `--profile=raw|flat|summary`，默认 `raw`
+- `raw` 输出结构化详情；`csv` 会附带原始 `details_json`
+- `flat` 会把常用扩展字段扁平化为 `genres_csv / platforms_csv / developers_csv` 等列
+- `summary` 会按 `run_id + category` 聚合输出覆盖率摘要
 
 ## detail compare
 
@@ -308,18 +317,23 @@ go run ./cmd/metacritic-harvester review query --db=output/metacritic.db --work-
 
 ## review export
 
-导出当前 `latest_reviews` 视图：
+导出当前 `latest_reviews` 视图，或通过 `--run-id` 导出单批次 `review_snapshots`：
 
 ```bash
 go run ./cmd/metacritic-harvester review export --db=output/metacritic.db --category=game --review-type=user --format=csv --output=output/game-user-reviews.csv
 go run ./cmd/metacritic-harvester review export --db=output/metacritic.db --category=tv --format=json --output=output/tv-reviews.json
+go run ./cmd/metacritic-harvester review export --db=output/metacritic.db --run-id=<review-run-id> --format=json --output=output/review-snapshot.json
+go run ./cmd/metacritic-harvester review export --db=output/metacritic.db --profile=flat --format=csv --output=output/review-flat.csv
+go run ./cmd/metacritic-harvester review export --db=output/metacritic.db --profile=summary --format=json --output=output/review-summary.json
 ```
 
 说明：
 
-- `csv` 适合分析和清洗
-- `json` 会保留 `source_payload_json`
-- 导出来源是 `latest_reviews`，不是历史快照
+- `--profile=raw|flat|summary`，默认 `raw`
+- `raw` 会保留 `source_payload_json`
+- `flat` 会保留标准化标量列，但去掉原始 payload，更适合 BI / 清洗
+- `summary` 会按 `run_id / category / review_type / platform_key` 聚合输出
+- 不传 `--run-id` 时读取 `latest_reviews`；传入 `--run-id` 时读取 `review_snapshots`
 
 ## review compare
 

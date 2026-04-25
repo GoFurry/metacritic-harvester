@@ -163,6 +163,17 @@ func (r *Repository) ListLatestReviews(ctx context.Context, filter ListLatestRev
 	})
 }
 
+func (r *Repository) ListReviewSnapshotsByRun(ctx context.Context, runID string, filter ListLatestReviewsFilter) ([]sqlcgen.ReviewSnapshot, error) {
+	return r.queries.ListReviewSnapshotsByRun(ctx, sqlcgen.ListReviewSnapshotsByRunParams{
+		CrawlRunID:  runID,
+		Category:    emptyString(filter.Category),
+		ReviewType:  emptyString(filter.ReviewType),
+		PlatformKey: emptyString(filter.Platform),
+		WorkHref:    emptyString(filter.WorkHref),
+		LimitRows:   positiveLimit(filter.Limit),
+	})
+}
+
 func (r *Repository) CompareReviewSnapshots(ctx context.Context, filter CompareReviewsFilter) ([]sqlcgen.CompareReviewSnapshotsRow, error) {
 	return r.queries.CompareReviewSnapshots(ctx, sqlcgen.CompareReviewSnapshotsParams{
 		IncludeUnchanged: boolAsInt(filter.IncludeUnchanged),

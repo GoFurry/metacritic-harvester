@@ -8,6 +8,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"sort"
 	"strconv"
 	"strings"
 	"text/tabwriter"
@@ -180,6 +181,101 @@ func mapLatestEntries(entries []sqlcgen.LatestListEntry) []latestEntryView {
 			SourceCrawlRunID: entry.SourceCrawlRunID,
 		})
 	}
+	return result
+}
+
+func mapListEntries(entries []sqlcgen.ListEntry) []latestEntryView {
+	result := make([]latestEntryView, 0, len(entries))
+	for _, entry := range entries {
+		result = append(result, latestEntryView{
+			WorkHref:         entry.WorkHref,
+			Category:         entry.Category,
+			Metric:           entry.Metric,
+			FilterKey:        entry.FilterKey,
+			PageNo:           entry.PageNo,
+			RankNo:           entry.RankNo,
+			Metascore:        nullStringValue(entry.Metascore),
+			UserScore:        nullStringValue(entry.UserScore),
+			LastCrawledAt:    entry.CrawledAt,
+			SourceCrawlRunID: entry.CrawlRunID,
+		})
+	}
+	return result
+}
+
+type latestSummaryView struct {
+	RunID             string `json:"run_id"`
+	Category          string `json:"category"`
+	Metric            string `json:"metric"`
+	FilterKey         string `json:"filter_key"`
+	RowCount          int    `json:"row_count"`
+	DistinctWorkCount int    `json:"distinct_work_count"`
+	MinRank           int64  `json:"min_rank"`
+	MaxRank           int64  `json:"max_rank"`
+}
+
+func summarizeLatestEntries(entries []latestEntryView) []latestSummaryView {
+	type groupKey struct {
+		runID     string
+		category  string
+		metric    string
+		filterKey string
+	}
+	type aggregate struct {
+		view  latestSummaryView
+		works map[string]struct{}
+	}
+
+	groups := make(map[groupKey]*aggregate, len(entries))
+	for _, entry := range entries {
+		key := groupKey{
+			runID:     entry.SourceCrawlRunID,
+			category:  entry.Category,
+			metric:    entry.Metric,
+			filterKey: entry.FilterKey,
+		}
+		group, ok := groups[key]
+		if !ok {
+			group = &aggregate{
+				view: latestSummaryView{
+					RunID:     entry.SourceCrawlRunID,
+					Category:  entry.Category,
+					Metric:    entry.Metric,
+					FilterKey: entry.FilterKey,
+					MinRank:   entry.RankNo,
+					MaxRank:   entry.RankNo,
+				},
+				works: make(map[string]struct{}),
+			}
+			groups[key] = group
+		}
+		group.view.RowCount++
+		group.works[entry.WorkHref] = struct{}{}
+		if entry.RankNo < group.view.MinRank {
+			group.view.MinRank = entry.RankNo
+		}
+		if entry.RankNo > group.view.MaxRank {
+			group.view.MaxRank = entry.RankNo
+		}
+	}
+
+	result := make([]latestSummaryView, 0, len(groups))
+	for _, group := range groups {
+		group.view.DistinctWorkCount = len(group.works)
+		result = append(result, group.view)
+	}
+	sort.Slice(result, func(i, j int) bool {
+		if result[i].RunID != result[j].RunID {
+			return result[i].RunID < result[j].RunID
+		}
+		if result[i].Category != result[j].Category {
+			return result[i].Category < result[j].Category
+		}
+		if result[i].Metric != result[j].Metric {
+			return result[i].Metric < result[j].Metric
+		}
+		return result[i].FilterKey < result[j].FilterKey
+	})
 	return result
 }
 

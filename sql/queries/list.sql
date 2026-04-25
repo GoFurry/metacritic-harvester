@@ -149,9 +149,20 @@ SELECT work_href, category, metric, filter_key, page_no, rank_no, metascore, use
 FROM latest_list_entries
 WHERE (sqlc.arg(category) = '' OR category = sqlc.arg(category))
   AND (sqlc.arg(metric) = '' OR metric = sqlc.arg(metric))
-  AND (sqlc.arg(work_href) = '' OR work_href = sqlc.arg(work_href))
+  AND (sqlc.arg(work_href) = '' OR RTRIM(work_href, '/') = RTRIM(sqlc.arg(work_href), '/'))
   AND (sqlc.arg(filter_key) = '' OR filter_key = sqlc.arg(filter_key))
 ORDER BY category ASC, metric ASC, rank_no ASC, work_href ASC
+LIMIT CASE WHEN sqlc.arg(limit_rows) <= 0 THEN -1 ELSE sqlc.arg(limit_rows) END;
+
+-- name: ListListEntriesByRun :many
+SELECT id, crawl_run_id, work_href, category, metric, page_no, rank_no, metascore, user_score, filter_key, crawled_at
+FROM list_entries
+WHERE crawl_run_id = sqlc.arg(crawl_run_id)
+  AND (sqlc.arg(category) = '' OR category = sqlc.arg(category))
+  AND (sqlc.arg(metric) = '' OR metric = sqlc.arg(metric))
+  AND (sqlc.arg(work_href) = '' OR RTRIM(work_href, '/') = RTRIM(sqlc.arg(work_href), '/'))
+  AND (sqlc.arg(filter_key) = '' OR filter_key = sqlc.arg(filter_key))
+ORDER BY category ASC, metric ASC, filter_key ASC, rank_no ASC, work_href ASC
 LIMIT CASE WHEN sqlc.arg(limit_rows) <= 0 THEN -1 ELSE sqlc.arg(limit_rows) END;
 
 -- name: GetLatestEntryByWork :many

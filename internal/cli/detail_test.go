@@ -117,6 +117,54 @@ func TestDetailExportCommandCSVAndJSON(t *testing.T) {
 	}
 }
 
+func TestDetailExportCommandRunIDFlatAndSummary(t *testing.T) {
+	t.Parallel()
+
+	dbPath := seedDetailReadTestDB(t)
+
+	runJSONPath := filepath.Join(t.TempDir(), "detail-run.json")
+	runJSONCmd := newDetailExportCommand()
+	runJSONCmd.SetArgs([]string{"--db", dbPath, "--run-id=detail-run-1", "--format=json", "--output", runJSONPath})
+	if err := runJSONCmd.Execute(); err != nil {
+		t.Fatalf("run json Execute() error = %v", err)
+	}
+	runJSONContent, err := os.ReadFile(runJSONPath)
+	if err != nil {
+		t.Fatalf("ReadFile(run json) error = %v", err)
+	}
+	if content := string(runJSONContent); !strings.Contains(content, "\"first pass\"") || !strings.Contains(content, "\"details\"") {
+		t.Fatalf("expected snapshot json export to include first run detail payload, got %q", content)
+	}
+
+	flatCSVPath := filepath.Join(t.TempDir(), "detail-flat.csv")
+	flatCSVCmd := newDetailExportCommand()
+	flatCSVCmd.SetArgs([]string{"--db", dbPath, "--profile=flat", "--format=csv", "--output", flatCSVPath})
+	if err := flatCSVCmd.Execute(); err != nil {
+		t.Fatalf("flat csv Execute() error = %v", err)
+	}
+	flatCSVContent, err := os.ReadFile(flatCSVPath)
+	if err != nil {
+		t.Fatalf("ReadFile(flat csv) error = %v", err)
+	}
+	if content := string(flatCSVContent); !strings.Contains(content, "genres_csv") || !strings.Contains(content, "RPG") || !strings.Contains(content, "run_id") {
+		t.Fatalf("expected flat csv export to include flattened columns, got %q", content)
+	}
+
+	summaryPath := filepath.Join(t.TempDir(), "detail-summary.json")
+	summaryCmd := newDetailExportCommand()
+	summaryCmd.SetArgs([]string{"--db", dbPath, "--run-id=detail-run-2", "--profile=summary", "--format=json", "--output", summaryPath})
+	if err := summaryCmd.Execute(); err != nil {
+		t.Fatalf("summary Execute() error = %v", err)
+	}
+	summaryContent, err := os.ReadFile(summaryPath)
+	if err != nil {
+		t.Fatalf("ReadFile(summary) error = %v", err)
+	}
+	if content := string(summaryContent); !strings.Contains(content, "\"run_id\":\"detail-run-2\"") || !strings.Contains(content, "\"with_metascore_count\":1") {
+		t.Fatalf("expected summary export to include aggregate metrics, got %q", content)
+	}
+}
+
 func TestDetailCompareCommandCSVAndJSON(t *testing.T) {
 	t.Parallel()
 

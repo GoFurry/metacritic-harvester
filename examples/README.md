@@ -14,10 +14,12 @@ Typical workflow:
 
 1. Run one or more `crawl list` tasks to seed `works`
 2. Run `crawl detail` against the same SQLite database
+3. Run `crawl reviews` if you also want critic/user review data
 
 ```bash
 go run ./cmd/metacritic-harvester crawl list --category=game --metric=metascore --pages=1 --db=output/metacritic.db
 go run ./cmd/metacritic-harvester crawl detail --db=output/metacritic.db --category=game
+go run ./cmd/metacritic-harvester crawl reviews --db=output/metacritic.db --category=game --review-type=critic --limit=10
 ```
 
 Run a batch example:
@@ -38,4 +40,5 @@ Run a single-task example:
 ```bash
 go run ./cmd/metacritic-harvester crawl list --category=game --metric=metascore --year=2011:2014 --platform=pc,ps5 --genre=action,rpg --release-type=coming-soon
 go run ./cmd/metacritic-harvester crawl detail --db=output/metacritic.db --category=game
+go run ./cmd/metacritic-harvester review export --db=output/metacritic.db --profile=summary --format=json --output=output/review-summary.json
 ```

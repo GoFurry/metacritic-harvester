@@ -5,6 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/GoFurry/metacritic-harvester/internal/config"
+	"github.com/GoFurry/metacritic-harvester/internal/domain"
 	"github.com/GoFurry/metacritic-harvester/internal/storage"
 )
 
@@ -13,8 +15,11 @@ func newLatestExportCommand() *cobra.Command {
 		dbPath     string
 		category   string
 		metric     string
+		workHref   string
 		filterKey  string
+		runID      string
 		format     string
+		profile    string
 		output     string
 		checkpoint bool
 	)
@@ -26,8 +31,12 @@ func newLatestExportCommand() *cobra.Command {
 			if err := validateOptionalCategoryMetric(category, metric); err != nil {
 				return err
 			}
+			workHref = domain.NormalizeWorkHref(workHref, config.DefaultBaseURL)
 			if format != "csv" && format != "json" {
 				return fmt.Errorf("format must be csv or json")
+			}
+			if !isValidExportProfile(profile) {
+				return fmt.Errorf("profile must be raw, flat, or summary")
 			}
 			if output == "" {
 				return fmt.Errorf("output must not be empty")
@@ -41,14 +50,26 @@ func newLatestExportCommand() *cobra.Command {
 				err = finishReadRepository(err, closeFn)
 			}()
 
-			entries, err := repo.ListLatestEntries(cmd.Context(), storage.ListLatestEntriesFilter{
+			filter := storage.ListLatestEntriesFilter{
 				Category:  category,
 				Metric:    metric,
+				WorkHref:  workHref,
 				FilterKey: filterKey,
 				Limit:     -1,
-			})
-			if err != nil {
-				return err
+			}
+			var rows []latestEntryView
+			if runID == "" {
+				entries, err := repo.ListLatestEntries(cmd.Context(), filter)
+				if err != nil {
+					return err
+				}
+				rows = mapLatestEntries(entries)
+			} else {
+				entries, err := repo.ListListEntriesByRun(cmd.Context(), runID, filter)
+				if err != nil {
+					return err
+				}
+				rows = mapListEntries(entries)
 			}
 
 			file, err := createOutputFile(output)
@@ -57,14 +78,43 @@ func newLatestExportCommand() *cobra.Command {
 			}
 			defer file.Close()
 
-			mapped := mapLatestEntries(entries)
-			if format == "json" {
-				return writeJSON(file, mapped)
+			if profile == exportProfileSummary {
+				summary := summarizeLatestEntries(rows)
+				if format == "json" {
+					return writeJSON(file, summary)
+				}
+				csvRows := make([][]string, 0, len(summary))
+				for _, row := range summary {
+					csvRows = append(csvRows, []string{
+						row.RunID,
+						row.Category,
+						row.Metric,
+						row.FilterKey,
+						fmt.Sprintf("%d", row.RowCount),
+						fmt.Sprintf("%d", row.DistinctWorkCount),
+						fmt.Sprintf("%d", row.MinRank),
+						fmt.Sprintf("%d", row.MaxRank),
+					})
+				}
+				return writeCSV(file, []string{
+					"run_id",
+					"category",
+					"metric",
+					"filter_key",
+					"row_count",
+					"distinct_work_count",
+					"min_rank",
+					"max_rank",
+				}, csvRows)
 			}
 
-			rows := make([][]string, 0, len(mapped))
-			for _, entry := range mapped {
-				rows = append(rows, []string{
+			if format == "json" {
+				return writeJSON(file, rows)
+			}
+
+			csvRows := make([][]string, 0, len(rows))
+			for _, entry := range rows {
+				csvRows = append(csvRows, []string{
 					entry.WorkHref,
 					entry.Category,
 					entry.Metric,
@@ -89,15 +139,18 @@ func newLatestExportCommand() *cobra.Command {
 				"user_score",
 				"last_crawled_at",
 				"source_crawl_run_id",
-			}, rows)
+			}, csvRows)
 		},
 	}
 
 	cmd.Flags().StringVar(&dbPath, "db", "output/metacritic.db", "SQLite database path")
 	cmd.Flags().StringVar(&category, "category", "", "Optional category filter: game|movie|tv")
 	cmd.Flags().StringVar(&metric, "metric", "", "Optional metric filter: metascore|userscore|newest")
+	cmd.Flags().StringVar(&workHref, "work-href", "", "Optional work href filter")
 	cmd.Flags().StringVar(&filterKey, "filter-key", "", "Optional normalized filter key")
+	cmd.Flags().StringVar(&runID, "run-id", "", "Optional crawl run id; when set, export snapshot rows from list_entries")
 	cmd.Flags().StringVar(&format, "format", "csv", "Export format: csv|json")
+	cmd.Flags().StringVar(&profile, "profile", exportProfileRaw, "Export profile: raw|flat|summary")
 	cmd.Flags().StringVar(&output, "output", "", "Output file path")
 	addCheckpointFlag(cmd, &checkpoint)
 	_ = cmd.MarkFlagRequired("output")
