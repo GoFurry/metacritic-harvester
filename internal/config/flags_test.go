@@ -68,3 +68,66 @@ func TestBuildListCommandConfigRejectsInvalidValues(t *testing.T) {
 		})
 	}
 }
+
+func TestBuildReviewCommandConfigParsesSentimentAndSort(t *testing.T) {
+	t.Parallel()
+
+	cfg, err := BuildReviewCommandConfig(ReviewCommandOptions{
+		Category:    "game",
+		WorkHref:    "/game/baldurs-gate-3",
+		Limit:       5,
+		Concurrency: 2,
+		ReviewType:  "critic",
+		Sentiment:   "positive",
+		Sort:        "score",
+		Platform:    "pc",
+		PageSize:    20,
+		MaxPages:    3,
+		DBPath:      "output/test.db",
+		MaxRetries:  1,
+	})
+	if err != nil {
+		t.Fatalf("BuildReviewCommandConfig() error = %v", err)
+	}
+
+	if cfg.Task.Sentiment != "positive" || cfg.Task.Sort != "score" {
+		t.Fatalf("unexpected sentiment/sort: %+v", cfg.Task)
+	}
+	if cfg.Task.WorkHref != "https://www.metacritic.com/game/baldurs-gate-3" {
+		t.Fatalf("unexpected normalized work href: %q", cfg.Task.WorkHref)
+	}
+}
+
+func TestBuildReviewCommandConfigRejectsInvalidSentimentAndSort(t *testing.T) {
+	t.Parallel()
+
+	tests := []ReviewCommandOptions{
+		{
+			Category:    "movie",
+			Concurrency: 1,
+			ReviewType:  "critic",
+			Sentiment:   "angry",
+			PageSize:    20,
+			DBPath:      "output/test.db",
+		},
+		{
+			Category:    "movie",
+			Concurrency: 1,
+			ReviewType:  "critic",
+			Sentiment:   "all",
+			Sort:        "newest-first",
+			PageSize:    20,
+			DBPath:      "output/test.db",
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.Sentiment+"-"+tt.Sort, func(t *testing.T) {
+			t.Parallel()
+			if _, err := BuildReviewCommandConfig(tt); err == nil {
+				t.Fatalf("expected error for %+v", tt)
+			}
+		})
+	}
+}

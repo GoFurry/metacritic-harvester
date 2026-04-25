@@ -56,6 +56,8 @@ type ReviewCommandOptions struct {
 	Force       bool
 	Concurrency int
 	ReviewType  string
+	Sentiment   string
+	Sort        string
 	Platform    string
 	PageSize    int
 	MaxPages    int

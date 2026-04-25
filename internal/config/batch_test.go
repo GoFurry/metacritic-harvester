@@ -192,6 +192,39 @@ func TestBuildBatchTaskConfigsAppliesDefaultDetailConcurrency(t *testing.T) {
 	}
 }
 
+func TestBuildBatchTaskConfigsParsesReviewSentimentAndSort(t *testing.T) {
+	t.Parallel()
+
+	file := BatchFile{
+		Defaults: BatchDefaults{
+			DBPath: "output/default.db",
+		},
+		Tasks: []BatchTaskSpec{
+			{
+				Kind:              "reviews",
+				Category:          "game",
+				ReviewType:        "critic",
+				Sentiment:         "negative",
+				Sort:              "publication",
+				ReviewConcurrency: intPtr(2),
+				PageSize:          intPtr(25),
+				MaxPages:          intPtr(4),
+			},
+		},
+	}
+
+	configs, err := BuildBatchTaskConfigs(file)
+	if err != nil {
+		t.Fatalf("BuildBatchTaskConfigs() error = %v", err)
+	}
+	if len(configs) != 1 || configs[0].Review == nil {
+		t.Fatalf("unexpected configs: %+v", configs)
+	}
+	if configs[0].Review.Task.Sentiment != "negative" || configs[0].Review.Task.Sort != "publication" {
+		t.Fatalf("unexpected review task fields: %+v", configs[0].Review.Task)
+	}
+}
+
 func intPtr(v int) *int {
 	return &v
 }

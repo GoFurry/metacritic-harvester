@@ -1,0 +1,35 @@
+{
+  "meta": {
+    "section": "critic-reviews"
+  },
+  "components": [
+    {
+      "meta": {
+        "componentName": "product"
+      },
+      "data": {
+        "item": {
+          "title": "Example Show",
+          "slug": "example-show"
+        }
+      }
+    },
+    {
+      "meta": {
+        "componentType": "SeasonList"
+      },
+      "data": {
+        "items": [
+          {
+            "title": "Season 1",
+            "link": "/tv/example-show/season-1/"
+          },
+          {
+            "label": "Season 2",
+            "link": "/tv/example-show/season-2/"
+          }
+        ]
+      }
+    }
+  ]
+}

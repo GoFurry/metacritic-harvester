@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"log"
 	"strings"
@@ -20,6 +21,7 @@ const reviewStaleRunningThreshold = 15 * time.Minute
 
 const (
 	reviewErrorTypeState   = "state"
+	reviewErrorTypeRecover = "state_recovered"
 	reviewErrorTypeContext = "context"
 	reviewErrorTypeNetwork = "network"
 	reviewErrorTypeHTTP403 = "http_403"
@@ -32,6 +34,7 @@ const (
 
 const (
 	reviewErrorStagePlan     = "plan"
+	reviewErrorStageRecovery = "recovery"
 	reviewErrorStageRequest  = "request"
 	reviewErrorStageMarkRun  = "mark_running"
 	reviewErrorStagePage     = "page"
@@ -104,11 +107,13 @@ func (s *ReviewService) Run(ctx context.Context, task domain.ReviewTask) (Review
 	}()
 
 	log.Printf(
-		"crawl reviews start: run_id=%s category=%s work_href=%s review_type=%s platform=%s limit=%d page_size=%d max_pages=%d force=%t concurrency=%d db=%s",
+		"crawl reviews start: run_id=%s category=%s work_href=%s review_type=%s sentiment=%s sort=%s platform=%s limit=%d page_size=%d max_pages=%d force=%t concurrency=%d db=%s",
 		runID,
 		scope.Category,
 		task.WorkHref,
 		task.ReviewType,
+		task.Sentiment,
+		task.Sort,
 		task.Platform,
 		task.Limit,
 		task.PageSize,
@@ -313,6 +318,10 @@ func (s *ReviewService) processReviewScope(
 		return
 	}
 
+	if !s.prepareReviewScopeState(ctx, repo, scopeTask.Task, scope, runID, state, dbWriteMu) {
+		return
+	}
+
 	attemptedAt := s.now().UTC()
 	dbWriteMu.Lock()
 	stateErr := repo.MarkReviewRunning(ctx, scope, attemptedAt, runID)
@@ -333,7 +342,7 @@ func (s *ReviewService) processReviewScope(
 			break
 		}
 
-		page, err := listAPI.FetchPage(ctx, scopeTask.Work, scopeTask.ReviewType, scopeTask.PlatformKey, offset, limit)
+		page, err := listAPI.FetchPage(ctx, scopeTask.Work, scopeTask.ReviewType, scopeTask.Task.Sentiment, scopeTask.Task.Sort, scopeTask.PlatformKey, offset, limit)
 		if err != nil {
 			failure := classifyReviewFetchError(err)
 			dbWriteMu.Lock()
@@ -417,6 +426,63 @@ func (s *ReviewService) processReviewScope(
 	logReviewProgress(runID, snapshot)
 }
 
+func (s *ReviewService) prepareReviewScopeState(
+	ctx context.Context,
+	repo *storage.Repository,
+	task domain.ReviewTask,
+	scope domain.ReviewScope,
+	runID string,
+	state *reviewRunState,
+	dbWriteMu *sync.Mutex,
+) bool {
+	scopeLabel := scope.Key()
+	dbWriteMu.Lock()
+	fetchState, err := repo.GetReviewFetchState(ctx, scope)
+	dbWriteMu.Unlock()
+	if err != nil && !storage.IsNotFound(err) {
+		snapshot := state.recordFailure(reviewFailuref(reviewErrorTypeState, reviewErrorStageState, err, "load review fetch state failed: scope=%s", scopeLabel))
+		logReviewProgress(runID, snapshot)
+		return false
+	}
+	if storage.IsNotFound(err) {
+		return true
+	}
+
+	if fetchState.Status == storage.ReviewFetchStatusSucceeded && !task.Force {
+		snapshot := state.recordSkip()
+		log.Printf("review skipped: run_id=%s scope=%s reason=already_succeeded", runID, scopeLabel)
+		logReviewProgress(runID, snapshot)
+		return false
+	}
+
+	if fetchState.Status != storage.ReviewFetchStatusRunning {
+		return true
+	}
+
+	lastAttemptedAt, ok := parseRFC3339NullString(fetchState.LastAttemptedAt)
+	if ok && lastAttemptedAt.After(s.now().UTC().Add(-reviewStaleRunningThreshold)) {
+		snapshot := state.recordSkip()
+		log.Printf("review skipped: run_id=%s scope=%s reason=fresh_running last_attempted_at=%s", runID, scopeLabel, lastAttemptedAt.Format(time.RFC3339))
+		logReviewProgress(runID, snapshot)
+		return false
+	}
+
+	dbWriteMu.Lock()
+	recoverErr := repo.MarkReviewFailed(ctx, scope, s.now().UTC(), runID, storage.ReviewFetchFailure{
+		Message:    "recovered stale running state",
+		ErrorType:  reviewErrorTypeRecover,
+		ErrorStage: reviewErrorStageRecovery,
+	})
+	dbWriteMu.Unlock()
+	if recoverErr != nil {
+		snapshot := state.recordFailure(reviewFailuref(reviewErrorTypeState, reviewErrorStageRecovery, recoverErr, "recover stale review state failed: scope=%s", scopeLabel))
+		logReviewProgress(runID, snapshot)
+		return false
+	}
+	log.Printf("review stale-running recovered: run_id=%s scope=%s", runID, scopeLabel)
+	return true
+}
+
 func (s *ReviewService) defaultReviewPageSize(task domain.ReviewTask) int {
 	if task.PageSize > 0 {
 		return task.PageSize
@@ -437,6 +503,12 @@ type reviewRunScope struct {
 	FilterKey string
 }
 
+// Reviews remain scope-recoverable instead of page-recoverable on purpose.
+// The backend exposes an append-like paginated stream whose offsets can drift as
+// new reviews arrive, so persisting per-page checkpoints would not provide a
+// stable resume boundary. Re-running an entire scope is cheaper to reason
+// about, and latest_reviews + review_snapshots already make scope replays
+// idempotent.
 func buildReviewRunScope(task domain.ReviewTask) reviewRunScope {
 	category := strings.TrimSpace(string(task.Category))
 	if category == "" {
@@ -451,11 +523,16 @@ func buildReviewRunScope(task domain.ReviewTask) reviewRunScope {
 		workHref = "all"
 	}
 	platform := strings.TrimSpace(task.Platform)
+	sentiment := strings.TrimSpace(string(task.Sentiment))
+	if sentiment == "" {
+		sentiment = string(domain.ReviewSentimentAll)
+	}
+	sort := strings.TrimSpace(string(task.Sort))
 	limit := task.Limit
 	pageSize := task.PageSize
 	maxPages := task.MaxPages
 	force := task.Force
-	filterKey := fmt.Sprintf("href=%s|review_type=%s|platform=%s|limit=%d|page_size=%d|max_pages=%d|force=%t", workHref, reviewType, platform, limit, pageSize, maxPages, force)
+	filterKey := fmt.Sprintf("href=%s|review_type=%s|platform=%s|sentiment=%s|sort=%s|limit=%d|page_size=%d|max_pages=%d|force=%t", workHref, reviewType, platform, sentiment, sort, limit, pageSize, maxPages, force)
 	taskName := fmt.Sprintf("reviews-%s-%s", category, reviewType)
 	if strings.TrimSpace(task.WorkHref) != "" {
 		taskName = "reviews-single"
@@ -510,6 +587,17 @@ func classifyReviewFetchError(err error) *reviewFailure {
 	default:
 		return reviewFailuref(reviewErrorTypeNetwork, reviewErrorStageRequest, err, "review request failed")
 	}
+}
+
+func parseRFC3339NullString(value sql.NullString) (time.Time, bool) {
+	if !value.Valid || strings.TrimSpace(value.String) == "" {
+		return time.Time{}, false
+	}
+	parsed, err := time.Parse(time.RFC3339, value.String)
+	if err != nil {
+		return time.Time{}, false
+	}
+	return parsed, true
 }
 
 type reviewRunState struct {

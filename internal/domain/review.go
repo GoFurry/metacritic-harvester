@@ -16,6 +16,23 @@ const (
 	ReviewTypeAll    ReviewType = "all"
 )
 
+type ReviewSentiment string
+
+const (
+	ReviewSentimentAll      ReviewSentiment = "all"
+	ReviewSentimentPositive ReviewSentiment = "positive"
+	ReviewSentimentNeutral  ReviewSentiment = "neutral"
+	ReviewSentimentNegative ReviewSentiment = "negative"
+)
+
+type ReviewSort string
+
+const (
+	ReviewSortDate        ReviewSort = "date"
+	ReviewSortScore       ReviewSort = "score"
+	ReviewSortPublication ReviewSort = "publication"
+)
+
 func ParseReviewType(raw string) (ReviewType, error) {
 	switch ReviewType(strings.TrimSpace(strings.ToLower(raw))) {
 	case ReviewTypeCritic:
@@ -29,6 +46,36 @@ func ParseReviewType(raw string) (ReviewType, error) {
 	}
 }
 
+func ParseReviewSentiment(raw string) (ReviewSentiment, error) {
+	switch ReviewSentiment(strings.TrimSpace(strings.ToLower(raw))) {
+	case "", ReviewSentimentAll:
+		return ReviewSentimentAll, nil
+	case ReviewSentimentPositive:
+		return ReviewSentimentPositive, nil
+	case ReviewSentimentNeutral:
+		return ReviewSentimentNeutral, nil
+	case ReviewSentimentNegative:
+		return ReviewSentimentNegative, nil
+	default:
+		return "", fmt.Errorf("invalid review sentiment %q: must be one of all|positive|neutral|negative", raw)
+	}
+}
+
+func ParseReviewSort(raw string) (ReviewSort, error) {
+	switch ReviewSort(strings.TrimSpace(strings.ToLower(raw))) {
+	case "":
+		return "", nil
+	case ReviewSortDate:
+		return ReviewSortDate, nil
+	case ReviewSortScore:
+		return ReviewSortScore, nil
+	case ReviewSortPublication:
+		return ReviewSortPublication, nil
+	default:
+		return "", fmt.Errorf("invalid review sort %q: must be one of date|score|publication", raw)
+	}
+}
+
 type ReviewTask struct {
 	Category    Category
 	WorkHref    string
@@ -36,6 +83,8 @@ type ReviewTask struct {
 	Force       bool
 	Concurrency int
 	ReviewType  ReviewType
+	Sentiment   ReviewSentiment
+	Sort        ReviewSort
 	Platform    string
 	PageSize    int
 	MaxPages    int
@@ -86,7 +135,7 @@ func BuildCriticReviewKey(workHref string, category Category, platformKey string
 
 func BuildUserReviewKey(workHref string, category Category, platformKey string, externalID string, author string, reviewDate string, score *float64, quote string) string {
 	if strings.TrimSpace(externalID) != "" {
-		return fmt.Sprintf("%s|%s|%s|%s", category, ReviewTypeUser, NormalizeWorkHref(workHref, ""), strings.TrimSpace(externalID))
+		return fmt.Sprintf("%s|%s|%s|%s|%s", category, ReviewTypeUser, NormalizeWorkHref(workHref, ""), strings.TrimSpace(platformKey), strings.TrimSpace(externalID))
 	}
 
 	scoreText := ""

@@ -143,18 +143,30 @@
 - `review_fetch_state`：按 `work_href + review_type + platform_key` 维护 scope 状态
 - `crawl_runs`：为每次 `crawl reviews` 生成批次血缘
 
-Phase 4 未完成：
+Phase 4 待补强 checklist：
 
-- `sentiment`、排序等更细的评论接口参数还没接入
-- 评论字段标准化仍是首版，`critic` / `user` 的更多异构字段还没系统整理
-- `internal/source/metacritic/api` 的评论样本 fixture 测试还不够完整
-- 增量恢复目前是 scope 级，尚未细化到页级恢复
-- 更丰富的 review 导出与分析视图留到 Phase 5 继续做
+- [x] 为评论抓取补齐更多接口参数映射，至少覆盖 `sentiment`、排序和现有接口已支持但尚未暴露的过滤维度
+- [x] 系统整理 `critic` / `user` 评论异构字段，明确统一字段、可选字段和仅特定类型存在的字段语义
+- [x] 为 `internal/source/metacritic/api` 下的评论接口补齐更完整的 fixture / 样本测试，覆盖：
+  - 正常分页
+  - 空列表
+  - `critic` / `user` 差异载荷
+  - game 多平台 scope
+  - 字段缺失与接口响应变体
+- [x] 将 `review_fetch_state` 的恢复粒度从当前 scope 级继续评估到页级，明确是否需要支持更细粒度断点续抓
+- [ ] 为 review 读侧补齐更丰富的导出与分析视图；这部分与 Phase 5 联动推进，但需要在 Phase 4 明确 review 数据面的输出目标
+
+进入下一阶段前建议至少完成：
+
+- [x] 评论 API fixture 补强
+- [x] 评论字段标准化规则收口
+- [x] 是否需要页级恢复的结论与方案
 
 说明：
 
 - Phase 4 明确采用“后端接口优先”策略，因为评论天然具有类型、平台、分页和来源字段，直接解析前端页面会更脆弱、也更难做增量抓取
 - 样本已经表明 `composer` 页适合做“上下文 + summary + 平台枚举”，而不是直接当评论列表数据源
+- `review_fetch_state` 继续维持 scope 级恢复；评论列表属于 append-like 分页流，offset 会随新评论写入漂移，页级 checkpoint 的状态复杂度高于收益，而 `latest_reviews + review_snapshots` 已能保证 scope 重抓幂等
 
 ## Phase 5：更完整的导出与分析
 

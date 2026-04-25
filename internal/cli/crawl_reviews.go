@@ -59,6 +59,8 @@ func newCrawlReviewsCommand() *cobra.Command {
 	cmd.Flags().BoolVar(&opts.Force, "force", false, "Re-crawl scopes even if they already succeeded")
 	cmd.Flags().IntVar(&opts.Concurrency, "concurrency", 1, "Maximum number of work scopes to run concurrently")
 	cmd.Flags().StringVar(&opts.ReviewType, "review-type", "all", "Review type: critic|user|all")
+	cmd.Flags().StringVar(&opts.Sentiment, "sentiment", "all", "Review sentiment filter: all|positive|neutral|negative")
+	cmd.Flags().StringVar(&opts.Sort, "sort", "", "Optional review sort: date|score|publication")
 	cmd.Flags().StringVar(&opts.Platform, "platform", "", "Optional game platform scope, e.g. pc or xbox-360")
 	cmd.Flags().IntVar(&opts.PageSize, "page-size", 20, "Reviews page size")
 	cmd.Flags().IntVar(&opts.MaxPages, "max-pages", 0, "Maximum number of pages to fetch per scope")

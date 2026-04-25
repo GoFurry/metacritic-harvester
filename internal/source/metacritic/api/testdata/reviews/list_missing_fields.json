@@ -1,0 +1,22 @@
+{
+  "data": {
+    "totalResults": 1,
+    "items": [
+      {
+        "id": "user-2",
+        "url": "",
+        "reviewDate": "",
+        "score": "",
+        "quote": "Sparse payload",
+        "author": "guest",
+        "authorSlug": "",
+        "thumbsUp": "",
+        "thumbsDown": null,
+        "spoiler": "1",
+        "platform": {
+          "slug": "switch"
+        }
+      }
+    ]
+  }
+}

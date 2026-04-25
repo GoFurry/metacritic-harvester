@@ -1,0 +1,21 @@
+{
+  "data": {
+    "totalResults": 1,
+    "items": [
+      {
+        "id": "user-1",
+        "url": "/game/baldurs-gate-3/user-reviews/user-1/",
+        "date": "2023-08-05",
+        "score": "8.5",
+        "quote": "Loved it",
+        "author": "player1",
+        "authorSlug": "player1",
+        "thumbsUp": "12",
+        "thumbsDown": 1,
+        "versionLabel": "PC",
+        "spoiler": "false",
+        "season": "Season 1"
+      }
+    ]
+  }
+}

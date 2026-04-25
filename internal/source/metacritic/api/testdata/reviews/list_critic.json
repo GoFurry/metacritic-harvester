@@ -1,0 +1,36 @@
+{
+  "data": {
+    "totalResults": 2,
+    "items": [
+      {
+        "id": "critic-1",
+        "url": "/game/baldurs-gate-3/critic-reviews/critic-1/",
+        "date": "2023-08-03",
+        "score": 100,
+        "quote": "A masterpiece.",
+        "publicationName": "PC Gamer",
+        "publicationSlug": "pc-gamer",
+        "author": "Alice",
+        "authorSlug": "alice",
+        "platform": {
+          "slug": "pc"
+        }
+      },
+      {
+        "id": "critic-2",
+        "reviewDate": "2023-08-04",
+        "score": "95",
+        "quote": "Great stuff.",
+        "publicationName": "IGN",
+        "publicationSlug": "ign",
+        "author": "Bob",
+        "authorSlug": "bob",
+        "reviewedProduct": {
+          "platform": {
+            "slug": "playstation-5"
+          }
+        }
+      }
+    ]
+  }
+}

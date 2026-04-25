@@ -52,23 +52,31 @@ type ReviewSeasonContext struct {
 }
 
 func NewReviewPageAPI(baseURL string, transport *http.Transport, timeout time.Duration, maxRetries int) *ReviewPageAPI {
+	var roundTripper http.RoundTripper
+	if transport != nil {
+		roundTripper = transport
+	}
 	return &ReviewPageAPI{
 		baseURL:    strings.TrimRight(baseURL, "/"),
 		maxRetries: maxRetries,
 		client: &http.Client{
 			Timeout:   timeout,
-			Transport: transport,
+			Transport: roundTripper,
 		},
 	}
 }
 
 func NewReviewListAPI(baseURL string, transport *http.Transport, timeout time.Duration, maxRetries int) *ReviewListAPI {
+	var roundTripper http.RoundTripper
+	if transport != nil {
+		roundTripper = transport
+	}
 	return &ReviewListAPI{
 		baseURL:    strings.TrimRight(baseURL, "/"),
 		maxRetries: maxRetries,
 		client: &http.Client{
 			Timeout:   timeout,
-			Transport: transport,
+			Transport: roundTripper,
 		},
 	}
 }
@@ -168,8 +176,8 @@ type ReviewListPage struct {
 	RawPayload   string
 }
 
-func (a *ReviewListAPI) FetchPage(ctx context.Context, work domain.Work, reviewType domain.ReviewType, platformKey string, offset int, limit int) (ReviewListPage, error) {
-	reqURL, err := buildReviewListURL(a.baseURL, work.Category, reviewType, work.Href, platformKey, offset, limit)
+func (a *ReviewListAPI) FetchPage(ctx context.Context, work domain.Work, reviewType domain.ReviewType, sentiment domain.ReviewSentiment, sort domain.ReviewSort, platformKey string, offset int, limit int) (ReviewListPage, error) {
+	reqURL, err := buildReviewListURL(a.baseURL, work.Category, reviewType, sentiment, sort, work.Href, platformKey, offset, limit)
 	if err != nil {
 		return ReviewListPage{}, err
 	}
@@ -297,7 +305,7 @@ func buildReviewPageURL(baseURL string, category domain.Category, reviewType dom
 	return fmt.Sprintf("%s/composer/metacritic/pages/%s-%s-reviews/%s/web", strings.TrimRight(baseURL, "/"), section, reviewType, slug), nil
 }
 
-func buildReviewListURL(baseURL string, category domain.Category, reviewType domain.ReviewType, workHref string, platformKey string, offset int, limit int) (string, error) {
+func buildReviewListURL(baseURL string, category domain.Category, reviewType domain.ReviewType, sentiment domain.ReviewSentiment, sort domain.ReviewSort, workHref string, platformKey string, offset int, limit int) (string, error) {
 	slug := slugFromWorkHref(category, workHref)
 	if slug == "" {
 		return "", fmt.Errorf("review list slug is empty")
@@ -315,6 +323,12 @@ func buildReviewListURL(baseURL string, category domain.Category, reviewType dom
 	q := u.Query()
 	if category == domain.CategoryGame && strings.TrimSpace(platformKey) != "" {
 		q.Set("platform", strings.TrimSpace(platformKey))
+	}
+	if sentiment != "" && sentiment != domain.ReviewSentimentAll {
+		q.Set("filterBySentiment", string(sentiment))
+	}
+	if sort != "" {
+		q.Set("sort", string(sort))
 	}
 	if offset >= 0 {
 		q.Set("offset", strconv.Itoa(offset))
@@ -357,19 +371,29 @@ func slugFromWorkHref(category domain.Category, workHref string) string {
 	return ""
 }
 
+// Review field normalization contract:
+//   - Shared fields always map into the common columns: review_key, work_href,
+//     category, review_type, platform_key, review_url, review_date, score, quote.
+//   - Critic payloads treat author/authorSlug as author_name/author_slug and
+//     publication* as critic-only metadata.
+//   - User payloads treat author/authorSlug as username/user_slug. We keep
+//     author_name/author_slug empty for user reviews so the normalized columns
+//     stay semantically stable.
+//   - publication* never backfills user rows, and season_label only persists when
+//     the payload explicitly exposes a season/show label.
+//   - source_payload_json remains the only heterogenous fallback for fields that
+//     do not fit the normalized schema.
 func buildReviewRecord(work domain.Work, reviewType domain.ReviewType, requestedPlatform string, itemMap map[string]any) domain.ReviewRecord {
 	score := floatPointer(itemMap["score"])
 	quote := scalarString(itemMap["quote"])
 	reviewURL := normalizeURL(scalarString(itemMap["url"]))
 	reviewDate := firstNonEmpty(scalarString(itemMap["date"]), scalarString(itemMap["reviewDate"]))
 	externalID := scalarString(itemMap["id"])
-	authorName := scalarString(itemMap["author"])
+	author := scalarString(itemMap["author"])
 	authorSlug := scalarString(itemMap["authorSlug"])
 	publicationName := scalarString(itemMap["publicationName"])
 	publicationSlug := scalarString(itemMap["publicationSlug"])
 	seasonLabel := scalarString(itemMap["season"])
-	username := scalarString(itemMap["author"])
-	userSlug := scalarString(itemMap["authorSlug"])
 	versionLabel := firstNonEmpty(scalarString(itemMap["version"]), scalarString(itemMap["versionLabel"]))
 	spoiler := boolPointer(itemMap["spoiler"])
 	thumbsUp := int64Pointer(itemMap["thumbsUp"])
@@ -386,24 +410,24 @@ func buildReviewRecord(work domain.Work, reviewType domain.ReviewType, requested
 		ReviewDate:        reviewDate,
 		Score:             score,
 		Quote:             quote,
-		PublicationName:   publicationName,
-		PublicationSlug:   publicationSlug,
-		AuthorName:        authorName,
-		AuthorSlug:        authorSlug,
 		SeasonLabel:       seasonLabel,
-		Username:          username,
-		UserSlug:          userSlug,
 		ThumbsUp:          thumbsUp,
 		ThumbsDown:        thumbsDown,
 		VersionLabel:      versionLabel,
 		SpoilerFlag:       spoiler,
 		SourcePayloadJSON: marshalAny(itemMap),
 	}
-	if reviewType == domain.ReviewTypeUser && record.ExternalReviewID != "" {
-		record.ReviewKey = domain.BuildUserReviewKey(work.Href, work.Category, platformKey, record.ExternalReviewID, firstNonEmpty(record.Username, record.AuthorName), record.ReviewDate, record.Score, record.Quote)
-	} else if reviewType == domain.ReviewTypeUser {
-		record.ReviewKey = domain.BuildUserReviewKey(work.Href, work.Category, platformKey, "", firstNonEmpty(record.Username, record.AuthorName), record.ReviewDate, record.Score, record.Quote)
-	} else {
+
+	switch reviewType {
+	case domain.ReviewTypeUser:
+		record.Username = author
+		record.UserSlug = authorSlug
+		record.ReviewKey = domain.BuildUserReviewKey(work.Href, work.Category, platformKey, record.ExternalReviewID, record.Username, record.ReviewDate, record.Score, record.Quote)
+	default:
+		record.PublicationName = publicationName
+		record.PublicationSlug = publicationSlug
+		record.AuthorName = author
+		record.AuthorSlug = authorSlug
 		record.ReviewKey = domain.BuildCriticReviewKey(work.Href, work.Category, platformKey, firstNonEmpty(record.PublicationSlug, record.AuthorSlug), record.ReviewDate, record.Quote)
 	}
 	return record

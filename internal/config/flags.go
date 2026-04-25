@@ -124,6 +124,14 @@ func BuildReviewCommandConfig(opts ReviewCommandOptions) (ReviewCommandConfig, e
 	if err != nil {
 		return ReviewCommandConfig{}, err
 	}
+	sentiment, err := domain.ParseReviewSentiment(opts.Sentiment)
+	if err != nil {
+		return ReviewCommandConfig{}, err
+	}
+	sort, err := domain.ParseReviewSort(opts.Sort)
+	if err != nil {
+		return ReviewCommandConfig{}, err
+	}
 
 	if opts.Limit < 0 {
 		return ReviewCommandConfig{}, fmt.Errorf("limit must be greater than or equal to 0")
@@ -166,6 +174,8 @@ func BuildReviewCommandConfig(opts ReviewCommandOptions) (ReviewCommandConfig, e
 			Force:       opts.Force,
 			Concurrency: opts.Concurrency,
 			ReviewType:  reviewType,
+			Sentiment:   sentiment,
+			Sort:        sort,
 			Platform:    platform,
 			PageSize:    opts.PageSize,
 			MaxPages:    opts.MaxPages,

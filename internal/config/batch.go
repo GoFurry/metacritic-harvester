@@ -47,6 +47,8 @@ type BatchTaskSpec struct {
 	Force             *bool    `yaml:"force"`
 	DetailConcurrency *int     `yaml:"detail-concurrency"`
 	ReviewType        string   `yaml:"review-type"`
+	Sentiment         string   `yaml:"sentiment"`
+	Sort              string   `yaml:"sort"`
 	PageSize          *int     `yaml:"page-size"`
 	MaxPages          *int     `yaml:"max-pages"`
 	ReviewConcurrency *int     `yaml:"review-concurrency"`
@@ -173,6 +175,8 @@ func BuildBatchTaskConfigs(file BatchFile) ([]BatchTaskConfig, error) {
 				Force:       mergeBool(false, task.Force),
 				Concurrency: concurrency,
 				ReviewType:  firstNonEmpty(task.ReviewType, string(domain.ReviewTypeAll)),
+				Sentiment:   firstNonEmpty(task.Sentiment, string(domain.ReviewSentimentAll)),
+				Sort:        strings.TrimSpace(task.Sort),
 				Platform:    strings.Join(task.Platform, ","),
 				PageSize:    firstPositivePointer(20, task.PageSize),
 				MaxPages:    firstNonNegativePointer(0, task.MaxPages),
