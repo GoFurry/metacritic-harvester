@@ -1,0 +1,27 @@
+defaults:
+  pages: 1
+  retries: 3
+  debug: false
+
+tasks:
+  - name: game-snapshot
+    category: game
+    metric: metascore
+    db: output/game-metacritic.db
+    platform: [pc, ps5]
+    genre: [action, rpg]
+
+  - name: movie-snapshot
+    category: movie
+    metric: userscore
+    db: output/movie-metacritic.db
+    network: [netflix, max]
+    genre: [drama, thriller]
+    release-type: [coming-soon, in-theaters]
+
+  - name: tv-snapshot
+    category: tv
+    metric: newest
+    db: output/tv-metacritic.db
+    network: [hulu, netflix]
+    genre: [drama, thriller]

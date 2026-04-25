@@ -1,0 +1,14 @@
+timezone: Asia/Shanghai
+
+jobs:
+  - name: morning-batch
+    cron: "0 9 * * *"
+    batch_file: ./batch-tasks.yaml
+    enabled: true
+    concurrency: 1
+
+  - name: evening-batch
+    cron: "0 21 * * *"
+    batch_file: ./batch-concurrent.yaml
+    enabled: true
+    concurrency: 2

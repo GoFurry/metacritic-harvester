@@ -1,0 +1,31 @@
+defaults:
+  pages: 1
+  retries: 3
+  debug: false
+  concurrency: 2
+
+tasks:
+  - name: game-metascore-fast
+    category: game
+    metric: metascore
+    db: output/game-metacritic.db
+    year: "2011:2014"
+    platform: [pc, ps5]
+    genre: [action, rpg]
+
+  - name: movie-userscore-fast
+    category: movie
+    metric: userscore
+    db: output/movie-metacritic.db
+    year: "2011:2014"
+    network: [netflix, max]
+    genre: [drama, thriller]
+    release-type: [coming-soon, in-theaters]
+
+  - name: tv-newest-fast
+    category: tv
+    metric: newest
+    db: output/tv-metacritic.db
+    year: "2011:2014"
+    network: [hulu, netflix]
+    genre: [drama, thriller]
