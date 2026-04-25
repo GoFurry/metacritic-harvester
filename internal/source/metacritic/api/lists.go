@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -43,7 +44,24 @@ type FinderListItem struct {
 	UserScore string
 }
 
-func NewFinderAPI(baseURL string, transport *http.Transport, timeout time.Duration, maxRetries int) *FinderAPI {
+type finderMissingRequiredFieldsError struct {
+	Field string
+}
+
+func (e *finderMissingRequiredFieldsError) Error() string {
+	return fmt.Sprintf("finder response missing required fields: %s", e.Field)
+}
+
+func isFinderMissingRequiredFieldsError(err error) bool {
+	var target *finderMissingRequiredFieldsError
+	return errors.As(err, &target)
+}
+
+func IsFinderMissingRequiredFieldsError(err error) bool {
+	return isFinderMissingRequiredFieldsError(err)
+}
+
+func NewFinderAPI(baseURL string, transport http.RoundTripper, timeout time.Duration, maxRetries int) *FinderAPI {
 	var roundTripper http.RoundTripper
 	if transport != nil {
 		roundTripper = transport
@@ -107,6 +125,9 @@ func (a *FinderAPI) FetchPage(ctx context.Context, task domain.ListTask, page in
 			UserScore: userScore,
 		})
 	}
+	if len(items) > 0 && len(result.Items) == 0 {
+		return FinderListPage{}, &finderMissingRequiredFieldsError{Field: "item.slug|item.title"}
+	}
 
 	return result, nil
 }
@@ -138,7 +159,11 @@ func buildFinderListURL(baseURL string, task domain.ListTask, page int) (string,
 		q.Set("releaseType", strings.Join(task.Filter.ReleaseTypes, ","))
 	}
 	if len(task.Filter.Genres) > 0 {
-		q.Set("genres", strings.Join(mapFinderGenres(task.Filter.Genres), ","))
+		genres, err := mapFinderGenres(task.Filter.Genres)
+		if err != nil {
+			return "", err
+		}
+		q.Set("genres", strings.Join(genres, ","))
 	}
 
 	if len(task.Filter.Platforms) > 0 {
@@ -265,72 +290,4 @@ func humanizeAPIDate(raw string) string {
 		return raw
 	}
 	return parsed.Format("Jan 2, 2006")
-}
-
-func mapFinderGenres(values []string) []string {
-	result := make([]string, 0, len(values))
-	for _, value := range values {
-		value = strings.TrimSpace(value)
-		if value == "" {
-			continue
-		}
-		value = strings.ReplaceAll(value, "-", " ")
-		parts := strings.Fields(value)
-		for i, part := range parts {
-			parts[i] = strings.ToUpper(part[:1]) + part[1:]
-		}
-		result = append(result, strings.Join(parts, " "))
-	}
-	return result
-}
-
-func mapFinderPlatformIDs(values []string) ([]string, error) {
-	result := make([]string, 0, len(values))
-	for _, value := range values {
-		mapped, ok := knownFinderPlatformIDs[strings.ToLower(strings.TrimSpace(value))]
-		if ok {
-			result = append(result, mapped)
-			continue
-		}
-		if _, err := strconv.Atoi(strings.TrimSpace(value)); err == nil {
-			result = append(result, strings.TrimSpace(value))
-			continue
-		}
-		return nil, fmt.Errorf("finder api does not support unresolved platform %q", value)
-	}
-	return result, nil
-}
-
-func mapFinderNetworkIDs(values []string) ([]string, error) {
-	result := make([]string, 0, len(values))
-	for _, value := range values {
-		mapped, ok := knownFinderNetworkIDs[strings.ToLower(strings.TrimSpace(value))]
-		if ok {
-			result = append(result, mapped)
-			continue
-		}
-		if _, err := strconv.Atoi(strings.TrimSpace(value)); err == nil {
-			result = append(result, strings.TrimSpace(value))
-			continue
-		}
-		return nil, fmt.Errorf("finder api does not support unresolved network %q", value)
-	}
-	return result, nil
-}
-
-var knownFinderPlatformIDs = map[string]string{
-	"pc":              "1500000019",
-	"playstation-4":   "1500000120",
-	"ps4":             "1500000120",
-	"xbox-one":        "1500000121",
-	"switch":          "1500000122",
-	"playstation-5":   "1500000128",
-	"ps5":             "1500000128",
-	"xbox-series-x":   "1500000129",
-	"xbox-series-xs":  "1500000129",
-	"xbox-series-x|s": "1500000129",
-}
-
-var knownFinderNetworkIDs = map[string]string{
-	"netflix": "1943",
 }

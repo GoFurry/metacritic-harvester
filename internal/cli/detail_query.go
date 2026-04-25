@@ -24,6 +24,12 @@ func newDetailQueryCommand() *cobra.Command {
 		Use:   "query",
 		Short: "Query current work_details rows",
 		RunE: func(cmd *cobra.Command, _ []string) (err error) {
+			scope := buildReadScope(
+				scopePart("db", dbPath),
+				scopePart("category", category),
+				scopePart("work_href", workHref),
+				scopePartInt("limit", limit),
+			)
 			if err := validateOptionalCategoryMetric(category, ""); err != nil {
 				return err
 			}
@@ -34,7 +40,7 @@ func newDetailQueryCommand() *cobra.Command {
 
 			repo, closeFn, err := openRepository(cmd.Context(), dbPath, checkpoint)
 			if err != nil {
-				return err
+				return wrapReadCommandError("detail query", err, scope)
 			}
 			defer func() {
 				err = finishReadRepository(err, closeFn)
@@ -46,12 +52,12 @@ func newDetailQueryCommand() *cobra.Command {
 				Limit:    limit,
 			})
 			if err != nil {
-				return err
+				return wrapReadCommandError("detail query", err, scope)
 			}
 
 			mapped, err := mapWorkDetails(rows)
 			if err != nil {
-				return err
+				return wrapReadCommandError("detail query", err, scope)
 			}
 			if format == "json" {
 				return writeJSON(cmd.OutOrStdout(), mapped)

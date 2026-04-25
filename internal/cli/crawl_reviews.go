@@ -22,6 +22,22 @@ func newCrawlReviewsCommand() *cobra.Command {
 			if err != nil {
 				return err
 			}
+			fmt.Fprintf(
+				cmd.ErrOrStderr(),
+				"crawl reviews starting: category=%s work_href=%s source=api review_type=%s sentiment=%s sort=%s platform=%s limit=%d page_size=%d max_pages=%d force=%t concurrency=%d db=%s\n",
+				cfg.Task.Category,
+				cfg.Task.WorkHref,
+				cfg.Task.ReviewType,
+				cfg.Task.Sentiment,
+				cfg.Task.Sort,
+				cfg.Task.Platform,
+				cfg.Task.Limit,
+				cfg.Task.PageSize,
+				cfg.Task.MaxPages,
+				cfg.Task.Force,
+				cfg.Task.Concurrency,
+				cfg.DBPath,
+			)
 
 			ctx, cancel := context.WithTimeout(cmd.Context(), 30*time.Minute)
 			defer cancel()
@@ -35,10 +51,36 @@ func newCrawlReviewsCommand() *cobra.Command {
 			})
 
 			result, err := service.Run(ctx, cfg.Task)
+			if err != nil {
+				fmt.Fprintf(
+					cmd.ErrOrStderr(),
+					"crawl reviews failed: run_id=%s requested_source=%s effective_source=%s fallback_used=%t fallback_reason=%s candidates=%d scopes=%d fetched=%d skipped=%d failed=%d reviews=%d snapshots=%d latest=%d failures=%d db=%s error=%v\n",
+					result.RunID,
+					result.RequestedSource,
+					result.EffectiveSource,
+					result.FallbackUsed,
+					result.FallbackReason,
+					result.Candidates,
+					result.ScopesScheduled,
+					result.ScopesFetched,
+					result.ScopesSkipped,
+					result.ScopesFailed,
+					result.ReviewsFetched,
+					result.ReviewSnapshotsSaved,
+					result.LatestReviewsUpserted,
+					result.Failures,
+					cfg.DBPath,
+					err,
+				)
+			}
 			fmt.Fprintf(
 				cmd.OutOrStdout(),
-				"reviews summary: run_id=%s candidates=%d scopes=%d fetched=%d skipped=%d failed=%d reviews=%d snapshots=%d latest=%d failures=%d\n",
+				"reviews summary: run_id=%s requested_source=%s effective_source=%s fallback_used=%t fallback_reason=%s candidates=%d scopes=%d fetched=%d skipped=%d failed=%d reviews=%d snapshots=%d latest=%d failures=%d\n",
 				result.RunID,
+				result.RequestedSource,
+				result.EffectiveSource,
+				result.FallbackUsed,
+				result.FallbackReason,
 				result.Candidates,
 				result.ScopesScheduled,
 				result.ScopesFetched,

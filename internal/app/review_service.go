@@ -11,6 +11,7 @@ import (
 
 	"github.com/google/uuid"
 
+	"github.com/GoFurry/metacritic-harvester/internal/config"
 	"github.com/GoFurry/metacritic-harvester/internal/crawler"
 	"github.com/GoFurry/metacritic-harvester/internal/domain"
 	reviewapi "github.com/GoFurry/metacritic-harvester/internal/source/metacritic/api"
@@ -45,15 +46,20 @@ const (
 )
 
 type ReviewServiceConfig struct {
-	BaseURL    string
-	DBPath     string
-	Debug      bool
-	MaxRetries int
-	ProxyURLs  []string
+	BaseURL       string
+	RuntimePolicy *crawler.HTTPRuntimePolicy
+	DBPath        string
+	Debug         bool
+	MaxRetries    int
+	ProxyURLs     []string
 }
 
 type ReviewRunResult struct {
 	RunID                 string
+	RequestedSource       string
+	EffectiveSource       string
+	FallbackUsed          bool
+	FallbackReason        string
 	Candidates            int
 	ScopesScheduled       int
 	ScopesProcessed       int
@@ -96,6 +102,8 @@ func (s *ReviewService) Run(ctx context.Context, task domain.ReviewTask) (Review
 	}
 
 	result := ReviewRunResult{RunID: runID}
+	result.RequestedSource = string(config.CrawlSourceAPI)
+	result.EffectiveSource = string(config.CrawlSourceAPI)
 	var finalErr error
 	defer func() {
 		finishedAt := s.now().UTC()
@@ -107,7 +115,7 @@ func (s *ReviewService) Run(ctx context.Context, task domain.ReviewTask) (Review
 	}()
 
 	log.Printf(
-		"crawl reviews start: run_id=%s category=%s work_href=%s review_type=%s sentiment=%s sort=%s platform=%s limit=%d page_size=%d max_pages=%d force=%t concurrency=%d db=%s",
+		"crawl reviews start: run_id=%s requested_source=api effective_source=api category=%s work_href=%s review_type=%s sentiment=%s sort=%s platform=%s limit=%d page_size=%d max_pages=%d force=%t concurrency=%d db=%s",
 		runID,
 		scope.Category,
 		task.WorkHref,
@@ -137,15 +145,20 @@ func (s *ReviewService) Run(ctx context.Context, task domain.ReviewTask) (Review
 		log.Printf("crawl reviews finished without candidates: run_id=%s", runID)
 		return result, nil
 	}
+	workerCount := task.Concurrency
+	if workerCount <= 0 {
+		workerCount = 1
+	}
 
 	proxyRotator, err := crawler.NewProxyRotator(s.cfg.ProxyURLs)
 	if err != nil {
 		finalErr = reviewFailuref(reviewErrorTypeState, reviewErrorStageRequest, err, "create review proxy rotator failed: run_id=%s", runID)
 		return result, finalErr
 	}
-	transport := crawler.NewHTTPTransport(s.cfg.Debug, proxyRotator)
-	pageAPI := reviewapi.NewReviewPageAPI(s.cfg.BaseURL, transport, 30*time.Second, s.cfg.MaxRetries)
-	listAPI := reviewapi.NewReviewListAPI(s.cfg.BaseURL, transport, 30*time.Second, s.cfg.MaxRetries)
+	policy := s.runtimePolicy(workerCount)
+	transport := crawler.WrapTransportWithPolicy(crawler.NewHTTPTransport(s.cfg.Debug, proxyRotator), policy)
+	pageAPI := reviewapi.NewReviewPageAPI(s.cfg.BaseURL, transport, policy.Timeout, s.cfg.MaxRetries)
+	listAPI := reviewapi.NewReviewListAPI(s.cfg.BaseURL, transport, policy.Timeout, s.cfg.MaxRetries)
 
 	scopeTasks, err := s.planReviewScopes(ctx, pageAPI, candidates, task)
 	if err != nil {
@@ -158,11 +171,6 @@ func (s *ReviewService) Run(ctx context.Context, task domain.ReviewTask) (Review
 		return result, nil
 	}
 
-	workerCount := task.Concurrency
-	if workerCount <= 0 {
-		workerCount = 1
-	}
-
 	type reviewJob struct {
 		index int
 		task  reviewScopeTask
@@ -172,7 +180,13 @@ func (s *ReviewService) Run(ctx context.Context, task domain.ReviewTask) (Review
 	var wg sync.WaitGroup
 	var dbWriteMu sync.Mutex
 	state := &reviewRunState{
-		result: ReviewRunResult{RunID: runID, Candidates: len(candidates), ScopesScheduled: len(scopeTasks)},
+		result: ReviewRunResult{
+			RunID:           runID,
+			RequestedSource: string(config.CrawlSourceAPI),
+			EffectiveSource: string(config.CrawlSourceAPI),
+			Candidates:      len(candidates),
+			ScopesScheduled: len(scopeTasks),
+		},
 	}
 
 	for worker := 0; worker < workerCount; worker++ {
@@ -208,8 +222,12 @@ sendJobs:
 	}
 
 	log.Printf(
-		"crawl reviews finished successfully: run_id=%s candidates=%d scopes=%d fetched=%d skipped=%d failed=%d reviews=%d snapshots=%d latest=%d failures=%d db=%s",
+		"crawl reviews finished successfully: run_id=%s requested_source=%s effective_source=%s fallback_used=%t fallback_reason=%s candidates=%d scopes=%d fetched=%d skipped=%d failed=%d reviews=%d snapshots=%d latest=%d failures=%d db=%s",
 		runID,
+		result.RequestedSource,
+		result.EffectiveSource,
+		result.FallbackUsed,
+		result.FallbackReason,
 		result.Candidates,
 		result.ScopesScheduled,
 		result.ScopesFetched,
@@ -222,6 +240,13 @@ sendJobs:
 		s.cfg.DBPath,
 	)
 	return result, nil
+}
+
+func (s *ReviewService) runtimePolicy(concurrency int) crawler.HTTPRuntimePolicy {
+	if s.cfg.RuntimePolicy != nil {
+		return *s.cfg.RuntimePolicy
+	}
+	return reviewRuntimePolicy(concurrency)
 }
 
 type reviewScopeTask struct {
@@ -672,7 +697,7 @@ func logReviewProgress(runID string, result ReviewRunResult) {
 		percent = int(float64(result.ScopesProcessed) / float64(result.ScopesScheduled) * 100)
 	}
 	log.Printf(
-		"crawl reviews progress: run_id=%s processed=%d/%d fetched=%d skipped=%d failed=%d reviews=%d snapshots=%d latest=%d failures=%d percent=%d",
+		"crawl reviews progress: run_id=%s processed=%d/%d fetched=%d skipped=%d failed=%d reviews=%d snapshots=%d latest=%d failures=%d requested_source=%s effective_source=%s fallback_used=%t fallback_reason=%s percent=%d",
 		runID,
 		result.ScopesProcessed,
 		result.ScopesScheduled,
@@ -683,6 +708,10 @@ func logReviewProgress(runID string, result ReviewRunResult) {
 		result.ReviewSnapshotsSaved,
 		result.LatestReviewsUpserted,
 		result.Failures,
+		result.RequestedSource,
+		result.EffectiveSource,
+		result.FallbackUsed,
+		result.FallbackReason,
 		percent,
 	)
 }

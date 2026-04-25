@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"path/filepath"
@@ -10,6 +11,7 @@ import (
 
 	"github.com/GoFurry/metacritic-harvester/internal/config"
 	"github.com/GoFurry/metacritic-harvester/internal/domain"
+	listapi "github.com/GoFurry/metacritic-harvester/internal/source/metacritic/api"
 	"github.com/GoFurry/metacritic-harvester/internal/storage"
 )
 
@@ -35,6 +37,7 @@ func TestListServiceRun(t *testing.T) {
 	dbPath := filepath.Join(t.TempDir(), "integration.db")
 	service := NewListService(ListServiceConfig{
 		BaseURL:    server.URL,
+		Source:     config.CrawlSourceHTML,
 		DBPath:     dbPath,
 		MaxRetries: 1,
 	})
@@ -177,6 +180,7 @@ func TestListServiceRunFailsOnParseFailure(t *testing.T) {
 	dbPath := filepath.Join(t.TempDir(), "failed.db")
 	service := NewListService(ListServiceConfig{
 		BaseURL:    server.URL,
+		Source:     config.CrawlSourceHTML,
 		DBPath:     dbPath,
 		MaxRetries: 1,
 	})
@@ -241,6 +245,7 @@ func TestListServiceRunTracksFailedPageStats(t *testing.T) {
 	dbPath := filepath.Join(t.TempDir(), "partial.db")
 	service := NewListService(ListServiceConfig{
 		BaseURL:    server.URL,
+		Source:     config.CrawlSourceHTML,
 		DBPath:     dbPath,
 		MaxRetries: 0,
 	})
@@ -380,6 +385,68 @@ func TestListServiceRunAutoFallsBackToHTML(t *testing.T) {
 	}
 	if result.PagesVisited != 1 || result.WorksUpserted != 1 || result.Failures != 0 {
 		t.Fatalf("unexpected auto fallback result: %+v", result)
+	}
+	if result.RequestedSource != string(config.CrawlSourceAuto) || result.EffectiveSource != string(config.CrawlSourceHTML) || !result.FallbackUsed || result.FallbackReason != "api_request_failed" {
+		t.Fatalf("expected structured fallback diagnostics, got %+v", result)
+	}
+}
+
+func TestClassifyListFallbackReason(t *testing.T) {
+	t.Parallel()
+
+	_, mappingErr := listapi.BuildFinderListURLForTest("https://backend.metacritic.com", domain.ListTask{
+		Category: domain.CategoryGame,
+		Metric:   domain.MetricMetascore,
+		Filter: domain.Filter{
+			Platforms: []string{"mystery-box"},
+		},
+	}, 1)
+	if mappingErr == nil {
+		t.Fatal("expected mapping error")
+	}
+
+	missingRequiredServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte(`{"data":{"items":[{"title":"","slug":""}]}}`))
+	}))
+	defer missingRequiredServer.Close()
+	finder := listapi.NewFinderAPI(missingRequiredServer.URL, nil, 0, 0)
+	_, requiredErr := finder.FetchPage(context.Background(), domain.ListTask{
+		Category: domain.CategoryGame,
+		Metric:   domain.MetricMetascore,
+		MaxPages: 1,
+	}, 1)
+	if requiredErr == nil {
+		t.Fatal("expected missing required fields error")
+	}
+
+	tests := []struct {
+		name string
+		err  error
+		want string
+	}{
+		{name: "request", err: context.DeadlineExceeded, want: "api_request_failed"},
+		{name: "parse", err: errors.New("decode finder response: invalid character"), want: "api_parse_failed"},
+		{name: "mapping", err: mappingErr, want: "api_mapping_failed"},
+		{name: "required_fields", err: requiredErr, want: "api_missing_required_fields"},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			if got := classifyListFallbackReason(tt.err); got != tt.want {
+				t.Fatalf("classifyListFallbackReason() = %q, want %q", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestListServiceDefaultsSourceToAPI(t *testing.T) {
+	t.Parallel()
+
+	service := NewListService(ListServiceConfig{})
+	if got := service.normalizedSource(); got != config.CrawlSourceAPI {
+		t.Fatalf("expected zero-value source to default to api, got %q", got)
 	}
 }
 

@@ -51,7 +51,7 @@ type ReviewSeasonContext struct {
 	Href  string
 }
 
-func NewReviewPageAPI(baseURL string, transport *http.Transport, timeout time.Duration, maxRetries int) *ReviewPageAPI {
+func NewReviewPageAPI(baseURL string, transport http.RoundTripper, timeout time.Duration, maxRetries int) *ReviewPageAPI {
 	var roundTripper http.RoundTripper
 	if transport != nil {
 		roundTripper = transport
@@ -66,7 +66,7 @@ func NewReviewPageAPI(baseURL string, transport *http.Transport, timeout time.Du
 	}
 }
 
-func NewReviewListAPI(baseURL string, transport *http.Transport, timeout time.Duration, maxRetries int) *ReviewListAPI {
+func NewReviewListAPI(baseURL string, transport http.RoundTripper, timeout time.Duration, maxRetries int) *ReviewListAPI {
 	var roundTripper http.RoundTripper
 	if transport != nil {
 		roundTripper = transport

@@ -52,6 +52,7 @@ type DetailServiceConfig struct {
 	BaseURL        string
 	BackendBaseURL string
 	Source         config.CrawlSource
+	RuntimePolicy  *crawler.HTTPRuntimePolicy
 	DBPath         string
 	Debug          bool
 	MaxRetries     int
@@ -60,6 +61,10 @@ type DetailServiceConfig struct {
 
 type DetailRunResult struct {
 	RunID            string
+	RequestedSource  string
+	EffectiveSource  string
+	FallbackUsed     bool
+	FallbackReason   string
 	Total            int
 	Processed        int
 	Fetched          int
@@ -67,6 +72,9 @@ type DetailRunResult struct {
 	Failed           int
 	RecoveredRunning int
 	DetailsUpserted  int
+	EnrichSucceeded  int
+	EnrichFailed     int
+	EnrichSkipped    int
 	Failures         int
 }
 
@@ -89,7 +97,7 @@ func (s *DetailService) normalizedSource() config.CrawlSource {
 	case config.CrawlSourceAPI, config.CrawlSourceHTML, config.CrawlSourceAuto:
 		return s.cfg.Source
 	default:
-		return config.CrawlSourceHTML
+		return config.CrawlSourceAPI
 	}
 }
 
@@ -127,15 +135,18 @@ func (s *DetailService) Run(ctx context.Context, task domain.DetailTask) (Detail
 		_ = repo.CompleteDetailCrawlRun(context.Background(), runID, finishedAt)
 	}()
 
+	source := s.normalizedSource()
+	result.RequestedSource = string(source)
 	workerCount := task.Concurrency
 	if workerCount <= 0 {
 		workerCount = 1
 	}
 
 	log.Printf(
-		"crawl detail start: run_id=%s scope=%s db=%s concurrency=%d",
+		"crawl detail start: run_id=%s scope=%s requested_source=%s db=%s concurrency=%d",
 		runID,
 		scope.Label,
+		source,
 		s.cfg.DBPath,
 		workerCount,
 	)
@@ -168,6 +179,7 @@ func (s *DetailService) Run(ctx context.Context, task domain.DetailTask) (Detail
 	state := &detailRunState{
 		result: DetailRunResult{
 			RunID:            runID,
+			RequestedSource:  string(source),
 			Total:            len(candidates),
 			RecoveredRunning: int(recoveredRunning),
 		},
@@ -206,6 +218,14 @@ sendJobs:
 	wg.Wait()
 
 	result = state.snapshot()
+	if result.EffectiveSource == "" {
+		switch source {
+		case config.CrawlSourceAuto, config.CrawlSourceAPI:
+			result.EffectiveSource = string(config.CrawlSourceAPI)
+		default:
+			result.EffectiveSource = string(source)
+		}
+	}
 	if err := state.firstError(); err != nil {
 		finalErr = fmt.Errorf("detail crawl run %s completed with %d failure(s): %w", runID, result.Failures, err)
 		return result, finalErr
@@ -217,14 +237,21 @@ sendJobs:
 	}
 
 	log.Printf(
-		"crawl detail finished successfully: run_id=%s processed=%d/%d fetched=%d skipped=%d failed=%d recovered_running=%d db=%s",
+		"crawl detail finished successfully: run_id=%s requested_source=%s effective_source=%s fallback_used=%t fallback_reason=%s processed=%d/%d fetched=%d skipped=%d failed=%d recovered_running=%d enrich_ok=%d enrich_failed=%d enrich_skipped=%d db=%s",
 		runID,
+		result.RequestedSource,
+		result.EffectiveSource,
+		result.FallbackUsed,
+		result.FallbackReason,
 		result.Processed,
 		result.Total,
 		result.Fetched,
 		result.Skipped,
 		result.Failed,
 		result.RecoveredRunning,
+		result.EnrichSucceeded,
+		result.EnrichFailed,
+		result.EnrichSkipped,
 		s.cfg.DBPath,
 	)
 	return result, nil
@@ -277,7 +304,7 @@ func (s *DetailService) processDetailCandidate(
 		return
 	}
 
-	detail, err := fetcher.Fetch(ctx, candidate.Work)
+	fetchResult, err := fetcher.Fetch(ctx, candidate.Work)
 	if err != nil {
 		failure := ensureDetailFailure(err, detailErrorTypeNetwork, detailErrorStageRequest)
 		dbWriteMu.Lock()
@@ -295,9 +322,10 @@ func (s *DetailService) processDetailCandidate(
 		logDetailProgress(runID, snapshot)
 		return
 	}
+	state.applyFetchOutcome(fetchResult)
 
 	dbWriteMu.Lock()
-	saveErr := repo.SaveWorkDetail(ctx, detail, attemptedAt, runID)
+	saveErr := repo.SaveWorkDetail(ctx, fetchResult.Detail, attemptedAt, runID)
 	if saveErr != nil {
 		markErr := repo.MarkDetailFailed(ctx, candidate.Work.Href, attemptedAt, runID, storage.DetailFetchFailure{
 			Message:    saveErr.Error(),
@@ -316,8 +344,17 @@ func (s *DetailService) processDetailCandidate(
 	}
 	dbWriteMu.Unlock()
 
-	snapshot := state.recordSuccess()
-	log.Printf("detail succeeded: run_id=%s %s title=%q", runID, workLabel, detail.Title)
+	snapshot := state.recordSuccess(fetchResult)
+	log.Printf(
+		"detail succeeded: run_id=%s %s title=%q effective_source=%s fallback_used=%t fallback_reason=%s enrich=%s",
+		runID,
+		workLabel,
+		fetchResult.Detail.Title,
+		fetchResult.EffectiveSource,
+		fetchResult.FallbackUsed,
+		fetchResult.FallbackReason,
+		fetchResult.EnrichStatus,
+	)
 	logDetailProgress(runID, snapshot)
 }
 
@@ -327,7 +364,8 @@ func (s *DetailService) buildDetailFetchers(workerCount int) ([]detailFetcher, e
 		return nil, detailFailuref(detailErrorTypeState, detailErrorStageRequest, err, "create detail proxy rotator failed")
 	}
 
-	transport := crawler.NewHTTPTransport(s.cfg.Debug, proxyRotator)
+	policy := s.runtimePolicy(workerCount)
+	transport := crawler.WrapTransportWithPolicy(crawler.NewHTTPTransport(s.cfg.Debug, proxyRotator), policy)
 	source := s.normalizedSource()
 	var allowedDomains []string
 	if source == config.CrawlSourceHTML || source == config.CrawlSourceAuto {
@@ -371,10 +409,10 @@ func (s *DetailService) buildDetailFetchers(workerCount int) ([]detailFetcher, e
 				api: detailapi.NewComposerAPI(
 					s.backendBaseURL(),
 					transport,
-					30*time.Second,
+					policy.Timeout,
 					s.cfg.MaxRetries,
 				),
-				enricher: newDetailHTMLEnricher(s.cfg.Debug, transport),
+				enricher: newDetailHTMLEnricher(s.cfg.Debug, transport, policy.Timeout),
 				fallback: fallback,
 			})
 		default:
@@ -384,8 +422,23 @@ func (s *DetailService) buildDetailFetchers(workerCount int) ([]detailFetcher, e
 	return fetchers, nil
 }
 
+func (s *DetailService) runtimePolicy(concurrency int) crawler.HTTPRuntimePolicy {
+	if s.cfg.RuntimePolicy != nil {
+		return *s.cfg.RuntimePolicy
+	}
+	return detailRuntimePolicy(concurrency)
+}
+
 type detailFetcher interface {
-	Fetch(context.Context, domain.Work) (domain.WorkDetail, error)
+	Fetch(context.Context, domain.Work) (detailFetchResult, error)
+}
+
+type detailFetchResult struct {
+	Detail          domain.WorkDetail
+	EffectiveSource string
+	FallbackUsed    bool
+	FallbackReason  string
+	EnrichStatus    string
 }
 
 type detailAPIFetcher struct {
@@ -395,27 +448,43 @@ type detailAPIFetcher struct {
 	fallback detailFetcher
 }
 
-func (f *detailAPIFetcher) Fetch(ctx context.Context, work domain.Work) (domain.WorkDetail, error) {
+func (f *detailAPIFetcher) Fetch(ctx context.Context, work domain.Work) (detailFetchResult, error) {
 	detail, err := f.api.Fetch(ctx, work)
 	if err != nil {
 		if f.fallback != nil {
-			return f.fallback.Fetch(ctx, work)
+			fallbackResult, fallbackErr := f.fallback.Fetch(ctx, work)
+			if fallbackErr == nil {
+				fallbackResult.FallbackUsed = true
+				if fallbackResult.FallbackReason == "" {
+					fallbackResult.FallbackReason = classifyDetailFallbackReason(err)
+				}
+			}
+			return fallbackResult, fallbackErr
 		}
-		return domain.WorkDetail{}, detailFailuref(detailErrorTypeParse, detailErrorStageParse, err, "detail composer api fetch failed: href=%s", work.Href)
+		return detailFetchResult{}, detailFailuref(detailErrorTypeParse, detailErrorStageParse, err, "detail composer api fetch failed: href=%s", work.Href)
 	}
 
+	result := detailFetchResult{
+		Detail:          detail,
+		EffectiveSource: string(config.CrawlSourceAPI),
+		EnrichStatus:    "skipped",
+	}
 	if f.enricher != nil {
 		if enrichErr := f.enricher.Enrich(ctx, work, &detail); enrichErr != nil {
+			result.EnrichStatus = "failed"
 			log.Printf(
 				"detail enrich warning: category=%s href=%s error=%v",
 				work.Category,
 				work.Href,
 				enrichErr,
 			)
+		} else {
+			result.EnrichStatus = "ok"
 		}
 	}
 
-	return detail, nil
+	result.Detail = detail
+	return result, nil
 }
 
 type detailHTMLEnricher struct {
@@ -423,15 +492,18 @@ type detailHTMLEnricher struct {
 	client *http.Client
 }
 
-func newDetailHTMLEnricher(debug bool, transport *http.Transport) *detailHTMLEnricher {
+func newDetailHTMLEnricher(debug bool, transport http.RoundTripper, timeout time.Duration) *detailHTMLEnricher {
 	var roundTripper http.RoundTripper
 	if transport != nil {
 		roundTripper = transport
 	}
+	if timeout <= 0 {
+		timeout = defaultHTTPTimeout
+	}
 	return &detailHTMLEnricher{
 		debug: debug,
 		client: &http.Client{
-			Timeout:   30 * time.Second,
+			Timeout:   timeout,
 			Transport: roundTripper,
 		},
 	}
@@ -520,13 +592,33 @@ func detailWorkLabel(work domain.Work) string {
 	return fmt.Sprintf("category=%s href=%s", work.Category, work.Href)
 }
 
+func classifyDetailFallbackReason(err error) string {
+	if err == nil {
+		return ""
+	}
+	if detailapi.IsComposerMissingRequiredFieldsError(err) {
+		return "api_missing_required_fields"
+	}
+	msg := strings.ToLower(err.Error())
+	switch {
+	case strings.Contains(msg, "decode composer response"),
+		strings.Contains(msg, "missing product component"),
+		strings.Contains(msg, "field="):
+		return "api_parse_failed"
+	case strings.Contains(msg, "slug is empty"):
+		return "api_mapping_failed"
+	default:
+		return "api_request_failed"
+	}
+}
+
 func logDetailProgress(runID string, result DetailRunResult) {
 	percent := 0
 	if result.Total > 0 {
 		percent = int(float64(result.Processed) / float64(result.Total) * 100)
 	}
 	log.Printf(
-		"crawl detail progress: run_id=%s processed=%d/%d fetched=%d skipped=%d failed=%d recovered_running=%d percent=%d",
+		"crawl detail progress: run_id=%s processed=%d/%d fetched=%d skipped=%d failed=%d recovered_running=%d enrich_ok=%d enrich_failed=%d enrich_skipped=%d requested_source=%s effective_source=%s fallback_used=%t fallback_reason=%s percent=%d",
 		runID,
 		result.Processed,
 		result.Total,
@@ -534,6 +626,13 @@ func logDetailProgress(runID string, result DetailRunResult) {
 		result.Skipped,
 		result.Failed,
 		result.RecoveredRunning,
+		result.EnrichSucceeded,
+		result.EnrichFailed,
+		result.EnrichSkipped,
+		result.RequestedSource,
+		result.EffectiveSource,
+		result.FallbackUsed,
+		result.FallbackReason,
 		percent,
 	)
 }
@@ -696,13 +795,35 @@ func (s *detailRunState) recordSkip() DetailRunResult {
 	return s.result
 }
 
-func (s *detailRunState) recordSuccess() DetailRunResult {
+func (s *detailRunState) recordSuccess(fetchResult detailFetchResult) DetailRunResult {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.result.Processed++
 	s.result.Fetched++
 	s.result.DetailsUpserted++
+	switch fetchResult.EnrichStatus {
+	case "ok":
+		s.result.EnrichSucceeded++
+	case "failed":
+		s.result.EnrichFailed++
+	default:
+		s.result.EnrichSkipped++
+	}
 	return s.result
+}
+
+func (s *detailRunState) applyFetchOutcome(fetchResult detailFetchResult) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if fetchResult.EffectiveSource == string(config.CrawlSourceAPI) || s.result.EffectiveSource == "" {
+		s.result.EffectiveSource = fetchResult.EffectiveSource
+	}
+	if fetchResult.FallbackUsed {
+		s.result.FallbackUsed = true
+		if s.result.FallbackReason == "" {
+			s.result.FallbackReason = fetchResult.FallbackReason
+		}
+	}
 }
 
 func (s *detailRunState) recordFailure(err error) DetailRunResult {
@@ -743,7 +864,7 @@ func (s *detailRunState) firstError() error {
 type detailWorkerFetcherConfig struct {
 	serviceConfig   DetailServiceConfig
 	allowedDomains  []string
-	sharedTransport *http.Transport
+	sharedTransport http.RoundTripper
 	sleep           func(time.Duration)
 }
 
@@ -787,14 +908,14 @@ func newDetailWorkerFetcher(cfg detailWorkerFetcherConfig) (*detailWorkerFetcher
 	return fetcher, nil
 }
 
-func (f *detailWorkerFetcher) Fetch(ctx context.Context, work domain.Work) (domain.WorkDetail, error) {
+func (f *detailWorkerFetcher) Fetch(ctx context.Context, work domain.Work) (detailFetchResult, error) {
 	if err := ctx.Err(); err != nil {
-		return domain.WorkDetail{}, detailFailuref(detailErrorTypeContext, detailErrorStageContext, err, "detail context canceled before request: href=%s", work.Href)
+		return detailFetchResult{}, detailFailuref(detailErrorTypeContext, detailErrorStageContext, err, "detail context canceled before request: href=%s", work.Href)
 	}
 
 	visitURL := strings.TrimSpace(work.Href)
 	if visitURL == "" {
-		return domain.WorkDetail{}, detailFailuref(detailErrorTypeState, detailErrorStageRequest, nil, "detail state invalid: href is empty")
+		return detailFetchResult{}, detailFailuref(detailErrorTypeState, detailErrorStageRequest, nil, "detail state invalid: href is empty")
 	}
 
 	f.retryTracker.Reset(visitURL)
@@ -802,22 +923,26 @@ func (f *detailWorkerFetcher) Fetch(ctx context.Context, work domain.Work) (doma
 	defer f.clearSession()
 
 	if err := f.collector.Visit(visitURL); err != nil {
-		return domain.WorkDetail{}, classifyDetailVisitError(err, visitURL)
+		return detailFetchResult{}, classifyDetailVisitError(err, visitURL)
 	}
 	f.collector.Wait()
 
 	session := f.snapshotSession()
 	if session == nil {
-		return domain.WorkDetail{}, detailFailuref(detailErrorTypeState, detailErrorStageRequest, nil, "detail request lost session: href=%s", work.Href)
+		return detailFetchResult{}, detailFailuref(detailErrorTypeState, detailErrorStageRequest, nil, "detail request lost session: href=%s", work.Href)
 	}
 	if session.firstErr != nil {
 		f.retryTracker.Reset(visitURL)
-		return domain.WorkDetail{}, session.firstErr
+		return detailFetchResult{}, session.firstErr
 	}
 	if session.detail.Title == "" {
-		return domain.WorkDetail{}, detailFailuref(detailErrorTypeParse, detailErrorStageParse, nil, "detail parse failed: href=%s category=%s field=title reason=empty_detail", work.Href, work.Category)
+		return detailFetchResult{}, detailFailuref(detailErrorTypeParse, detailErrorStageParse, nil, "detail parse failed: href=%s category=%s field=title reason=empty_detail", work.Href, work.Category)
 	}
-	return session.detail, nil
+	return detailFetchResult{
+		Detail:          session.detail,
+		EffectiveSource: string(config.CrawlSourceHTML),
+		EnrichStatus:    "skipped",
+	}, nil
 }
 
 func (f *detailWorkerFetcher) onRequest(r *colly.Request) {

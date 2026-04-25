@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -85,6 +86,96 @@ func TestBuildFinderListURLIncludesMappedFilters(t *testing.T) {
 	}
 	if !strings.Contains(reqURL, "offset=24") || !strings.Contains(reqURL, "mcoTypeId=13") || !strings.Contains(reqURL, "gamePlatformIds=1500000019%2C1500000128") {
 		t.Fatalf("unexpected finder URL: %s", reqURL)
+	}
+}
+
+func TestBuildFinderListURLNormalizesFinderMappings(t *testing.T) {
+	t.Parallel()
+
+	reqURL, err := BuildFinderListURLForTest("https://backend.metacritic.com", domain.ListTask{
+		Category: domain.CategoryGame,
+		Metric:   domain.MetricMetascore,
+		Filter: domain.Filter{
+			Platforms: []string{"PlayStation 5", "Xbox Series X|S"},
+			Networks:  []string{"Netflix"},
+			Genres:    []string{"western-rpg"},
+		},
+	}, 1)
+	if err != nil {
+		t.Fatalf("BuildFinderListURLForTest() error = %v", err)
+	}
+
+	if !strings.Contains(reqURL, "gamePlatformIds=1500000128%2C1500000129") {
+		t.Fatalf("expected normalized platform ids in %q", reqURL)
+	}
+	if !strings.Contains(reqURL, "streamingNetworkIds=1943") {
+		t.Fatalf("expected normalized network ids in %q", reqURL)
+	}
+	if !strings.Contains(reqURL, "genres=Western+RPG") {
+		t.Fatalf("expected normalized genres in %q", reqURL)
+	}
+}
+
+func TestBuildFinderListURLReturnsStableMappingErrors(t *testing.T) {
+	t.Parallel()
+
+	_, err := BuildFinderListURLForTest("https://backend.metacritic.com", domain.ListTask{
+		Category: domain.CategoryGame,
+		Metric:   domain.MetricMetascore,
+		Filter: domain.Filter{
+			Platforms: []string{"mystery-box"},
+		},
+	}, 1)
+	if err == nil {
+		t.Fatal("expected mapping error")
+	}
+	if !IsFinderMappingError(err) {
+		t.Fatalf("expected finder mapping error, got %v", err)
+	}
+	var target *finderMappingError
+	if !errors.As(err, &target) || target.Kind != finderMappingKindPlatform {
+		t.Fatalf("expected platform mapping error, got %T %v", err, err)
+	}
+}
+
+func TestFinderAPIFetchPageMissingRequiredFields(t *testing.T) {
+	t.Parallel()
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte(`{"data":{"items":[{"title":"","slug":""}]}}`))
+	}))
+	defer server.Close()
+
+	api := NewFinderAPI(server.URL, nil, 5*time.Second, 0)
+	_, err := api.FetchPage(context.Background(), domain.ListTask{
+		Category: domain.CategoryGame,
+		Metric:   domain.MetricMetascore,
+		MaxPages: 1,
+	}, 1)
+	if err == nil {
+		t.Fatal("expected missing required fields error")
+	}
+	if !IsFinderMissingRequiredFieldsError(err) {
+		t.Fatalf("expected missing required fields error, got %v", err)
+	}
+}
+
+func TestFinderAPIFetchPageReturnsParseErrorForNonJSON(t *testing.T) {
+	t.Parallel()
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte("not-json"))
+	}))
+	defer server.Close()
+
+	api := NewFinderAPI(server.URL, nil, 5*time.Second, 0)
+	if _, err := api.FetchPage(context.Background(), domain.ListTask{
+		Category: domain.CategoryGame,
+		Metric:   domain.MetricMetascore,
+		MaxPages: 1,
+	}, 1); err == nil || !strings.Contains(err.Error(), "decode finder response") {
+		t.Fatalf("expected decode finder response error, got %v", err)
 	}
 }
 

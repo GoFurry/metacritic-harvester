@@ -205,6 +205,48 @@
 - Phase 5-1 的目标不是移除 HTML / Nuxt，而是把默认抓取主链路切换为更稳定的 `API-first`
 - 本阶段未改数据库 schema，也未改 current/latest/snapshot 写入语义
 
+## Phase 5.5：进入 `serve` 之前的补强
+
+状态：P0 / P1 已完成，P2 待实施
+
+目标：
+
+- 在进入 Phase 6 之前，先把当前仓库的运行稳定性、边界安全、可观测性和性能短板补平
+- Phase 5.5 不新增新的主抓取范围，也不直接做 UI；主要用于给 `serve` 打工程化基础
+
+当前主要不足：
+
+- `crawl list` / `crawl detail` 在 service 层的 `Source` 零值与 CLI / batch 默认值仍不完全一致，仍存在“对外默认 `api`、对内默认 `html`”的行为分叉
+- finder API 对 `platform / network` 的 ID 映射仍是硬编码表；遇到新平台、新流媒体或命名变体时，`API-first` 路径会更脆弱
+- `auto` fallback 当前更偏向“整次 run 回退”或“整条 work 回退”，缺少更细粒度的 provenance 和 fallback 诊断信息
+- API 抓取路径已有 retry，但缺少全局速率限制、统一 timeout 预算、并发预算、circuit-breaker 一类的运行级保护
+- detail enrich 失败目前主要体现在日志 warning；缺少可直接被程序消费的结构化状态，不利于后续 `serve` / console 展示“主详情成功但补充缺失”
+- fixture 与回归测试已覆盖主路径，但对真实站点结构漂移、新过滤组合、大样本运行、长时间运行后的行为覆盖还不够系统
+- export / compare 已能用，但距离“服务化后长期运行、对外暴露、可运维诊断”的成熟度还有一段距离
+
+P0：
+
+- [x] 收口 `source` 默认语义：CLI、batch、service 统一默认 `api`
+- [x] 为 `list / detail / reviews` 增加统一 timeout、速率限制和并发 gate
+- [x] 为 `list / detail / review` 的 run 结果补齐 `requested_source / effective_source / fallback_*` 结构化诊断
+- [x] 将 detail enrich 收口为结构化结果统计，而不是只留 warning 日志
+- [x] 补关键 fallback / source parity / 漂移回归测试
+
+P1：
+
+- [x] 将 finder API 的 `platform / network / genre` 映射收口到集中配置模块，并补标准化与稳定错误
+- [x] 细化 fallback 原因：统一使用 `api_request_failed / api_parse_failed / api_mapping_failed / api_missing_required_fields`
+- [x] 为 `list / detail / review` 增加 opt-in benchmark / soak 验证入口
+- [x] 统一 `query / export / compare` 的读侧错误风格与空结果语义，减少后续 `serve` 层适配成本
+- [x] 明确 `auto` 不是双抓取，并在文档中收口 list/detail 的 fallback 粒度差异
+
+P2：
+
+- [ ] 预先定义 `serve` 的安全基线：默认绑定地址、任务触发权限边界、写操作暴露范围、导出文件路径约束等，避免 Phase 6 再临时拼接
+- [ ] 将 `crawl_runs`、`fetch_state`、export summary 收敛成一套更完整的运行观测模型，为之后的控制台提供统一数据来源
+- [ ] 评估 SQLite 在 `serve` 场景下的 WAL 增长、读写并发、checkpoint 策略和极限约束，明确 Phase 6 是否需要先补更重的存储抽象
+- [ ] 评估当前 `source adapter` 抽象是否足够支撑后续更多站点或更多后端 API，避免进入 Phase 6 后再做大重构
+
 ## Phase 6：服务化
 
 状态：未开始
@@ -222,13 +264,11 @@
 
 下一步更推荐按这个顺序推进：
 
-1. Phase 4：`crawl reviews`
-2. Phase 5-1：list / detail 切到 `API-first`
-3. Phase 5：更丰富的导出与分析
-4. Phase 6：`serve`
+1. Phase 5.5：进入 `serve` 之前的补强
+2. Phase 6：`serve`
 
 原因：
 
-- 评论抓取是当前数据面最自然的下一层，而且它本身就更适合直接走后端接口
-- 完成评论后，再把 list / detail 统一切到 `API-first`，可以把三条主抓取链路收敛到同一套接口层
-- 更丰富的导出与服务化会继续受益于统一的 source adapter 与更稳定的结构化数据输入
+- 当前抓取与读侧主链路已经齐备，进入 `serve` 之前更值得做的是把运行语义、fallback、速率控制和观测模型补扎实
+- Phase 5.5 做完之后，Phase 6 可以更专注于服务边界、接口设计和控制台交互，而不是一边服务化一边补基础设施
+- 这些补强同时也会提升 CLI / batch / schedule 的稳定性，不只是为后续 HTTP 服务做准备

@@ -27,6 +27,14 @@ func newReviewQueryCommand() *cobra.Command {
 		Use:   "query",
 		Short: "Query current latest_reviews rows",
 		RunE: func(cmd *cobra.Command, _ []string) (err error) {
+			scope := buildReadScope(
+				scopePart("db", dbPath),
+				scopePart("category", category),
+				scopePart("review_type", reviewType),
+				scopePart("platform", platform),
+				scopePart("work_href", workHref),
+				scopePartInt("limit", limit),
+			)
 			if err := validateOptionalCategoryMetric(category, ""); err != nil {
 				return err
 			}
@@ -42,7 +50,7 @@ func newReviewQueryCommand() *cobra.Command {
 
 			repo, closeFn, err := openRepository(cmd.Context(), dbPath, checkpoint)
 			if err != nil {
-				return err
+				return wrapReadCommandError("review query", err, scope)
 			}
 			defer func() {
 				err = finishReadRepository(err, closeFn)
@@ -56,7 +64,7 @@ func newReviewQueryCommand() *cobra.Command {
 				Limit:      limit,
 			})
 			if err != nil {
-				return err
+				return wrapReadCommandError("review query", err, scope)
 			}
 
 			mapped := mapLatestReviews(rows)

@@ -73,6 +73,27 @@ func TestComposerAPIFetchFromFixtures(t *testing.T) {
 	}
 }
 
+func TestComposerAPIFetchReturnsMissingRequiredFieldsError(t *testing.T) {
+	t.Parallel()
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte(`{"components":[{"meta":{"componentName":"product"},"data":{"item":{"title":"","description":"no title"}}}]}`))
+	}))
+	defer server.Close()
+
+	api := NewComposerAPI(server.URL, nil, 5*time.Second, 0)
+	_, err := api.Fetch(context.Background(), domain.Work{
+		Href:     "https://www.metacritic.com/movie/pk/",
+		Category: domain.CategoryMovie,
+	})
+	if err == nil {
+		t.Fatal("expected missing required fields error")
+	}
+	if !IsComposerMissingRequiredFieldsError(err) {
+		t.Fatalf("expected composer missing required fields error, got %v", err)
+	}
+}
+
 func readDetailFixture(t *testing.T, name string) string {
 	t.Helper()
 	path := filepath.Join("testdata", "details", name)

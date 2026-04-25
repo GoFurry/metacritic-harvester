@@ -19,6 +19,8 @@ func TestCrawlDetailCommandParsesFlags(t *testing.T) {
 		captured = cfg
 		return app.DetailRunResult{
 			RunID:            "detail-run-1",
+			RequestedSource:  "auto",
+			EffectiveSource:  "api",
 			Total:            3,
 			Processed:        3,
 			Fetched:          2,
@@ -69,7 +71,7 @@ func TestCrawlDetailCommandParsesFlags(t *testing.T) {
 	if !strings.Contains(normalizedOutput, "crawl detail starting: category=game work_href=https://www.metacritic.com/game/test-game source=auto limit=3 force=true concurrency=4 db=output/detail.db") {
 		t.Fatalf("unexpected start output: %q", out.String())
 	}
-	if !strings.Contains(normalizedOutput, "crawl detail completed: run_id=detail-run-1 total=3 processed=3 fetched=2 skipped=1 failed=0 recovered_running=1 details_upserted=2") {
+	if !strings.Contains(normalizedOutput, "crawl detail completed: run_id=detail-run-1 requested_source=auto effective_source=api fallback_used=false fallback_reason= total=3 processed=3 fetched=2 skipped=1 failed=0 recovered_running=1 details_upserted=2") {
 		t.Fatalf("unexpected output: %q", out.String())
 	}
 }
@@ -96,7 +98,15 @@ func TestCrawlDetailCommandReturnsRunnerError(t *testing.T) {
 	t.Parallel()
 
 	cmd := newCrawlDetailCommandWithRunner(func(_ context.Context, _ config.DetailCommandConfig) (app.DetailRunResult, error) {
-		return app.DetailRunResult{RunID: "detail-run-failed", Total: 1, Processed: 1, Failed: 1, Failures: 1}, errors.New("detail failed")
+		return app.DetailRunResult{
+			RunID:           "detail-run-failed",
+			RequestedSource: "api",
+			EffectiveSource: "api",
+			Total:           1,
+			Processed:       1,
+			Failed:          1,
+			Failures:        1,
+		}, errors.New("detail failed")
 	})
 	var out bytes.Buffer
 	cmd.SetOut(&out)
@@ -110,7 +120,7 @@ func TestCrawlDetailCommandReturnsRunnerError(t *testing.T) {
 	if strings.Contains(out.String(), "crawl detail completed") {
 		t.Fatalf("did not expect success output, got %q", out.String())
 	}
-	if !strings.Contains(out.String(), "crawl detail failed: run_id=detail-run-failed processed=1/1") {
+	if !strings.Contains(out.String(), "crawl detail failed: run_id=detail-run-failed requested_source=api effective_source=api") {
 		t.Fatalf("expected failure summary in output, got %q", out.String())
 	}
 }

@@ -29,6 +29,16 @@ func newReviewExportCommand() *cobra.Command {
 		Use:   "export",
 		Short: "Export current latest_reviews rows",
 		RunE: func(cmd *cobra.Command, _ []string) (err error) {
+			scope := buildReadScope(
+				scopePart("db", dbPath),
+				scopePart("category", category),
+				scopePart("review_type", reviewType),
+				scopePart("platform", platform),
+				scopePart("work_href", workHref),
+				scopePart("run_id", runID),
+				scopePart("profile", profile),
+				scopePart("format", format),
+			)
 			if err := validateOptionalCategoryMetric(category, ""); err != nil {
 				return err
 			}
@@ -50,7 +60,7 @@ func newReviewExportCommand() *cobra.Command {
 
 			repo, closeFn, err := openRepository(cmd.Context(), dbPath, checkpoint)
 			if err != nil {
-				return err
+				return wrapReadCommandError("review export", err, scope)
 			}
 			defer func() {
 				err = finishReadRepository(err, closeFn)
@@ -67,19 +77,19 @@ func newReviewExportCommand() *cobra.Command {
 			if runID == "" {
 				rows, err := repo.ListLatestReviews(cmd.Context(), filter)
 				if err != nil {
-					return err
+					return wrapReadCommandError("review export", err, scope)
 				}
 				records = mapLatestReviewsForExport(rows)
 			} else {
 				rows, err := repo.ListReviewSnapshotsByRun(cmd.Context(), runID, filter)
 				if err != nil {
-					return err
+					return wrapReadCommandError("review export", err, scope)
 				}
 				records = mapReviewSnapshotsForExport(rows)
 			}
 			file, err := createOutputFile(output)
 			if err != nil {
-				return err
+				return wrapReadCommandError("review export", err, scope, scopePart("output", output))
 			}
 			defer file.Close()
 

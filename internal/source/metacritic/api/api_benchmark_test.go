@@ -13,6 +13,9 @@ import (
 )
 
 func BenchmarkFinderAPIFetchPage(b *testing.B) {
+	if os.Getenv("METACRITIC_BENCH") != "1" {
+		b.Skip("set METACRITIC_BENCH=1 to run API benchmarks")
+	}
 	fixture, err := os.ReadFile(filepath.Join("testdata", "lists", "game.json"))
 	if err != nil {
 		b.Fatalf("ReadFile() error = %v", err)
@@ -34,6 +37,9 @@ func BenchmarkFinderAPIFetchPage(b *testing.B) {
 }
 
 func BenchmarkComposerAPIFetch(b *testing.B) {
+	if os.Getenv("METACRITIC_BENCH") != "1" {
+		b.Skip("set METACRITIC_BENCH=1 to run API benchmarks")
+	}
 	fixture, err := os.ReadFile(filepath.Join("testdata", "details", "game.json"))
 	if err != nil {
 		b.Fatalf("ReadFile() error = %v", err)

@@ -1,0 +1,5204 @@
+mcoTypeId means game/movie/tv etc.
+game/movie/tv also has sortBy & releaseType
+
+
+https://backend.metacritic.com/finder/metacritic/web?mcoTypeId=13&limit=24&offset=24&sortBy=-metaScore&releaseYearMin=2016&releaseYearMax=2018&releaseType=coming-soon&gamePlatformIds=1500000128%2C1500000129&genres=Action,Action%20Adventure
+
+https://backend.metacritic.com/finder/metacritic/web?mcoTypeId=13&limit=24&offset=24&sortBy=-userScore&releaseYearMin=2011&releaseYearMax=2026&releaseType=coming-soon&gamePlatformIds=1500000019%2C1500000128&genres=Action
+
+https://backend.metacritic.com/finder/metacritic/web?mcoTypeId=13&limit=24&offset=48&sortBy=-releaseDate&releaseYearMin=2016&releaseYearMax=2022&gamePlatformIds=1500000019%2C1500000128&genres=Action%20Adventure
+
+{
+  "data": {
+    "id": "50996a44-4066-4be2-fbd6-54e474b47506",
+    "totalResults": 46,
+    "items": [
+      {
+        "id": 1300697383,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "Rhell: Warped Worlds & Troubled Times",
+        "slug": "rhell-warped-worlds-and-troubled-times",
+        "premiereYear": 2026,
+        "releaseDate": "2026-12-31",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1149656-59.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 580,
+          "height": 580,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1149656-59.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/rhell-warped-worlds-and-troubled-times/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Rhell: Warped Worlds & Troubled Times is a semi-open world puzzle adventure where you play as a loud-mouthed, hot-headed mage trying to figure out why everyone has disappeared. With 40 magical runes to combine however you want, every challenge is an opportunity to create your own solution.\r\n\r\nAs Rhell, a sharp-tongued mage, you explore forgotten ruins filled with ancient secrets, decode mysterious fragments left behind by those who came before, and slowly piece together what really caused this catastrophe. The few remaining inhabitants have their theories, but you might find a truth far stranger than anyone suspected.\r\n\r\nWhat started as a simple mystery becomes something that challenges everything you thought you knew.",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300704129,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "Demi and the Fractured Dream",
+        "slug": "demi-and-the-fractured-dream",
+        "premiereYear": 2026,
+        "releaseDate": "2026-12-31",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1165305-59.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 720,
+          "height": 720,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1165305-59.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/demi-and-the-fractured-dream/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "In this enchanting action adventure, play as Demi and venture through the world of Somnus.\r\n\r\nAs a Voidsent, Demi can harness the powers of the void. While the void curse eats away at you, it also empowers you. Guided by a mysterious voice that whispers from beyond, Demi must travel the wondrous yet perilous realms, from the wind-swept spires of the Desert Kingdom to the spiritual waters of the Marsh Kingdom, to slay the three Accursed Beasts and stave off a world-ending awakening.\r\n\r\nTackle dungeons filled with environmental puzzles, use your wide arsenal of attacks, spells, and tools to vanquish void monsters, and defeat the three Accursed Beasts of legend. As your story unfolds, what will you unveil about your own role in this world?",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300597544,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "SAND: Raiders of Sophie",
+        "slug": "sand-raiders-of-sophie",
+        "premiereYear": 2026,
+        "releaseDate": "2026-12-31",
+        "rating": "T",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1189557-52.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1440,
+          "height": 2160,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1189557-52.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/sand-raiders-of-sophie/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Play Billiards in a different style; Time Trial, Matrix Mode and 2 Player 15 Ball Mode.\n\nIn Time Trial you have a time limit of 4 minutes, in which you have to pot balls as fast as you can to achieve more score. When you pot more than one ball back to back, your multiplier will increase and which will boost your score and time.\n\nIn Matrix Mode, when you pot a ball your score will be multiplied by the difference of your previous and current ball number if the current is more than the previous; but if the current is less, then your score is divided by the current ball number. So be careful.\n\nIn 2 Player 15 Ball Mode you can compete against your friend.\n\nFeatures:\nThree Different Modes.\n   1. Time Trial Mode\n   2. Matrix Mode\n   3. Two Player 15 Ball Mode\nOpen Feint enabled.\nAchievements to unlock.\nPublish Score to Facebook &amp; Twitter",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300574181,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "CALX",
+        "slug": "calx",
+        "premiereYear": 2026,
+        "releaseDate": "2026-12-31",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1207470-59.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 480,
+          "height": 480,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1207470-59.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/calx/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "CALX is an atmospheric 3D action adventure inspired by visionary sci-fi art. Explore planet Syro - vast landscapes filled with crystal structures and ancient technology. Find out what the WARP did to the Quoths civilization. The environment guides you, revealing secrets through exploration.\r\n\r\nThe game moves between stillness and frenzy. Silent moments give way to frantic fights in a rhythm like waves - contemplation, then action, then back again. Art and music work in tandem. The mesmerizing visuals shape the soundscape, and the music breathes life back into the art.\r\n\r\nYou are alone on Syro, but not lonely. A speck of dust in a vast, mysterious world. There's a quiet melancholy to wandering these forgotten places.",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300567579,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "Astrolander",
+        "slug": "astrolander",
+        "premiereYear": 2026,
+        "releaseDate": "2026-12-31",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1216292-52.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1024,
+          "height": 1024,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1216292-52.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/astrolander/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Play a reimagining of platformers in the action-packed Astrolander. Join a curious robot on a roll named Feedback and an adventurous rocket powered sidekick named Haptic on their quest to save the Most Valuable Programs.",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300711413,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "Erosion",
+        "slug": "erosion",
+        "premiereYear": 2026,
+        "releaseDate": "2026-12-31",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1182826-59.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 780,
+          "height": 780,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1182826-59.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/erosion/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Your daughter's been kidnapped by a warlord and dragged into the mysterious living Pillar that warps time itself. You're gonna get her back. The catch? When you die, the world jumps forward a decade, aging your daughter and changing the world around you.\r\n\r\nDie in a dungeon? Wake up ten years later. That peaceful farm is now a cultist compound worshipping the Great Ol' Rooster. That store owner you helped? They've built an empire. Your choices permeate across decades, transforming factions, townsfolk, and entire regions. Once you’ve mastered full timeline control you can rewrite every possible future.\r\n\r\nExplore a massive wasteland overworld where you can join a cult, steal a slick new ride, and gamble your hard-earned Cheddar away at the Al Cashino. Go sand fishing for buried creatures, hunt bounties, try your luck in duels, or just race trucks through the salt flats. Complete quests to unlock permanent upgrades and reshape the future.",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300714327,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "Tomb Raider: Legacy of Atlantis",
+        "slug": "tomb-raider-legacy-of-atlantis",
+        "premiereYear": 2026,
+        "releaseDate": "2026-12-31",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1189376-52.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1024,
+          "height": 1024,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1189376-52.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/tomb-raider-legacy-of-atlantis/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Experience the pinnacle of adventure with Tomb Raider: Legacy of Atlantis, a stunning reimagining of the 1996 genre-defining game.\r\n\r\nAs Lara Croft, harness your wits and athleticism to explore exotic locations lost to time - from the jungles of Peru to the ancient ruins of Greece, the deserts of Egypt, and a mysterious Mediterranean island shrouded in myth. Traverse treacherous landscapes, solve deadly contraptions, and face lethal predators as you hunt for the scattered pieces of the Scion, an artifact of immeasurable power.\r\n\r\nWhether you're a veteran raider or new to Lara's world, Tomb Raider: Legacy of Atlantis delivers jaw-dropping visuals powered by Unreal Engine 5, modern game design, and new surprises, while honoring the spirit and atmosphere of Lara Croft's debut adventure.",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300689330,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "Snap & Grab",
+        "slug": "snap-and-grab",
+        "premiereYear": 2026,
+        "releaseDate": "2026-12-31",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1129960-52.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1024,
+          "height": 1024,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1129960-52.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/snap-and-grab/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Nifty Nevada is the world's most famous fashion photographer. She’s also the mysterious mastermind behind the world's most brazen unsolved heists. What’s her secret? Her loyal crew of henchmen keep her from ever lifting a beautiful, important finger!\r\n\r\nAs Nifty, you'll travel to exclusive and exotic locations, using your fashion photographer skills to take pictures of anything and everything you want to steal - as well as any complications or threats in the way.\r\n\r\nThen, instead of committing any crimes yourself, assemble your photos to plan the perfect heist for your crew to execute! They are going to do a great job. Your plans won't cause complete chaos or have any problems. Don't worry about it!",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300487308,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "Infinitesimals",
+        "slug": "infinitesimals",
+        "premiereYear": 2026,
+        "releaseDate": "2026-12-31",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1129951-52.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1024,
+          "height": 1024,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1129951-52.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/infinitesimals/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Infinitesimals is a third-person action adventure game where you play as Captain Awkney Relinrake, as he and his crew of minuscule aliens arrive on a mysterious, unknown planet.\n\nIt's a big world out there when you're only a few millimeters tall. Explore seemingly giant environments from a miniature perspective - using high-tech weaponry, vehicles, and high mobility to survive.\n\nInfinitesimals is being developed with Unreal Engine 5 by Cubit Studios, a small team from Europe.",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300670726,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "Tides of Annihilation",
+        "slug": "tides-of-annihilation",
+        "premiereYear": 2026,
+        "releaseDate": "2026-12-31",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1093995-52.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1024,
+          "height": 1024,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1093995-52.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/tides-of-annihilation/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "London lies in ruin, torn apart by an abrupt invasion from another realm. As Gwendolyn, the city’s last surviving inhabitant, you will face off against otherworldly foes as she navigates a world where reality and fantasy intertwine, unravelling the mysteries binding this shattered existence.\r\n\r\nTides of Annihilation is a fantasy action-adventure inspired by Arthurian legend. Uncover the mystery of an otherworldly invasion in a shattered modern London, unleashing hordes of enemies. As Gwendolyn, fight alongside spectral knights to save your family and piece a broken world back together.",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300680220,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "IKUMA: The Frozen Compass",
+        "slug": "ikuma-the-frozen-compass",
+        "premiereYear": 2026,
+        "releaseDate": "2026-12-31",
+        "rating": "RP",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1111725-52.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1024,
+          "height": 1024,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1111725-52.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/ikuma-the-frozen-compass/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "1864, an uncharted island in the Arctic. Cabin boy Sam and loyal husky Ellie are stranded in the unforgiving cold. \r\n\r\nEndure the harsh elements, uncover a bleak mystery and find your way home and to yourself. Play solo as both characters or cooperatively with a friend. Your survival depends on your friendship!",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300689394,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "Mudang: Two Hearts",
+        "slug": "mudang-two-hearts",
+        "premiereYear": 2026,
+        "releaseDate": "2026-12-31",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1130100-52.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1440,
+          "height": 2160,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1130100-52.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/mudang-two-hearts/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "In a unified Korea, masked terrorists strike at the heart of Seoul. Ji Jeongtae, a soldier sent in to stop the attacks, stumbles upon a K-Pop star named Gavi at the center of the unfolding crisis.\r\n\r\nAs their stories intertwine, a chilling truth begins to take shape.",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300689397,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "At Fate's End",
+        "slug": "at-fates-end",
+        "premiereYear": 2026,
+        "releaseDate": "2026-12-31",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1130112-52.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 720,
+          "height": 1080,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1130112-52.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/at-fates-end/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Wield your blade. Confront your kin. Decide your fate.\r\n\r\nAt Fate’s End is an action-adventure game where you fight the ones you love. Wield the legendary God Sword Aesus as Shan, the deft young heiress of the Hemlock clan. Explore a lush, hand-crafted fantasy world. Defeat the foul creatures of the realm in combat.\r\n\r\nSolve intricate narrative puzzles, uncover painful truths, and hone both your blade skills and knowledge to face your estranged siblings in intense, emotional duels - and ultimately decide your family’s fate.",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300545609,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "Back to the Dawn",
+        "slug": "back-to-the-dawn",
+        "premiereYear": 2026,
+        "releaseDate": "2026-12-31",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1161698-52.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1024,
+          "height": 1024,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1161698-52.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/back-to-the-dawn/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "In Back to the Dawn, you play a reporter caught up in a dark conspiracy and who got thrown into a maximum-security prison for not playing ball. Gather your wits and learn how to survive in this hostile environment. Explore every inch of the prison and exploit any weakness you find. Make friends (or foes) with your fellow inmates and with their help, break out of prison. It's not just your life you are saving, but the entire city!",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300722467,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "Kena: Scars of Kosmora",
+        "slug": "kena-scars-of-kosmora",
+        "premiereYear": 2026,
+        "releaseDate": "2026-12-31",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1206012-59.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 666,
+          "height": 666,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1206012-59.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/kena-scars-of-kosmora/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": null,
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300722594,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "Crimson Moon",
+        "slug": "crimson-moon",
+        "premiereYear": 2026,
+        "releaseDate": "2026-12-31",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1206019-52.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1024,
+          "height": 1024,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1206019-52.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/crimson-moon/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Ken, a high school student, is suddenly swallowed into another world, and he decides to take desperate action to rescue his younger sister.\r\n\r\nIn this strange world illuminated by the red moon, a terrible tragedy unfolds.... A tense search and a battle to the death await you.\r\n\r\nIsekai survival horror RPG. defeat the enemy or escape, your decision will make the difference between life and death. A horror RPG with large character dots and a death-defying storyline.",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300646190,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "The Player Who Can't Level Up",
+        "slug": "the-player-who-cant-level-up",
+        "premiereYear": 2026,
+        "releaseDate": "2026-12-31",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1145672-52.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1024,
+          "height": 1024,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1145672-52.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/the-player-who-cant-level-up/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": null,
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300679686,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "Welcome to Brightville",
+        "slug": "welcome-to-brightville",
+        "premiereYear": 2027,
+        "releaseDate": "2027-12-31",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1111467-59.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 600,
+          "height": 600,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1111467-59.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/welcome-to-brightville/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "'Welcome to Brightville' is an action-adventure immersive sim in which you play as a unique automaton guardian. You will explore the mysterious city of Brightville, where magic and steampunk technology collide!\r\n\r\nNavigate a world where magic and technology collide! Experiment with abilities, interact with characters, and adapt to an environment that responds to your decisions. \r\n\r\nWhether you engage in combat, explore the city's hidden depths, or uncover the mysteries of your existence, every action shapes the world around you.",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300619099,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "Exodus",
+        "slug": "exodus",
+        "premiereYear": 2027,
+        "releaseDate": "2027-12-31",
+        "rating": "RP",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-987931-59.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1100,
+          "height": 1100,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-987931-59.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/exodus/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "The debut game from legendary RPG creator James Ohlen's new studio is a next-generation, story-driven RPG that marries cinematic storytelling with deep emotional impact featuring broad player agency and modern AAA gameplay. The story is fueled by the consequences of player choices due to the impact of Time Dilation, and how they change the lives of those we love most.\n\nIn EXODUS, humanity has fled a dying Earth, finding a new home in a hostile galaxy - here, we are the underdogs fighting for survival. As The Traveler, you are humanity's last hope. Your job is to steal alien weapons and technology from the most powerful beings in the universe, the Celestials - humanity's greatest enemy. But there's a catch - Time Dilation. \n\nAs Travelers on interstellar missions, days for you are decades back home. The sacrifices you make to protect your loved ones create unpredictable consequences that change your world -- reshaping the future. Returning home, you confront the consequences of your choices. In Exodus, the outcome of those choices manifests at a massive level, compounding over generations.",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300714322,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "The Free Shepherd",
+        "slug": "the-free-shepherd",
+        "premiereYear": 2027,
+        "releaseDate": "2027-12-31",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1189361-52.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1024,
+          "height": 1024,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1189361-52.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/the-free-shepherd/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "The Free Shepherd is a single player atmospheric adventure where you are an energetic and loyal sheepdog.\r\n\r\nRun fast and free in a beautiful but troubled world. Herd masses of lost sheep to a secret refuge. Discover a mysterious calamity that only you can stop.",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300728907,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "Artificial Detective",
+        "slug": "artificial-detective",
+        "premiereYear": 2027,
+        "releaseDate": "2027-12-31",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "6-1-1219029-59.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 700,
+          "height": 700,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/6/12/6-1-1219029-59.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/game/artificial-detective/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "A third-person action-adventure where a robot detective uncovers the mystery behind humanity’s disappearance. From talent behind Love, Death & Robots, DreamWorks, and Crytek.\r\n\r\nAwaken as AD 2846, a robot detective with fractured memories, in a decopunk metropolis maintained by mad robots. Together with DAWG, your loyal military robodog, and Mowgli, a human girl raised by machines, fight and hack your way through a city where crazy robots took over to uncover why humanity vanished.\r\n\r\nExplore the multilayered districts of Conglomerate North, a crime-ridden metropolis seized by the malevolent Rise Corp. Use electromagnetic weapons, hack systems, weaponize the environment, or stay hidden and outsmart rogue robots. Search for clues, gather resources, and approach each encounter your own way.\r\n\r\nExperience a cinematic adventure that blends action, companionship, and mystery in a striking Art Deco future. Artificial Detective is a witty, character-driven story about unlikely companionship and the future-of-humanity dilemma.",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      },
+      {
+        "id": 1300703095,
+        "type": "game-title",
+        "typeId": 13,
+        "title": "THE LIFT: Supernatural Handyman Simulator",
+        "slug": "the-lift-supernatural-handyman-simulator",
+        "premiereYear": 2027,
+        "releaseDate": "2027-12-31",
+        "rating": null,
+        "seoUrl": null,
+        "image": null,
+        "criticScoreSummary": {
+          "url": "/game/the-lift-supernatural-handyman-simulator/critic-reviews/",
+          "max": 100,
+          "score": null,
+          "reviewCount": 0,
+          "positiveCount": 0,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "tbd"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action Adventure"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": null,
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": null,
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": null,
+          "videoClosestFutureAvailableNetworkId": null,
+          "videoClosestPastExpiryNetworkId": null,
+          "videoClosestFutureExpiryNetworkId": null,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": null
+        }
+      }
+    ],
+    "genres": "Action,Action Adventure",
+    "network": null
+  },
+  "links": {
+    "self": {
+      "href": "https://backend.metacritic.com/finder/metacritic/web?mcoTypeId=13&limit=24&offset=24&sortBy=-metaScore&releaseYearMin=2016&releaseYearMax=2018&releaseType=coming-soon&gamePlatformIds=1500000128%2C1500000129&genres=Action%2CAction%20Adventure",
+      "meta": {
+        "pageNum": 2,
+        "count": 22
+      }
+    },
+    "prev": {
+      "href": "https://backend.metacritic.com/finder/metacritic/web?mcoTypeId=13&limit=24&offset=0&sortBy=-metaScore&releaseYearMin=2016&releaseYearMax=2018&releaseType=coming-soon&gamePlatformIds=1500000128%2C1500000129&genres=Action%2CAction+Adventure",
+      "meta": {
+        "pageNum": 1,
+        "count": 24
+      }
+    },
+    "next": {
+      "href": null,
+      "meta": null
+    },
+    "first": {
+      "href": "https://backend.metacritic.com/finder/metacritic/web?mcoTypeId=13&limit=24&offset=0&sortBy=-metaScore&releaseYearMin=2016&releaseYearMax=2018&releaseType=coming-soon&gamePlatformIds=1500000128%2C1500000129&genres=Action%2CAction+Adventure",
+      "meta": {
+        "pageNum": 1,
+        "count": 24
+      }
+    },
+    "last": {
+      "href": "https://backend.metacritic.com/finder/metacritic/web?mcoTypeId=13&limit=24&offset=24&sortBy=-metaScore&releaseYearMin=2016&releaseYearMax=2018&releaseType=coming-soon&gamePlatformIds=1500000128%2C1500000129&genres=Action%2CAction+Adventure",
+      "meta": {
+        "pageNum": 2,
+        "count": 22
+      }
+    }
+  },
+  "meta": {
+    "componentName": null,
+    "componentDisplayName": null,
+    "componentType": null
+  }
+}
+
+https://backend.metacritic.com/finder/metacritic/web?mcoTypeId=2&limit=24&offset=24&sortBy=-metaScore&releaseYearMin=2006&releaseYearMax=2021&streamingNetworkIds=3034%2C1943%2C1102&genres=Action,Adventure,Comedy
+
+{
+  "data": {
+    "id": "3525fd65-5448-4d7b-f28b-f56e281f21f8",
+    "totalResults": 519,
+    "items": [
+      {
+        "id": 2000548743,
+        "type": "movie",
+        "typeId": 2,
+        "title": "Woman at War",
+        "slug": "woman-at-war",
+        "premiereYear": 2019,
+        "releaseDate": "2019-03-01",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-c9ea8000934f19b5e086981bd3bbe27b.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 2764,
+          "height": 4096,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-c9ea8000934f19b5e086981bd3bbe27b.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/woman-at-war/critic-reviews/",
+          "max": 100,
+          "score": 81,
+          "reviewCount": 25,
+          "positiveCount": 23,
+          "neutralCount": 2,
+          "negativeCount": 0,
+          "sentiment": "Universal acclaim"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Thriller"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Halla is a fifty-year-old independent woman. But behind the scenes of a quiet routine, she leads a double life as a passionate environmental activist. Known to others only by her alias “The Woman of the Mountain,” Halla secretly wages a one-woman-war on the local aluminum industry. As Halla’s actions grow bolder, from petty vandalism to outright industrial sabotage, she succeeds in pausing the negotiations between the Icelandic government and the corporation building a new aluminum smelter. But right as she begins planning her biggest and boldest operation yet, she receives an unexpected letter that changes everything. Her application to adopt a child has finally been accepted and there is a little girl waiting for her in Ukraine. As Halla prepares to abandon her role as saboteur and savior of the Highlands to fulfill her dream of becoming a mother, she decides to plot one final attack to deal the aluminum industry a crippling blow.",
+        "duration": 101,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2023-01-02T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2037-11-18T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 3034,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 6.8
+        }
+      },
+      {
+        "id": 2000552172,
+        "type": "movie",
+        "typeId": 2,
+        "title": "The Mitchells vs. The Machines",
+        "slug": "the-mitchells-vs-the-machines",
+        "premiereYear": 2021,
+        "releaseDate": "2021-04-30",
+        "rating": "PG",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-ecda7965afd4b97d140e47bbc2a0c35e.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1500,
+          "height": 2222,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-ecda7965afd4b97d140e47bbc2a0c35e.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/the-mitchells-vs-the-machines/critic-reviews/",
+          "max": 100,
+          "score": 81,
+          "reviewCount": 33,
+          "positiveCount": 31,
+          "neutralCount": 2,
+          "negativeCount": 0,
+          "sentiment": "Universal acclaim"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Animation"
+          },
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Family"
+          },
+          {
+            "id": null,
+            "name": "Sci-Fi"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "It all starts when creative outsider Katie Mitchell is accepted into the film school of her dreams and is eager to leave home and find “her people,” when her nature-loving dad insists on having the whole family drive her to school and bond during one last totally-not-awkward-or-forced road trip. But just when the trip can’t get any worse, the family suddenly finds itself in the middle of the robot uprising! Everything from smart phones, to roombas, to evil Furbys are employed to capture every human on the planet. Now it’s up to the Mitchells, including upbeat mom Linda, quirky little brother Aaron, their squishy pug, Monchi, and two friendly, but simple-minded robots to save humanity. [Netflix]",
+        "duration": 113,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2024-04-30T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2037-11-18T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 2806,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 8
+        }
+      },
+      {
+        "id": 2000500239,
+        "type": "movie",
+        "typeId": 2,
+        "title": "Casino Royale",
+        "slug": "casino-royale",
+        "premiereYear": 2006,
+        "releaseDate": "2006-11-17",
+        "rating": "PG-13",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-a92d9f6fc67562f457e56727036d0f8b.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1600,
+          "height": 2400,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-a92d9f6fc67562f457e56727036d0f8b.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/casino-royale/critic-reviews/",
+          "max": 100,
+          "score": 80,
+          "reviewCount": 46,
+          "positiveCount": 43,
+          "neutralCount": 3,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Thriller"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "After earning his license to kill, James Bond's first 007 mission takes him to Madagascar where he is to spy on a terrorist. Not everything goes as planned and Bond decides to investigate, independently of MI6. Following a lead to the Bahamas, he encounters Alex Dimitrios (Simon Abkarian) and his girlfriend, Solange (Caterina Murino). He learns that Dimitrios is involved with Le Chiffre (Mads Mikkelsen), banker to the world's terrorist organizations. Intelligence reveals that Le Chiffre is planning to raise money in a high-stakes poker game in Montenegro at Le Casino Royale. MI6 assigns 007 to play against him, knowing that if Le Chiffre loses, it will destroy his organization, but Bond falls in love with Vesper Lynd (Eva Green), the treasury employee assigned to provide the money he needs to bankrupt Le Chiffre.",
+        "duration": 144,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2024-10-16T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2037-11-18T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 2806,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 8.4
+        }
+      },
+      {
+        "id": 2000544740,
+        "type": "movie",
+        "typeId": 2,
+        "title": "American Honey",
+        "slug": "american-honey",
+        "premiereYear": 2016,
+        "releaseDate": "2016-09-30",
+        "rating": "R",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "5-tt3721936.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 2025,
+          "height": 3000,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/5/2/5-tt3721936.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/american-honey/critic-reviews/",
+          "max": 100,
+          "score": 80,
+          "reviewCount": 42,
+          "positiveCount": 33,
+          "neutralCount": 8,
+          "negativeCount": 1,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Romance"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Star (Sasha Lane), a teenage girl from a troubled home, runs away with a traveling sales crew who drive across the American Midwest selling magazine subscriptions door to door. Finding her feet in this gang of teenagers, one of whom is Jake (Shia LaBeouf), she soon gets into the group's lifestyle of hard-partying nights, law-bending days, and young love.",
+        "duration": 163,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2024-11-12T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2037-11-18T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 2806,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 7
+        }
+      },
+      {
+        "id": 2000546383,
+        "type": "movie",
+        "typeId": 2,
+        "title": "The Meyerowitz Stories (New and Selected)",
+        "slug": "the-meyerowitz-stories-new-and-selected",
+        "premiereYear": 2017,
+        "releaseDate": "2017-10-13",
+        "rating": "TV-MA",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-9bb7535764525f47bc02d65ce0e204f4.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1024,
+          "height": 1517,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-9bb7535764525f47bc02d65ce0e204f4.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/the-meyerowitz-stories-new-and-selected/critic-reviews/",
+          "max": 100,
+          "score": 80,
+          "reviewCount": 41,
+          "positiveCount": 40,
+          "neutralCount": 1,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "The Meyerowitz Stories (New and Selected) is the emotional and comic intergenerational tale of adult siblings (Adam Sandler, Ben Stiller, and Elizabeth Marvel) contending with the long shadow their strong-willed father (Dustin Hoffman) has cast over their lives. [Netflix]",
+        "duration": 112,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2020-04-19T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 7
+        }
+      },
+      {
+        "id": 2000542739,
+        "type": "movie",
+        "typeId": 2,
+        "title": "White God",
+        "slug": "white-god",
+        "premiereYear": 2015,
+        "releaseDate": "2015-03-27",
+        "rating": "R",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-c4f44b7f2b0eb8105cd20a7c72696e8f.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1019,
+          "height": 1528,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-c4f44b7f2b0eb8105cd20a7c72696e8f.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/white-god/critic-reviews/",
+          "max": 100,
+          "score": 80,
+          "reviewCount": 29,
+          "positiveCount": 26,
+          "neutralCount": 3,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Thriller"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "When young Lili is forced to give up her beloved dog Hagen, because it's mixed-breed heritage is deemed unfit by The State, she and the dog begin a dangerous journey back towards each other. At the same time, all the unwanted, unloved and so-called unfit dogs rise up under a new leader, Hagen, the one-time housepet who has learned all too well from his journey through the streets and animal control centers. [Magnolia Pictures]",
+        "duration": 121,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2023-04-01T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2037-11-17T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 3034,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 7.2
+        }
+      },
+      {
+        "id": 2000547296,
+        "type": "movie",
+        "typeId": 2,
+        "title": "Lean on Pete",
+        "slug": "lean-on-pete",
+        "premiereYear": 2018,
+        "releaseDate": "2018-04-06",
+        "rating": "R",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-25f2c50337b2d7f8439f079087d9dfc8.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1463,
+          "height": 2048,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-25f2c50337b2d7f8439f079087d9dfc8.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/lean-on-pete/critic-reviews/",
+          "max": 100,
+          "score": 80,
+          "reviewCount": 44,
+          "positiveCount": 38,
+          "neutralCount": 6,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Sport"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Fifteen-year-old Charley Thompson (Charlie Plummer) arrives in Portland, Oregon with his single father Ray (Travis Fimmel), both of them eager for a fresh start after a series of hard knocks. While Ray descends into personal turmoil, Charley finds acceptance and camaraderie at a local racetrack where he lands a job caring for an aging Quarter Horse named Lean On Pete. The horse’s gruff owner Del Montgomery (Steve Buscemi) and his seasoned jockey Bonnie (Chloë Sevigny) help Charley fill the void of his father’s absence—until he discovers that Pete is bound for slaughter, prompting him to take extreme measures to spare his new friend’s life. Charley and Pete head out into the great unknown, embarking on an odyssey across the new American frontier in search of a loving aunt Charley hasn’t seen in years. They experience adventure and heartbreak in equal measure, but never lose their irrepressible hope and resiliency as they pursue their dream of finding a place they can call home.",
+        "duration": 121,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2024-09-03T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2037-11-18T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 2806,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 7.7
+        }
+      },
+      {
+        "id": 2000551951,
+        "type": "movie",
+        "typeId": 2,
+        "title": "The Forty-Year-Old Version",
+        "slug": "the-forty-year-old-version",
+        "premiereYear": 2020,
+        "releaseDate": "2020-10-02",
+        "rating": "R",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-43e81c02ae6a9a05cba1862e6c73eaa2.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1365,
+          "height": 2048,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-43e81c02ae6a9a05cba1862e6c73eaa2.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/the-forty-year-old-version/critic-reviews/",
+          "max": 100,
+          "score": 80,
+          "reviewCount": 28,
+          "positiveCount": 26,
+          "neutralCount": 2,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Radha, a down-on-her-luck NY playwright, is desperate for a breakthrough before 40. But when she foils what seems like her last shot at success, she’s left with no choice but to reinvent herself as rapper RadhaMUSPrime. The Forty-Year-Old Version follows Radha as she vacillates between the worlds of Hip Hop and theater on a quest to find her true voice.\r\n\r\n\r\n",
+        "duration": 129,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2020-10-17T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 6.7
+        }
+      },
+      {
+        "id": 2000500209,
+        "type": "movie",
+        "typeId": 2,
+        "title": "Little Miss Sunshine",
+        "slug": "little-miss-sunshine",
+        "premiereYear": 2006,
+        "releaseDate": "2006-07-26",
+        "rating": "R",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "5-tt0449059.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 2033,
+          "height": 3000,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/5/2/5-tt0449059.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/little-miss-sunshine/critic-reviews/",
+          "max": 100,
+          "score": 80,
+          "reviewCount": 36,
+          "positiveCount": 34,
+          "neutralCount": 2,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Little Miss Sunshine is an American family road comedy that shatters the mold. Brazenly satirical and yet deeply human, the film introduces audiences to one of the most endearingly fractured families in recent cinema history: the Hoovers, whose trip to a pre-pubescent beauty pageant results not only in comic mayhem but in death, transformation and a moving look at the surprising rewards of being losers in a winning-crazed culture.  (Fox Searchlight Pictures)",
+        "duration": 101,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2024-12-04T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2037-11-18T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 2806,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 8.2
+        }
+      },
+      {
+        "id": 2000551028,
+        "type": "movie",
+        "typeId": 2,
+        "title": "Bad Education",
+        "slug": "bad-education-2019",
+        "premiereYear": 2020,
+        "releaseDate": "2020-04-25",
+        "rating": "TV-MA",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-a8c5b501fc313bd6dce06890f6238210.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 2000,
+          "height": 3000,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-a8c5b501fc313bd6dce06890f6238210.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/bad-education-2019/critic-reviews/",
+          "max": 100,
+          "score": 79,
+          "reviewCount": 29,
+          "positiveCount": 27,
+          "neutralCount": 2,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Biography"
+          },
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Crime"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Long Island school superintendent Frank Tassone (Hugh Jackman) and his assistant superintendent for business, Pam Gluckin (Allison Janney), are credited with bringing Roslyn School District unprecedented prestige. Frank, always immaculately groomed and tailored, is a master of positive messaging, whether before an audience of community leaders or in an office with a concerned student or parent. In short, it seems Frank can do no wrong. That is, until a plucky student reporter (Geraldine Viswanathan) decides to dig deep into some expense reports and begins to uncover an embezzlement scheme of epic proportions, prompting Frank to devise an elaborate cover-up — by any means necessary. [TIFF]",
+        "duration": 108,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2023-09-05T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2037-11-18T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 2806,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 7.6
+        }
+      },
+      {
+        "id": 2000550726,
+        "type": "movie",
+        "typeId": 2,
+        "title": "An Easy Girl",
+        "slug": "an-easy-girl",
+        "premiereYear": 2020,
+        "releaseDate": "2020-08-13",
+        "rating": "TV-MA",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-3cf01802e26626bb0028ac44d34dfa55.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1000,
+          "height": 1500,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-3cf01802e26626bb0028ac44d34dfa55.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/an-easy-girl/critic-reviews/",
+          "max": 100,
+          "score": 79,
+          "reviewCount": 9,
+          "positiveCount": 8,
+          "neutralCount": 1,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Naïma has just turned 16. This summer, she will have to decide what she wants from life if she doesn’t want to miss out. Then her cousin Sofia arrives – 22, with an amazing body and a dangerously seductive lifestyle. Naïma desires only to follow her own path, so long as it leads upwards… Despite the warnings of her best friend Dodo, she and Sofia will live through unforgettable encounters during a long summer that will mark them forever.",
+        "duration": 92,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2020-09-06T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 6.1
+        }
+      },
+      {
+        "id": 2000549270,
+        "type": "movie",
+        "typeId": 2,
+        "title": "The Ballad of Buster Scruggs",
+        "slug": "the-ballad-of-buster-scruggs",
+        "premiereYear": 2018,
+        "releaseDate": "2018-11-09",
+        "rating": "R",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-9ee29f2fac289045e770db6fcf2a12df.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1000,
+          "height": 1500,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-9ee29f2fac289045e770db6fcf2a12df.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/the-ballad-of-buster-scruggs/critic-reviews/",
+          "max": 100,
+          "score": 79,
+          "reviewCount": 48,
+          "positiveCount": 45,
+          "neutralCount": 3,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Musical"
+          },
+          {
+            "id": null,
+            "name": "Mystery"
+          },
+          {
+            "id": null,
+            "name": "Western"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "The Ballad of Buster Scruggs is a six-part Western anthology film, a series of tales about the American frontier told through the unique and incomparable voice of Joel and Ethan Coen. Each chapter tells a distinct story about the American West.",
+        "duration": 133,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2020-04-19T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 7.4
+        }
+      },
+      {
+        "id": 2000551683,
+        "type": "movie",
+        "typeId": 2,
+        "title": "A Shaun the Sheep Movie: Farmageddon",
+        "slug": "a-shaun-the-sheep-movie-farmageddon",
+        "premiereYear": 2020,
+        "releaseDate": "2020-02-14",
+        "rating": "G",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-f5869ef166eb6008c684f68e58fd8bbe.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1080,
+          "height": 1600,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-f5869ef166eb6008c684f68e58fd8bbe.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/a-shaun-the-sheep-movie-farmageddon/critic-reviews/",
+          "max": 100,
+          "score": 79,
+          "reviewCount": 18,
+          "positiveCount": 17,
+          "neutralCount": 1,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Animation"
+          },
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Family"
+          },
+          {
+            "id": null,
+            "name": "Fantasy"
+          },
+          {
+            "id": null,
+            "name": "Sci-Fi"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "When an alien with amazing powers crash-lands near Mossy Bottom Farm, Shaun the Sheep goes on a mission to shepherd the intergalactic visitor home before a sinister organization can capture her.",
+        "duration": 86,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2020-04-19T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 7.2
+        }
+      },
+      {
+        "id": 2000553091,
+        "type": "movie",
+        "typeId": 2,
+        "title": "Shiva Baby",
+        "slug": "shiva-baby",
+        "premiereYear": 2021,
+        "releaseDate": "2021-04-02",
+        "rating": "TV-MA",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-3269f1ce5c8cf7e6ea44b29fb8dfe2ee.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1382,
+          "height": 2048,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-3269f1ce5c8cf7e6ea44b29fb8dfe2ee.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/shiva-baby/critic-reviews/",
+          "max": 100,
+          "score": 79,
+          "reviewCount": 24,
+          "positiveCount": 22,
+          "neutralCount": 2,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "At a Jewish funeral service with her parents, a college student runs into her sugar daddy.",
+        "duration": 77,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2021-07-08T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 3034,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 7.3
+        }
+      },
+      {
+        "id": 2000550256,
+        "type": "movie",
+        "typeId": 2,
+        "title": "Police Story (1985)",
+        "slug": "police-story-1985",
+        "premiereYear": 2018,
+        "releaseDate": "2018-03-09",
+        "rating": "PG-13",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-ab7853a27ef1ba3218526beeec9635d1.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 2000,
+          "height": 3000,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-ab7853a27ef1ba3218526beeec9635d1.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/police-story-1985/critic-reviews/",
+          "max": 100,
+          "score": 78,
+          "reviewCount": 9,
+          "positiveCount": 8,
+          "neutralCount": 1,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Crime"
+          },
+          {
+            "id": null,
+            "name": "Thriller"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "A virtuous Hong Kong Police Officer must clear his good name when the drug lords he is after frame him for the murder of a dirty cop.",
+        "duration": 101,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2020-05-29T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 3034,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 8.1
+        }
+      },
+      {
+        "id": 2000550100,
+        "type": "movie",
+        "typeId": 2,
+        "title": "Monos",
+        "slug": "monos",
+        "premiereYear": 2019,
+        "releaseDate": "2019-09-13",
+        "rating": "R",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-4d23a85f15fc95b338c2c248855d0090.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 620,
+          "height": 921,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-4d23a85f15fc95b338c2c248855d0090.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/monos/critic-reviews/",
+          "max": 100,
+          "score": 78,
+          "reviewCount": 27,
+          "positiveCount": 23,
+          "neutralCount": 4,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Thriller"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "In a remote mountaintop setting somewhere in Latin America, a rebel group of teenage commandos bearing noms de guerre like Rambo, Smurf, Bigfoot, Wolf and Boom-Boom perform military training exercises while watching over a prisoner (Julianne Nicholson) and a conscripted milk cow for a shadowy force known only as The Organization.  After an ambush drives the squadron into the jungle, fracturing their intricate bond, the mission begins to collapse.",
+        "duration": 102,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2023-05-09T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": "2026-01-01T00:00:00Z",
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 2806,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 2806,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 7.2
+        }
+      },
+      {
+        "id": 2000554946,
+        "type": "movie",
+        "typeId": 2,
+        "title": "The Summit of the Gods",
+        "slug": "the-summit-of-the-gods",
+        "premiereYear": 2021,
+        "releaseDate": "2021-11-24",
+        "rating": "PG",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "5-tt7014378.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1500,
+          "height": 2222,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/5/2/5-tt7014378.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/the-summit-of-the-gods/critic-reviews/",
+          "max": 100,
+          "score": 78,
+          "reviewCount": 12,
+          "positiveCount": 12,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Animation"
+          },
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Mystery"
+          },
+          {
+            "id": null,
+            "name": "Sport"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Fukamachi, a young Japanese photojournalist, finds a camera that could change the history of mountaineering. It leads him to the mysterious Habu, an outcast climber believed missing for years. Fukamachi enters a world of obsessive mountaineers hungry for impossible conquests on a journey that leads him, step by step, towards the summit of the gods.",
+        "duration": 95,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2021-11-06T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 7.8
+        }
+      },
+      {
+        "id": 2000539269,
+        "type": "movie",
+        "typeId": 2,
+        "title": "The Dark Knight Rises",
+        "slug": "the-dark-knight-rises",
+        "premiereYear": 2012,
+        "releaseDate": "2012-07-20",
+        "rating": "PG-13",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-f88365fa25baf2b4ec93a31c55193922.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 270,
+          "height": 405,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-f88365fa25baf2b4ec93a31c55193922.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/the-dark-knight-rises/critic-reviews/",
+          "max": 100,
+          "score": 78,
+          "reviewCount": 45,
+          "positiveCount": 37,
+          "neutralCount": 6,
+          "negativeCount": 2,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Crime"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Thriller"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "It has been eight years since Batman vanished into the night, turning, in that instant, from hero to fugitive. Assuming the blame for the death of D.A. Harvey Dent, the Dark Knight sacrificed everything for what he and Commissioner Gordon both hoped was the greater good. For a time the lie worked, as criminal activity in Gotham City was crushed under the weight of the anti-crime Dent Act. But everything will change with the arrival of a cunning cat burglar with a mysterious agenda. Far more dangerous, however, is the emergence of Bane, a masked terrorist whose ruthless plans for Gotham drive Bruce out of his self-imposed exile. But even if he dons the cape and cowl again, Batman may be no match for Bane. (Warner Bros. Pictures)",
+        "duration": 165,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2024-09-24T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2037-11-18T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 2806,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 8.5
+        }
+      },
+      {
+        "id": 2000500211,
+        "type": "movie",
+        "typeId": 2,
+        "title": "Harry Potter and the Half-Blood Prince",
+        "slug": "harry-potter-and-the-half-blood-prince",
+        "premiereYear": 2009,
+        "releaseDate": "2009-07-15",
+        "rating": "PG",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-b2525da991d23ed1d85d56e4fe690d70.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1339,
+          "height": 1900,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-b2525da991d23ed1d85d56e4fe690d70.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/harry-potter-and-the-half-blood-prince/critic-reviews/",
+          "max": 100,
+          "score": 78,
+          "reviewCount": 36,
+          "positiveCount": 31,
+          "neutralCount": 5,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Family"
+          },
+          {
+            "id": null,
+            "name": "Fantasy"
+          },
+          {
+            "id": null,
+            "name": "Mystery"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Voldemort is tightening his grip on both the Muggle and wizarding worlds and Hogwarts is no longer the safe haven it once was. Harry suspects that dangers may even lie within the castle, but Dumbledore is more intent upon preparing him for the final battle that he knows is fast approaching. Together they work to find the key to unlock Voldemort's defenses and, to this end, Dumbledore recruits his old friend and colleague, the well-connected and unsuspecting bon vivant Professor Horace Slughorn, whom he believes holds crucial information. Meanwhile, one student remains aloof. He is determined to make his mark, albeit a dark one. Love is in the air, but tragedy lies ahead and Hogwarts may never be the same again. (Warner Bros.)",
+        "duration": 153,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2024-09-03T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2037-11-18T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 2806,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 7.6
+        }
+      },
+      {
+        "id": 2000543547,
+        "type": "movie",
+        "typeId": 2,
+        "title": "Mississippi Grind",
+        "slug": "mississippi-grind",
+        "premiereYear": 2015,
+        "releaseDate": "2015-09-25",
+        "rating": "R",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "5-tt2349144.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1382,
+          "height": 2048,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/5/2/5-tt2349144.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/mississippi-grind/critic-reviews/",
+          "max": 100,
+          "score": 77,
+          "reviewCount": 27,
+          "positiveCount": 24,
+          "neutralCount": 3,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Gerry (Ben Mendelsohn) is a talented, but struggling poker player about to be swallowed up by his unshakeable gambling habit. But his luck begins to change after he meets the young, charismatic Curtis (Ryan Reynolds).  Gerry convinces his new lucky charm to hit the road with him, towards a legendary high stakes poker game in New Orleans.  The highs and lows unveil the duo’s true characters and motivations, and an undeniable bond forms between them. [A24]",
+        "duration": 108,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2024-11-12T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2037-11-18T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 2806,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 6.7
+        }
+      },
+      {
+        "id": 2000542709,
+        "type": "movie",
+        "typeId": 2,
+        "title": "Wild Tales",
+        "slug": "wild-tales",
+        "premiereYear": 2015,
+        "releaseDate": "2015-02-20",
+        "rating": "R",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-359d4d369fba470865a113c3f13ca045.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 227,
+          "height": 320,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-359d4d369fba470865a113c3f13ca045.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/wild-tales/critic-reviews/",
+          "max": 100,
+          "score": 77,
+          "reviewCount": 33,
+          "positiveCount": 29,
+          "neutralCount": 4,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Thriller"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Vulnerable in the face of a reality that suddenly shifts and becomes unpredictable, the characters of Wild Tales cross the thin line that divides civilization and barbarism.  A lover's betrayal, a return to a repressed past and the violence woven into everyday life drive the characters to madness as they cede to the undeniable pleasure of losing control.",
+        "duration": 122,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2023-08-29T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2037-11-18T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 2806,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 8.5
+        }
+      },
+      {
+        "id": 2000543100,
+        "type": "movie",
+        "typeId": 2,
+        "title": "While We're Young",
+        "slug": "while-were-young",
+        "premiereYear": 2015,
+        "releaseDate": "2015-03-27",
+        "rating": "R",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-10557016e1d185a25bec1a6e5906f5fc.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1000,
+          "height": 1500,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-10557016e1d185a25bec1a6e5906f5fc.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/while-were-young/critic-reviews/",
+          "max": 100,
+          "score": 77,
+          "reviewCount": 44,
+          "positiveCount": 37,
+          "neutralCount": 7,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Mystery"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "A documentary filmmaker (Ben Stiller) and his wife (Naomi Watts) find their lives loosened up a bit after befriending a free-spirited younger couple (Adam Driver and Amanda Seyfried).",
+        "duration": 97,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2024-07-23T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2037-11-18T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 2806,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 6.5
+        }
+      },
+      {
+        "id": 2000550914,
+        "type": "movie",
+        "typeId": 2,
+        "title": "Promare",
+        "slug": "promare",
+        "premiereYear": 2019,
+        "releaseDate": "2019-09-17",
+        "rating": "PG-13",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-6c1270b5a63287d0f3eb7f883b896a0d.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 485,
+          "height": 633,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-6c1270b5a63287d0f3eb7f883b896a0d.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/promare/critic-reviews/",
+          "max": 100,
+          "score": 76,
+          "reviewCount": 9,
+          "positiveCount": 9,
+          "neutralCount": 0,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Animation"
+          },
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Fantasy"
+          },
+          {
+            "id": null,
+            "name": "Sci-Fi"
+          },
+          {
+            "id": null,
+            "name": "Thriller"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Thirty years has passed since the appearance of Burnish, a race of flame-wielding mutant beings, who destroyed half of the world with fire. When a new group of aggressive mutants calling themselves \"Mad Burnish\" appears, the epic battle between Galo Thymos, a new member of the anti-Burnish rescue team \"Burning Rescue,\" and Lio Fotia, the leader of \"Mad Burnish\" begins.",
+        "duration": 111,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2024-08-01T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2037-11-18T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 2806,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 6.1
+        }
+      },
+      {
+        "id": 2000545578,
+        "type": "movie",
+        "typeId": 2,
+        "title": "Tramps",
+        "slug": "tramps",
+        "premiereYear": 2017,
+        "releaseDate": "2017-04-21",
+        "rating": null,
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-99516a0f769ca962a12b2df8d08648f6.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1354,
+          "height": 2000,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-99516a0f769ca962a12b2df8d08648f6.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/movie/tramps/critic-reviews/",
+          "max": 100,
+          "score": 76,
+          "reviewCount": 11,
+          "positiveCount": 10,
+          "neutralCount": 1,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Romance"
+          }
+        ],
+        "numberOfSeasons": 0,
+        "network": null,
+        "description": "Danny (Callum Turner) is an aspiring chef whose hustler brother asks him to complete a job for him. It all seems simple enough: meet a driver with a briefcase, proceed to a rendez-vous spot and exchange one briefcase for another. But Danny swaps the wrong bag, sending him and the driver Ellie (Grace Van Patten) on a two-day odyssey through the boroughs and suburbs of New York City. [Netflix]",
+        "duration": 82,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2020-04-19T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 6.6
+        }
+      }
+    ],
+    "genres": "Action,Adventure,Comedy",
+    "network": null
+  },
+  "links": {
+    "self": {
+      "href": "https://backend.metacritic.com/finder/metacritic/web?mcoTypeId=2&limit=24&offset=24&sortBy=-metaScore&releaseYearMin=2006&releaseYearMax=2021&streamingNetworkIds=3034%2C1943%2C1102&genres=Action%2CAdventure%2CComedy",
+      "meta": {
+        "pageNum": 2,
+        "count": 24
+      }
+    },
+    "prev": {
+      "href": "https://backend.metacritic.com/finder/metacritic/web?mcoTypeId=2&limit=24&offset=0&sortBy=-metaScore&releaseYearMin=2006&releaseYearMax=2021&streamingNetworkIds=3034%2C1943%2C1102&genres=Action%2CAdventure%2CComedy",
+      "meta": {
+        "pageNum": 1,
+        "count": 24
+      }
+    },
+    "next": {
+      "href": "https://backend.metacritic.com/finder/metacritic/web?mcoTypeId=2&limit=24&offset=48&sortBy=-metaScore&releaseYearMin=2006&releaseYearMax=2021&streamingNetworkIds=3034%2C1943%2C1102&genres=Action%2CAdventure%2CComedy",
+      "meta": {
+        "pageNum": 3,
+        "count": 24
+      }
+    },
+    "first": {
+      "href": "https://backend.metacritic.com/finder/metacritic/web?mcoTypeId=2&limit=24&offset=0&sortBy=-metaScore&releaseYearMin=2006&releaseYearMax=2021&streamingNetworkIds=3034%2C1943%2C1102&genres=Action%2CAdventure%2CComedy",
+      "meta": {
+        "pageNum": 1,
+        "count": 24
+      }
+    },
+    "last": {
+      "href": "https://backend.metacritic.com/finder/metacritic/web?mcoTypeId=2&limit=24&offset=504&sortBy=-metaScore&releaseYearMin=2006&releaseYearMax=2021&streamingNetworkIds=3034%2C1943%2C1102&genres=Action%2CAdventure%2CComedy",
+      "meta": {
+        "pageNum": 22,
+        "count": 15
+      }
+    }
+  },
+  "meta": {
+    "componentName": null,
+    "componentDisplayName": null,
+    "componentType": null
+  }
+}
+
+https://backend.metacritic.com/finder/metacritic/web?mcoTypeId=1&limit=24&offset=24&sortBy=-metaScore&releaseYearMin=2012&releaseYearMax=2021&streamingNetworkIds=1943&genres=Action,Adventure
+
+{
+  "data": {
+    "id": "8ec8d37a-a864-4335-8c58-3431afdc6c47",
+    "totalResults": 44,
+    "items": [
+      {
+        "id": 1000365922,
+        "type": "show",
+        "typeId": 1,
+        "title": "Squid Game",
+        "slug": "squid-game",
+        "premiereYear": 2021,
+        "releaseDate": "2021-09-17",
+        "rating": "TV-MA",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-38a7fa376383044856ce29d1090e137c.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1382,
+          "height": 2048,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-38a7fa376383044856ce29d1090e137c.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/squid-game/critic-reviews/",
+          "max": 100,
+          "score": 65,
+          "reviewCount": 75,
+          "positiveCount": 48,
+          "neutralCount": 23,
+          "negativeCount": 4,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Crime"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Mystery"
+          },
+          {
+            "id": null,
+            "name": "Thriller"
+          }
+        ],
+        "numberOfSeasons": 3,
+        "network": null,
+        "description": "The South Korean drama series about a group of indebted people who are invited to compete in (deadly) series of children's games to win millions of dollars.",
+        "duration": 60,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2021-09-25T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 6.8
+        }
+      },
+      {
+        "id": 1000358190,
+        "type": "show",
+        "typeId": 1,
+        "title": "Happy!",
+        "slug": "happy!",
+        "premiereYear": 2017,
+        "releaseDate": "2017-12-06",
+        "rating": "TV-MA",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-80a7a528a5ccdab2847297f29e9097eb.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 2000,
+          "height": 3000,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-80a7a528a5ccdab2847297f29e9097eb.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/happy!/critic-reviews/",
+          "max": 100,
+          "score": 65,
+          "reviewCount": 23,
+          "positiveCount": 14,
+          "neutralCount": 9,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Crime"
+          },
+          {
+            "id": null,
+            "name": "Fantasy"
+          },
+          {
+            "id": null,
+            "name": "Mystery"
+          },
+          {
+            "id": null,
+            "name": "Thriller"
+          }
+        ],
+        "numberOfSeasons": 2,
+        "network": null,
+        "description": "Nick Sax (Christopher Meloni) is a former-cop-turned-hit-man who meets an imaginary blue-winged horse named Happy (Patton Osw) after a hit job goes wrong in this series based on the graphic novel of the same name by Grant Morrison and Darick Robertson.",
+        "duration": 60,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2021-04-29T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2037-11-18T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 1984,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 7.8
+        }
+      },
+      {
+        "id": 1000356216,
+        "type": "show",
+        "typeId": 1,
+        "title": "Altered Carbon",
+        "slug": "altered-carbon",
+        "premiereYear": 2018,
+        "releaseDate": "2018-02-02",
+        "rating": "TV-MA",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-468642fbaf62e5561cf6346d066377be.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 680,
+          "height": 1020,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-468642fbaf62e5561cf6346d066377be.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/altered-carbon/critic-reviews/",
+          "max": 100,
+          "score": 64,
+          "reviewCount": 33,
+          "positiveCount": 17,
+          "neutralCount": 16,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Sci-Fi"
+          }
+        ],
+        "numberOfSeasons": 2,
+        "network": null,
+        "description": "The sci-fi series based on Richard K. Morgan's 2002 novel Carbon is set 300 years in the future where soldier Takeshi Kovacs (Will Yun Lee/Joel Kinnaman) awakens in a new body when he is freed from prison by Laurens Bancroft (James Purefoy), who wants him to solve his murder.",
+        "duration": 60,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2021-04-29T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2030-01-01T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 1984,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 7.2
+        }
+      },
+      {
+        "id": 1000342279,
+        "type": "show",
+        "typeId": 1,
+        "title": "The 100",
+        "slug": "the-100",
+        "premiereYear": 2014,
+        "releaseDate": "2014-03-19",
+        "rating": "TV-14",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-d1fa53f0de07eb127787c27fd27b57c7.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1200,
+          "height": 1500,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-d1fa53f0de07eb127787c27fd27b57c7.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/the-100/critic-reviews/",
+          "max": 100,
+          "score": 64,
+          "reviewCount": 34,
+          "positiveCount": 23,
+          "neutralCount": 9,
+          "negativeCount": 2,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Sci-Fi"
+          }
+        ],
+        "numberOfSeasons": 7,
+        "network": null,
+        "description": "Based on the Alloy books by Kass Morgan, 97 years after a nuclear war destroyed Earth and forced survivors to flee to space stations, a secret project by leaders of the group sends 100 juvenile prisoners back to Earth to see if it is viable once again.",
+        "duration": 43,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2023-05-21T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2037-11-18T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 6.6
+        }
+      },
+      {
+        "id": 1000359233,
+        "type": "show",
+        "typeId": 1,
+        "title": "The Umbrella Academy",
+        "slug": "the-umbrella-academy",
+        "premiereYear": 2019,
+        "releaseDate": "2019-02-15",
+        "rating": "TV-14",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-d1133281148e70ebb38a5d4a04a577cf.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1481,
+          "height": 2222,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-d1133281148e70ebb38a5d4a04a577cf.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/the-umbrella-academy/critic-reviews/",
+          "max": 100,
+          "score": 64,
+          "reviewCount": 55,
+          "positiveCount": 28,
+          "neutralCount": 25,
+          "negativeCount": 2,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Fantasy"
+          },
+          {
+            "id": null,
+            "name": "Sci-Fi"
+          }
+        ],
+        "numberOfSeasons": 4,
+        "network": null,
+        "description": "Luther (Tom Hopper), Diego (David Castañeda), Allison (Emmy Raver-Lampman), Klaus (Robert Sheehan), Vanya (Elliot Page) and Number Five (Aidan Gallagher) are brought back together by the death of their adoptive father (Colm Feore) in this series based on the comics and graphic novels by My Chemical Romance's Gerard Way.",
+        "duration": 60,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2026-04-06T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 6.8
+        }
+      },
+      {
+        "id": 1000359948,
+        "type": "show",
+        "typeId": 1,
+        "title": "The Witcher",
+        "slug": "the-witcher",
+        "premiereYear": 2019,
+        "releaseDate": "2019-12-20",
+        "rating": "TV-MA",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-dd4183345153d40d06de680ee27f2ce4.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 903,
+          "height": 1354,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-dd4183345153d40d06de680ee27f2ce4.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/the-witcher/critic-reviews/",
+          "max": 100,
+          "score": 63,
+          "reviewCount": 76,
+          "positiveCount": 37,
+          "neutralCount": 36,
+          "negativeCount": 3,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Fantasy"
+          },
+          {
+            "id": null,
+            "name": "Mystery"
+          }
+        ],
+        "numberOfSeasons": 5,
+        "network": null,
+        "description": "Monster hunter Geralt of Rivia (Henry Cavill), sorceress Yennefer (Anya Cholatra), and Princess Ciri (Freya Allan) must learn to work together to survive as they journey through the Continent in the fantasy series based on the Polish book series by Andrzej Sapkowski.",
+        "duration": 60,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2026-04-06T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 6.1
+        }
+      },
+      {
+        "id": 1000360466,
+        "type": "show",
+        "typeId": 1,
+        "title": "Warrior Nun",
+        "slug": "warrior-nun",
+        "premiereYear": 2020,
+        "releaseDate": "2020-07-02",
+        "rating": "TV-MA",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-2bd74ad82ec9d9938da702f226105996.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 675,
+          "height": 1000,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-2bd74ad82ec9d9938da702f226105996.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/warrior-nun/critic-reviews/",
+          "max": 100,
+          "score": 62,
+          "reviewCount": 9,
+          "positiveCount": 6,
+          "neutralCount": 3,
+          "negativeCount": 0,
+          "sentiment": "Generally favorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Fantasy"
+          }
+        ],
+        "numberOfSeasons": 2,
+        "network": null,
+        "description": "Ava (Alba Baptista), a 19-year-old woman wakes up in a morgue and learns the ring on her back means she was chosen to be a part of a secret group of demon-hunting nuns in this series inspired by Ben Dunn's comic book series, Warrior Nun Areala.",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2022-11-21T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 8.6
+        }
+      },
+      {
+        "id": 1000357168,
+        "type": "show",
+        "typeId": 1,
+        "title": "Queen of the South",
+        "slug": "queen-of-the-south",
+        "premiereYear": 2016,
+        "releaseDate": "2016-06-23",
+        "rating": "TV-MA",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-d5c734cd623967c3adb80d06a53db99d.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1890,
+          "height": 2048,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-d5c734cd623967c3adb80d06a53db99d.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/queen-of-the-south/critic-reviews/",
+          "max": 100,
+          "score": 59,
+          "reviewCount": 16,
+          "positiveCount": 6,
+          "neutralCount": 10,
+          "negativeCount": 0,
+          "sentiment": "Mixed or average"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Crime"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Thriller"
+          }
+        ],
+        "numberOfSeasons": 5,
+        "network": null,
+        "description": "Based on the Arturo Pérez-Reverte novel \"La Reina Del Sur,\" the drama (also adapted for television for Telemundo in 2011) focuses on Teresa Mendoz (Alice Braga) who must go on the run after her drug-dealing boyfriend is murdered in Mexico.",
+        "duration": 40,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2021-08-23T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2037-11-18T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 1984,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 7.2
+        }
+      },
+      {
+        "id": 1000360298,
+        "type": "show",
+        "typeId": 1,
+        "title": "Outer Banks",
+        "slug": "outer-banks",
+        "premiereYear": 2020,
+        "releaseDate": "2020-04-15",
+        "rating": "TV-MA",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-6725eab131db889002f5d597b765d7e5.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 405,
+          "height": 600,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-6725eab131db889002f5d597b765d7e5.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/outer-banks/critic-reviews/",
+          "max": 100,
+          "score": 58,
+          "reviewCount": 18,
+          "positiveCount": 9,
+          "neutralCount": 8,
+          "negativeCount": 1,
+          "sentiment": "Mixed or average"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Crime"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Mystery"
+          },
+          {
+            "id": null,
+            "name": "Romance"
+          },
+          {
+            "id": null,
+            "name": "Thriller"
+          }
+        ],
+        "numberOfSeasons": 5,
+        "network": null,
+        "description": "John B (Chase Stokes) and his friends search for his missing father and the treasure he was searching for off the Outer Banks of North Carolina in this teen drama created by Jonas Pate, Josh Pate, and Shannon Burke.",
+        "duration": 50,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2026-04-06T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 7.1
+        }
+      },
+      {
+        "id": 1000351271,
+        "type": "show",
+        "typeId": 1,
+        "title": "DC's Legends of Tomorrow",
+        "slug": "dcs-legends-of-tomorrow",
+        "premiereYear": 2016,
+        "releaseDate": "2016-01-21",
+        "rating": "TV-14",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-13776a3b548ab582486983d31d381368.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 900,
+          "height": 1350,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-13776a3b548ab582486983d31d381368.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/dcs-legends-of-tomorrow/critic-reviews/",
+          "max": 100,
+          "score": 58,
+          "reviewCount": 28,
+          "positiveCount": 9,
+          "neutralCount": 19,
+          "negativeCount": 0,
+          "sentiment": "Mixed or average"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Sci-Fi"
+          }
+        ],
+        "numberOfSeasons": 7,
+        "network": null,
+        "description": "Rip Hunter's (Arthur Darvill) mission is to form a team that includes Ray Palmer/the Atom (Brandon Routh), Dr. Martin Stein (Victor Garber) and Leonard Snart/Captain Cold (Wentworth Miller) to help save the world and it's future.",
+        "duration": 42,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2023-05-07T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2037-11-18T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 6.5
+        }
+      },
+      {
+        "id": 1000358956,
+        "type": "show",
+        "typeId": 1,
+        "title": "Disenchantment",
+        "slug": "disenchantment",
+        "premiereYear": 2018,
+        "releaseDate": "2018-08-17",
+        "rating": "TV-14",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-6c763a844cdd59ab65b9cc11fa0f67f1.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1000,
+          "height": 1500,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-6c763a844cdd59ab65b9cc11fa0f67f1.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/disenchantment/critic-reviews/",
+          "max": 100,
+          "score": 56,
+          "reviewCount": 32,
+          "positiveCount": 9,
+          "neutralCount": 22,
+          "negativeCount": 1,
+          "sentiment": "Mixed or average"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Animation"
+          },
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Fantasy"
+          },
+          {
+            "id": null,
+            "name": "Horror"
+          },
+          {
+            "id": null,
+            "name": "Romance"
+          },
+          {
+            "id": null,
+            "name": "Sci-Fi"
+          }
+        ],
+        "numberOfSeasons": 5,
+        "network": null,
+        "description": "The Matt Groening animated comedy follows the adventures of hard-drinking Princess Bean (voiced by Abbi Jacobson), her elf Elfo (voiced by Nat Faxon), and her personal demon Luci (voiced by Eric Andre).",
+        "duration": 30,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2026-04-06T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 6.8
+        }
+      },
+      {
+        "id": 1000358201,
+        "type": "show",
+        "typeId": 1,
+        "title": "Marvel's The Punisher",
+        "slug": "marvels-the-punisher",
+        "premiereYear": 2017,
+        "releaseDate": "2017-11-17",
+        "rating": "TV-MA",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-289b3011613d73170b3f432b8699da33.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1500,
+          "height": 2222,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-289b3011613d73170b3f432b8699da33.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/marvels-the-punisher/critic-reviews/",
+          "max": 100,
+          "score": 55,
+          "reviewCount": 26,
+          "positiveCount": 8,
+          "neutralCount": 16,
+          "negativeCount": 2,
+          "sentiment": "Mixed or average"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Crime"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Thriller"
+          }
+        ],
+        "numberOfSeasons": 2,
+        "network": null,
+        "description": "The Daredevil spin-off follows Frank Castle/The Punisher (Jon Bernthal) as he tracks down a hacker named Micro (Ebon Moss-Bachrach) to locate those who killed his family while Homeland Security agents Dinah Madani (Amber Rose Revah) tries to locate Frank.",
+        "duration": 60,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2022-03-24T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 3031,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 8
+        }
+      },
+      {
+        "id": 1000343336,
+        "type": "show",
+        "typeId": 1,
+        "title": "Into the Badlands",
+        "slug": "into-the-badlands",
+        "premiereYear": 2015,
+        "releaseDate": "2015-11-15",
+        "rating": "TV-14",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-afb57500163086af257393478a11cfce.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 810,
+          "height": 1200,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-afb57500163086af257393478a11cfce.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/into-the-badlands/critic-reviews/",
+          "max": 100,
+          "score": 54,
+          "reviewCount": 34,
+          "positiveCount": 12,
+          "neutralCount": 21,
+          "negativeCount": 1,
+          "sentiment": "Mixed or average"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Fantasy"
+          }
+        ],
+        "numberOfSeasons": 3,
+        "network": null,
+        "description": "Loosely based on Journey To The West, warrior Sunny (Daniel Wu) and a young boy named M.K. (Aramis Knight) must travel across the Badlands controlled by seven barons in a post-apocalyptic America in this martial arts drama from Alfred Gough and Miles Millar .",
+        "duration": 42,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2022-10-11T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2027-12-31T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 8.2
+        }
+      },
+      {
+        "id": 1000359898,
+        "type": "show",
+        "typeId": 1,
+        "title": "Daybreak (2019)",
+        "slug": "daybreak-2019",
+        "premiereYear": 2019,
+        "releaseDate": "2019-10-24",
+        "rating": "TV-MA",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-e492605dba8334bed955794a75f51899.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 800,
+          "height": 1200,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-e492605dba8334bed955794a75f51899.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/daybreak-2019/critic-reviews/",
+          "max": 100,
+          "score": 54,
+          "reviewCount": 10,
+          "positiveCount": 4,
+          "neutralCount": 6,
+          "negativeCount": 0,
+          "sentiment": "Mixed or average"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Fantasy"
+          },
+          {
+            "id": null,
+            "name": "Horror"
+          },
+          {
+            "id": null,
+            "name": "Mystery"
+          },
+          {
+            "id": null,
+            "name": "Sci-Fi"
+          },
+          {
+            "id": null,
+            "name": "Thriller"
+          }
+        ],
+        "numberOfSeasons": 1,
+        "network": null,
+        "description": "17-year-old Josh (Colin Ford) searches for his girlfriend Sam (Sophie Simnett) in post-zombie apocalyptic Glendale in this dark comedy based on the graphic novel by Brian Ralph.",
+        "duration": 0,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2020-04-19T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 6
+        }
+      },
+      {
+        "id": 1000355071,
+        "type": "show",
+        "typeId": 1,
+        "title": "Frontier",
+        "slug": "frontier",
+        "premiereYear": 2017,
+        "releaseDate": "2017-01-20",
+        "rating": "TV-MA",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-c541fd7dbe54490e3a07e0e57cc7d483.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1436,
+          "height": 2160,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-c541fd7dbe54490e3a07e0e57cc7d483.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/frontier/critic-reviews/",
+          "max": 100,
+          "score": 52,
+          "reviewCount": 11,
+          "positiveCount": 3,
+          "neutralCount": 7,
+          "negativeCount": 1,
+          "sentiment": "Mixed or average"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "History"
+          },
+          {
+            "id": null,
+            "name": "Western"
+          }
+        ],
+        "numberOfSeasons": 3,
+        "network": null,
+        "description": "Set in the late 18th century during the North American fur trade, Declan Harp (Jason Mamoa), who runs the Black Wolf Company, seeks to destroy the Hudson’s Bay Company run by Lord Benton (Alun Armstrong) by utilizing Michael Smyth (Landon Liboiron), who in a deal with Benton, works as a spy for him. ",
+        "duration": 60,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2020-04-19T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 6.5
+        }
+      },
+      {
+        "id": 1000346362,
+        "type": "show",
+        "typeId": 1,
+        "title": "Marco Polo (2014)",
+        "slug": "marco-polo-2014",
+        "premiereYear": 2014,
+        "releaseDate": "2014-12-12",
+        "rating": "TV-MA",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-a6d03123b6a23c5c255db113410979ec.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 680,
+          "height": 1000,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-a6d03123b6a23c5c255db113410979ec.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/marco-polo-2014/critic-reviews/",
+          "max": 100,
+          "score": 48,
+          "reviewCount": 22,
+          "positiveCount": 5,
+          "neutralCount": 10,
+          "negativeCount": 7,
+          "sentiment": "Mixed or average"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "History"
+          }
+        ],
+        "numberOfSeasons": 2,
+        "network": null,
+        "description": "The Netflix series explores the early days of Marco Polo's (Lorenzo Richelmy) time in the court of Kublai Khan (Benedict Wong).",
+        "duration": 60,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2021-04-29T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": "2025-12-14T00:00:00Z",
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 1984,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 2806,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 8.3
+        }
+      },
+      {
+        "id": 1000361946,
+        "type": "show",
+        "typeId": 1,
+        "title": "Jupiter's Legacy",
+        "slug": "jupiters-legacy",
+        "premiereYear": 2021,
+        "releaseDate": "2021-05-07",
+        "rating": "TV-MA",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-b84b0e1ced8aeed63a93d5e4daabe516.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 1920,
+          "height": 2883,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-b84b0e1ced8aeed63a93d5e4daabe516.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/jupiters-legacy/critic-reviews/",
+          "max": 100,
+          "score": 45,
+          "reviewCount": 17,
+          "positiveCount": 2,
+          "neutralCount": 10,
+          "negativeCount": 5,
+          "sentiment": "Mixed or average"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Fantasy"
+          },
+          {
+            "id": null,
+            "name": "Sci-Fi"
+          }
+        ],
+        "numberOfSeasons": 1,
+        "network": null,
+        "description": "After many decades of protecting the world, the first superheroes who had emerged in the 1930s are ready to pass on the torch to their children who struggle with the responsibility and expectations in this adaptation of the graphic novels by Mark Millar and Frank Quitely.",
+        "duration": 56,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2021-05-09T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 6.5
+        }
+      },
+      {
+        "id": 1000358014,
+        "type": "show",
+        "typeId": 1,
+        "title": "S.W.A.T. (2017)",
+        "slug": "swat-2017",
+        "premiereYear": 2017,
+        "releaseDate": "2017-11-02",
+        "rating": "TV-14",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-4cff13564b3d1e84eda4f2032c73f9ac.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 833,
+          "height": 1200,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-4cff13564b3d1e84eda4f2032c73f9ac.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/swat-2017/critic-reviews/",
+          "max": 100,
+          "score": 45,
+          "reviewCount": 12,
+          "positiveCount": 0,
+          "neutralCount": 8,
+          "negativeCount": 4,
+          "sentiment": "Mixed or average"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Crime"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Mystery"
+          },
+          {
+            "id": null,
+            "name": "Thriller"
+          }
+        ],
+        "numberOfSeasons": 8,
+        "network": null,
+        "description": "Former Marine Daniel “Hondo” Harrelson (Shemar Moore) is a S.W.A.T. sergeant given the task of running a specialized tactical unit in this police drama inspired by the Aaron Spelling's 1970s series and 2003 film of the same name.",
+        "duration": 45,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2026-04-06T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": "2037-11-18T00:00:00Z",
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 2806,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 5.2
+        }
+      },
+      {
+        "id": 1000365834,
+        "type": "show",
+        "typeId": 1,
+        "title": "Q-Force",
+        "slug": "q-force",
+        "premiereYear": 2021,
+        "releaseDate": "2021-09-02",
+        "rating": "TV-MA",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-0ddfbdf003301ed2feb9a6a027fd7499.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 426,
+          "height": 597,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-0ddfbdf003301ed2feb9a6a027fd7499.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/q-force/critic-reviews/",
+          "max": 100,
+          "score": 45,
+          "reviewCount": 7,
+          "positiveCount": 0,
+          "neutralCount": 5,
+          "negativeCount": 2,
+          "sentiment": "Mixed or average"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Animation"
+          },
+          {
+            "id": null,
+            "name": "Action"
+          },
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Comedy"
+          },
+          {
+            "id": null,
+            "name": "Crime"
+          },
+          {
+            "id": null,
+            "name": "Fantasy"
+          },
+          {
+            "id": null,
+            "name": "Sci-Fi"
+          }
+        ],
+        "numberOfSeasons": 1,
+        "network": null,
+        "description": "After coming out as gay, Steve Maryweather, AKA Agent Mary (voiced by Sean Hayes) was exiled by the American Intelligence Agency (AIA) to West Hollywood where he recruited mechanic Deb (Wanda Sykes), master of drag and disguise Twink (Matt Rogers), and hacker Stat (Patti Harrison) to form the Q-Force. After finding and solving a case, they are forced to add straight Agent Buck (David Harbour) in this animated series from Gabe Liedman.",
+        "duration": 30,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2021-09-04T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 4
+        }
+      },
+      {
+        "id": 1000359674,
+        "type": "show",
+        "typeId": 1,
+        "title": "Another Life",
+        "slug": "another-life",
+        "premiereYear": 2019,
+        "releaseDate": "2019-07-25",
+        "rating": "TV-MA",
+        "seoUrl": null,
+        "image": {
+          "id": null,
+          "filename": "2-80342336b30d3e1410fa696b5234eb39.jpg",
+          "dateCreated": {
+            "date": null,
+            "timezone": null
+          },
+          "alt": null,
+          "credits": null,
+          "path": null,
+          "cropGravity": null,
+          "crop": null,
+          "caption": null,
+          "typeName": null,
+          "imageUrl": null,
+          "width": 674,
+          "height": 1000,
+          "sType": null,
+          "bucketType": "catalog",
+          "bucketPath": "/provider/2/2/2-80342336b30d3e1410fa696b5234eb39.jpg",
+          "mediaType": null,
+          "provider": null
+        },
+        "criticScoreSummary": {
+          "url": "/tv/another-life/critic-reviews/",
+          "max": 100,
+          "score": 33,
+          "reviewCount": 8,
+          "positiveCount": 0,
+          "neutralCount": 4,
+          "negativeCount": 4,
+          "sentiment": "Generally unfavorable"
+        },
+        "genres": [
+          {
+            "id": null,
+            "name": "Adventure"
+          },
+          {
+            "id": null,
+            "name": "Drama"
+          },
+          {
+            "id": null,
+            "name": "Mystery"
+          },
+          {
+            "id": null,
+            "name": "Sci-Fi"
+          },
+          {
+            "id": null,
+            "name": "Thriller"
+          }
+        ],
+        "numberOfSeasons": 2,
+        "network": null,
+        "description": "Astronaut Niko Breckinridge (Katee Sackhoff) leads a team to look into an alien artifact in this sci-fi drama from Aaron Martin and Noreen Halpern.",
+        "duration": 43,
+        "streamingDates": {
+          "videoClosestPastAvailableDate": "2021-10-24T00:00:00Z",
+          "videoClosestFutureAvailableDate": null,
+          "videoClosestPastExpiryDate": null,
+          "videoClosestFutureExpiryDate": null,
+          "videoClosestPastAvailableNetworkId": 1943,
+          "videoClosestFutureAvailableNetworkId": 0,
+          "videoClosestPastExpiryNetworkId": 0,
+          "videoClosestFutureExpiryNetworkId": 0,
+          "networkStreamingDates": null
+        },
+        "userScore": {
+          "score": 4.2
+        }
+      }
+    ],
+    "genres": "Action,Adventure",
+    "network": null
+  },
+  "links": {
+    "self": {
+      "href": "https://backend.metacritic.com/finder/metacritic/web?mcoTypeId=1&limit=24&offset=24&sortBy=-metaScore&releaseYearMin=2012&releaseYearMax=2021&streamingNetworkIds=1943&genres=Action%2CAdventure",
+      "meta": {
+        "pageNum": 2,
+        "count": 20
+      }
+    },
+    "prev": {
+      "href": "https://backend.metacritic.com/finder/metacritic/web?mcoTypeId=1&limit=24&offset=0&sortBy=-metaScore&releaseYearMin=2012&releaseYearMax=2021&streamingNetworkIds=1943&genres=Action%2CAdventure",
+      "meta": {
+        "pageNum": 1,
+        "count": 24
+      }
+    },
+    "next": {
+      "href": null,
+      "meta": null
+    },
+    "first": {
+      "href": "https://backend.metacritic.com/finder/metacritic/web?mcoTypeId=1&limit=24&offset=0&sortBy=-metaScore&releaseYearMin=2012&releaseYearMax=2021&streamingNetworkIds=1943&genres=Action%2CAdventure",
+      "meta": {
+        "pageNum": 1,
+        "count": 24
+      }
+    },
+    "last": {
+      "href": "https://backend.metacritic.com/finder/metacritic/web?mcoTypeId=1&limit=24&offset=24&sortBy=-metaScore&releaseYearMin=2012&releaseYearMax=2021&streamingNetworkIds=1943&genres=Action%2CAdventure",
+      "meta": {
+        "pageNum": 2,
+        "count": 20
+      }
+    }
+  },
+  "meta": {
+    "componentName": null,
+    "componentDisplayName": null,
+    "componentType": null
+  }
+}

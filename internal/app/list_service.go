@@ -25,6 +25,7 @@ type ListServiceConfig struct {
 	BaseURL        string
 	BackendBaseURL string
 	Source         config.CrawlSource
+	RuntimePolicy  *crawler.HTTPRuntimePolicy
 	DBPath         string
 	Debug          bool
 	MaxRetries     int
@@ -35,6 +36,10 @@ type ListServiceConfig struct {
 
 type ListRunResult struct {
 	RunID                 string
+	RequestedSource       string
+	EffectiveSource       string
+	FallbackUsed          bool
+	FallbackReason        string
 	PagesVisited          int
 	PagesScheduled        int
 	PagesSucceeded        int
@@ -86,16 +91,32 @@ func (s *ListService) Run(ctx context.Context, task domain.ListTask) (ListRunRes
 	}()
 
 	source := s.normalizedSource()
+	requestedSource := source
 	result, err := s.runListBySource(ctx, repo, task, runID, source)
+	result.RequestedSource = string(requestedSource)
 	if err != nil && source == config.CrawlSourceAuto && canFallbackListToHTML(result) {
+		fallbackReason := classifyListFallbackReason(err)
 		log.Printf(
-			"crawl list fallback: run_id=%s category=%s metric=%s reason=api_failed fallback_source=html error=%v",
+			"crawl list fallback: run_id=%s category=%s metric=%s requested_source=%s fallback_reason=%s fallback_source=html error=%v",
 			runID,
 			task.Category,
 			task.Metric,
+			requestedSource,
+			fallbackReason,
 			err,
 		)
 		result, err = s.runListBySource(ctx, repo, task, runID, config.CrawlSourceHTML)
+		result.RequestedSource = string(requestedSource)
+		result.EffectiveSource = string(config.CrawlSourceHTML)
+		result.FallbackUsed = true
+		result.FallbackReason = fallbackReason
+	}
+	if result.EffectiveSource == "" {
+		if requestedSource == config.CrawlSourceAuto {
+			result.EffectiveSource = string(config.CrawlSourceAPI)
+		} else {
+			result.EffectiveSource = string(requestedSource)
+		}
 	}
 	if err != nil {
 		finalErr = fmt.Errorf("list crawl completed with %d failure(s): %w", result.Failures, err)
@@ -109,12 +130,33 @@ func (s *ListService) normalizedSource() config.CrawlSource {
 	case config.CrawlSourceAPI, config.CrawlSourceHTML, config.CrawlSourceAuto:
 		return s.cfg.Source
 	default:
-		return config.CrawlSourceHTML
+		return config.CrawlSourceAPI
 	}
 }
 
 func canFallbackListToHTML(result ListRunResult) bool {
 	return result.WorksUpserted == 0 && result.ListEntriesInserted == 0 && result.LatestEntriesUpserted == 0 && result.PagesWritten == 0
+}
+
+func classifyListFallbackReason(err error) string {
+	if err == nil {
+		return ""
+	}
+	if listapi.IsFinderMissingRequiredFieldsError(err) {
+		return "api_missing_required_fields"
+	}
+	if listapi.IsFinderMappingError(err) {
+		return "api_mapping_failed"
+	}
+	msg := strings.ToLower(err.Error())
+	switch {
+	case strings.Contains(msg, "decode finder response"),
+		strings.Contains(msg, "missing data"),
+		strings.Contains(msg, "finder response"):
+		return "api_parse_failed"
+	default:
+		return "api_request_failed"
+	}
 }
 
 func (s *ListService) runListBySource(ctx context.Context, repo *storage.Repository, task domain.ListTask, runID string, source config.CrawlSource) (ListRunResult, error) {
@@ -184,8 +226,9 @@ func (s *ListService) runAPI(ctx context.Context, repo *storage.Repository, task
 	if err != nil {
 		return ListRunResult{RunID: runID}, err
 	}
-	transport := crawler.NewHTTPTransport(s.cfg.Debug, proxyRotator)
-	finder := listapi.NewFinderAPI(s.backendBaseURL(), transport, 30*time.Second, s.cfg.MaxRetries)
+	policy := s.runtimePolicy()
+	transport := crawler.WrapTransportWithPolicy(crawler.NewHTTPTransport(s.cfg.Debug, proxyRotator), policy)
+	finder := listapi.NewFinderAPI(s.backendBaseURL(), transport, policy.Timeout, s.cfg.MaxRetries)
 	state := s.newListRunState(runID)
 
 	lastPage := task.MaxPages
@@ -308,6 +351,13 @@ func (s *ListService) runAPI(ctx context.Context, repo *storage.Repository, task
 		return result, err
 	}
 	return result, nil
+}
+
+func (s *ListService) runtimePolicy() crawler.HTTPRuntimePolicy {
+	if s.cfg.RuntimePolicy != nil {
+		return *s.cfg.RuntimePolicy
+	}
+	return listRuntimePolicy()
 }
 
 func (s *ListService) backendBaseURL() string {

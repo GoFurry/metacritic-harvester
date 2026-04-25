@@ -28,6 +28,16 @@ func newLatestExportCommand() *cobra.Command {
 		Use:   "export",
 		Short: "Export current latest_list_entries rows",
 		RunE: func(cmd *cobra.Command, _ []string) (err error) {
+			scope := buildReadScope(
+				scopePart("db", dbPath),
+				scopePart("category", category),
+				scopePart("metric", metric),
+				scopePart("work_href", workHref),
+				scopePart("filter_key", filterKey),
+				scopePart("run_id", runID),
+				scopePart("profile", profile),
+				scopePart("format", format),
+			)
 			if err := validateOptionalCategoryMetric(category, metric); err != nil {
 				return err
 			}
@@ -44,7 +54,7 @@ func newLatestExportCommand() *cobra.Command {
 
 			repo, closeFn, err := openRepository(cmd.Context(), dbPath, checkpoint)
 			if err != nil {
-				return err
+				return wrapReadCommandError("latest export", err, scope)
 			}
 			defer func() {
 				err = finishReadRepository(err, closeFn)
@@ -61,20 +71,20 @@ func newLatestExportCommand() *cobra.Command {
 			if runID == "" {
 				entries, err := repo.ListLatestEntries(cmd.Context(), filter)
 				if err != nil {
-					return err
+					return wrapReadCommandError("latest export", err, scope)
 				}
 				rows = mapLatestEntries(entries)
 			} else {
 				entries, err := repo.ListListEntriesByRun(cmd.Context(), runID, filter)
 				if err != nil {
-					return err
+					return wrapReadCommandError("latest export", err, scope)
 				}
 				rows = mapListEntries(entries)
 			}
 
 			file, err := createOutputFile(output)
 			if err != nil {
-				return err
+				return wrapReadCommandError("latest export", err, scope, scopePart("output", output))
 			}
 			defer file.Close()
 

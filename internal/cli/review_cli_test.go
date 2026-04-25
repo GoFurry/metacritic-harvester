@@ -33,6 +33,24 @@ func TestReviewQueryCommandJSON(t *testing.T) {
 	}
 }
 
+func TestReviewQueryCommandRequiresExistingDB(t *testing.T) {
+	t.Parallel()
+
+	dbPath := filepath.Join(t.TempDir(), "missing", "review.db")
+	cmd := newReviewQueryCommand()
+	var out bytes.Buffer
+	cmd.SetOut(&out)
+	cmd.SetErr(&out)
+	cmd.SetArgs([]string{"--db", dbPath})
+
+	if err := cmd.Execute(); err == nil {
+		t.Fatal("expected Execute() to fail for missing database")
+	}
+	if output := out.String(); !strings.Contains(output, "review query failed") || !strings.Contains(output, "db=") {
+		t.Fatalf("expected wrapped review query error, got %q", output)
+	}
+}
+
 func TestReviewExportCommandRunIDFlatAndSummary(t *testing.T) {
 	t.Parallel()
 

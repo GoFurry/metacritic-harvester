@@ -26,6 +26,14 @@ func newDetailCompareCommand() *cobra.Command {
 		Use:   "compare",
 		Short: "Compare two detail crawl runs using snapshot rows",
 		RunE: func(cmd *cobra.Command, _ []string) (err error) {
+			scope := buildReadScope(
+				scopePart("db", dbPath),
+				scopePart("from_run_id", fromRunID),
+				scopePart("to_run_id", toRunID),
+				scopePart("category", category),
+				scopePart("work_href", workHref),
+				scopePart("format", format),
+			)
 			if err := validateOptionalCategoryMetric(category, ""); err != nil {
 				return err
 			}
@@ -38,7 +46,7 @@ func newDetailCompareCommand() *cobra.Command {
 
 			repo, closeFn, err := openRepository(cmd.Context(), dbPath, checkpoint)
 			if err != nil {
-				return err
+				return wrapReadCommandError("detail compare", err, scope)
 			}
 			defer func() {
 				err = finishReadRepository(err, closeFn)
@@ -52,7 +60,7 @@ func newDetailCompareCommand() *cobra.Command {
 				IncludeUnchanged: includeUnchanged,
 			})
 			if err != nil {
-				return err
+				return wrapReadCommandError("detail compare", err, scope)
 			}
 
 			mapped := mapDetailCompareRows(rows)

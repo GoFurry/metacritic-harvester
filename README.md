@@ -43,6 +43,15 @@ go run ./cmd/metacritic-harvester crawl reviews --db=output/metacritic.db --cate
 go run ./cmd/metacritic-harvester detail query --db=output/metacritic.db --category=game
 ```
 
+Source behavior:
+
+- `crawl list` and `crawl detail` support `--source=api|html|auto`
+- default is `api`
+- `auto` means "try API first, then fall back on failure"
+- list fallback happens at the run level
+- detail fallback happens per work
+- `auto` is not dual-fetching; HTML only runs when the API path fails
+
 Batch example:
 
 ```bash

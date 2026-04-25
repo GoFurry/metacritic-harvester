@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/GoFurry/metacritic-harvester/internal/config"
 	"github.com/GoFurry/metacritic-harvester/internal/domain"
 	"github.com/GoFurry/metacritic-harvester/internal/storage"
 )
@@ -47,6 +48,9 @@ func TestReviewServiceRunPlansGamePlatformsAndMixedTypes(t *testing.T) {
 	}
 	if result.ScopesScheduled != 4 || result.ScopesFetched != 4 || result.ScopesFailed != 0 || result.ReviewsFetched != 6 || result.Failures != 0 {
 		t.Fatalf("unexpected result: %+v", result)
+	}
+	if result.RequestedSource != string(config.CrawlSourceAPI) || result.EffectiveSource != string(config.CrawlSourceAPI) || result.FallbackUsed {
+		t.Fatalf("expected reviews to report fixed api source, got %+v", result)
 	}
 
 	latestCount, err := repo.CountLatestReviews(ctx)
@@ -416,4 +420,17 @@ func readReviewServiceFixture(t *testing.T, name string) string {
 		t.Fatalf("ReadFile(%s) error = %v", path, err)
 	}
 	return string(content)
+}
+
+func TestReviewServiceRuntimePolicyUsesTaskConcurrency(t *testing.T) {
+	t.Parallel()
+
+	service := NewReviewService(ReviewServiceConfig{})
+	policy := service.runtimePolicy(3)
+	if policy.MaxInFlight != 3 {
+		t.Fatalf("expected max in-flight to follow task concurrency, got %+v", policy)
+	}
+	if policy.Timeout <= 0 {
+		t.Fatalf("expected positive timeout, got %+v", policy)
+	}
 }

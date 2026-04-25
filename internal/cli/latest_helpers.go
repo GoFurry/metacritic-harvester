@@ -51,6 +51,43 @@ func finishReadRepository(runErr error, closeFn func() error) error {
 	return closeErr
 }
 
+func scopePart(key string, value string) string {
+	value = strings.TrimSpace(value)
+	if value == "" {
+		return ""
+	}
+	return fmt.Sprintf("%s=%s", key, value)
+}
+
+func scopePartInt(key string, value int) string {
+	if value == 0 {
+		return ""
+	}
+	return fmt.Sprintf("%s=%d", key, value)
+}
+
+func buildReadScope(parts ...string) string {
+	filtered := make([]string, 0, len(parts))
+	for _, part := range parts {
+		if strings.TrimSpace(part) == "" {
+			continue
+		}
+		filtered = append(filtered, part)
+	}
+	return strings.Join(filtered, " ")
+}
+
+func wrapReadCommandError(command string, err error, parts ...string) error {
+	if err == nil {
+		return nil
+	}
+	scope := buildReadScope(parts...)
+	if scope == "" {
+		return fmt.Errorf("%s failed: %w", command, err)
+	}
+	return fmt.Errorf("%s failed (%s): %w", command, scope, err)
+}
+
 func addCheckpointFlag(cmd interface {
 	Flags() *pflag.FlagSet
 }, target *bool) {

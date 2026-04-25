@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -13,6 +14,7 @@ import (
 
 	"github.com/GoFurry/metacritic-harvester/internal/config"
 	"github.com/GoFurry/metacritic-harvester/internal/domain"
+	detailapi "github.com/GoFurry/metacritic-harvester/internal/source/metacritic/api"
 	"github.com/GoFurry/metacritic-harvester/internal/storage"
 )
 
@@ -35,6 +37,7 @@ func TestDetailServiceRunSuccessCreatesCompletedCrawlRun(t *testing.T) {
 
 	service := NewDetailService(DetailServiceConfig{
 		BaseURL:    server.URL,
+		Source:     config.CrawlSourceHTML,
 		DBPath:     dbPath,
 		MaxRetries: 0,
 	})
@@ -48,6 +51,9 @@ func TestDetailServiceRunSuccessCreatesCompletedCrawlRun(t *testing.T) {
 
 	if result.RunID == "" || result.Total != 2 || result.Processed != 2 || result.Fetched != 2 || result.Failed != 0 || result.Failures != 0 {
 		t.Fatalf("unexpected result: %+v", result)
+	}
+	if result.RequestedSource != string(config.CrawlSourceHTML) || result.EffectiveSource != string(config.CrawlSourceHTML) || result.FallbackUsed {
+		t.Fatalf("expected html diagnostics, got %+v", result)
 	}
 	if requests["/game/alpha"] != 1 || requests["/game/beta"] != 1 {
 		t.Fatalf("unexpected requests: %+v", requests)
@@ -92,6 +98,7 @@ func TestDetailServiceRunPersistsNuxtWhereToBuy(t *testing.T) {
 
 	service := NewDetailService(DetailServiceConfig{
 		BaseURL:    server.URL,
+		Source:     config.CrawlSourceHTML,
 		DBPath:     dbPath,
 		MaxRetries: 0,
 	})
@@ -141,6 +148,7 @@ func TestDetailServiceRunFailureMarksCrawlRunFailed(t *testing.T) {
 
 	service := NewDetailService(DetailServiceConfig{
 		BaseURL:    server.URL,
+		Source:     config.CrawlSourceHTML,
 		DBPath:     dbPath,
 		MaxRetries: 0,
 	})
@@ -208,6 +216,7 @@ func TestDetailServiceRunRecoversStaleAndSkipsFreshRunning(t *testing.T) {
 
 	service := NewDetailService(DetailServiceConfig{
 		BaseURL:    server.URL,
+		Source:     config.CrawlSourceHTML,
 		DBPath:     dbPath,
 		MaxRetries: 0,
 	})
@@ -298,6 +307,7 @@ func TestDetailServiceRequestClassificationAndRetryPolicy(t *testing.T) {
 
 			service := NewDetailService(DetailServiceConfig{
 				BaseURL:    server.URL,
+				Source:     config.CrawlSourceHTML,
 				DBPath:     dbPath,
 				MaxRetries: 2,
 			})
@@ -368,6 +378,7 @@ func TestDetailServiceParseFailureDoesNotRetry(t *testing.T) {
 
 	service := NewDetailService(DetailServiceConfig{
 		BaseURL:    server.URL,
+		Source:     config.CrawlSourceHTML,
 		DBPath:     dbPath,
 		MaxRetries: 3,
 	})
@@ -417,6 +428,7 @@ func TestDetailServiceRunWritesSnapshotsAcrossRuns(t *testing.T) {
 
 	service := NewDetailService(DetailServiceConfig{
 		BaseURL:    server.URL,
+		Source:     config.CrawlSourceHTML,
 		DBPath:     dbPath,
 		MaxRetries: 0,
 	})
@@ -467,6 +479,7 @@ func TestDetailServiceRunWithConcurrency(t *testing.T) {
 
 	service := NewDetailService(DetailServiceConfig{
 		BaseURL:    server.URL,
+		Source:     config.CrawlSourceHTML,
 		DBPath:     dbPath,
 		MaxRetries: 0,
 	})
@@ -611,6 +624,9 @@ func TestDetailServiceRunAutoFallsBackToHTML(t *testing.T) {
 	if result.Fetched != 1 || result.Failures != 0 {
 		t.Fatalf("unexpected auto fallback result: %+v", result)
 	}
+	if result.RequestedSource != string(config.CrawlSourceAuto) || result.EffectiveSource != string(config.CrawlSourceHTML) || !result.FallbackUsed || result.FallbackReason != "api_request_failed" {
+		t.Fatalf("expected auto fallback diagnostics, got %+v", result)
+	}
 }
 
 func TestDetailServiceAPISourceIgnoresEnrichFailure(t *testing.T) {
@@ -656,6 +672,57 @@ func TestDetailServiceAPISourceIgnoresEnrichFailure(t *testing.T) {
 	}
 	if result.Fetched != 1 || result.Failures != 0 {
 		t.Fatalf("unexpected result: %+v", result)
+	}
+	if result.EnrichFailed != 1 || result.EnrichSucceeded != 0 || result.EnrichSkipped != 0 {
+		t.Fatalf("expected structured enrich failure counts, got %+v", result)
+	}
+}
+
+func TestDetailServiceDefaultsSourceToAPI(t *testing.T) {
+	t.Parallel()
+
+	service := NewDetailService(DetailServiceConfig{})
+	if got := service.normalizedSource(); got != config.CrawlSourceAPI {
+		t.Fatalf("expected zero-value source to default to api, got %q", got)
+	}
+}
+
+func TestClassifyDetailFallbackReason(t *testing.T) {
+	t.Parallel()
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte(`{"components":[{"meta":{"componentName":"product"},"data":{"item":{"title":""}}}]}`))
+	}))
+	defer server.Close()
+
+	composer := detailapi.NewComposerAPI(server.URL, nil, 0, 0)
+	_, requiredErr := composer.Fetch(context.Background(), domain.Work{
+		Href:     "https://www.metacritic.com/movie/pk/",
+		Category: domain.CategoryMovie,
+	})
+	if requiredErr == nil {
+		t.Fatal("expected missing required fields error")
+	}
+
+	tests := []struct {
+		name string
+		err  error
+		want string
+	}{
+		{name: "request", err: context.DeadlineExceeded, want: "api_request_failed"},
+		{name: "parse", err: errors.New("decode composer response: invalid character"), want: "api_parse_failed"},
+		{name: "mapping", err: errors.New("composer detail slug is empty"), want: "api_mapping_failed"},
+		{name: "required_fields", err: requiredErr, want: "api_missing_required_fields"},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			if got := classifyDetailFallbackReason(tt.err); got != tt.want {
+				t.Fatalf("classifyDetailFallbackReason() = %q, want %q", got, tt.want)
+			}
+		})
 	}
 }
 

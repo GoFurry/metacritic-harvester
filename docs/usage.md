@@ -86,6 +86,7 @@ go run ./cmd/metacritic-harvester crawl list --category=tv --metric=newest --yea
 - `crawl list` 默认走后端 finder API
 - `--source=html` 会强制使用现有 HTML 抓取路径
 - `--source=auto` 会先尝试 API，失败后整次任务回退到 HTML
+- `--source=auto` 不是双抓取；只有 API 路径失败时才会回退到 HTML
 
 ## crawl detail
 
@@ -114,9 +115,11 @@ go run ./cmd/metacritic-harvester crawl detail --db=output/metacritic.db --sourc
 - `--work-href` 支持传完整 URL，也支持以 `/game/...`、`/movie/...`、`/tv/...` 开头的相对路径
 - `--source=html` 会强制使用现有 HTML 详情路径
 - `--source=auto` 会先尝试 API，单个作品 API 主抓失败时回退到 HTML
+- `--source=auto` 不是双抓取；只有当前作品的 API 主抓失败时才会回退到 HTML
 - 当前在 `source=api` 下会用 HTML / Nuxt 做 enrich，补充：
   - `game` 的 `where_to_buy`
   - `movie / tv` 的 `where_to_watch`
+- enrich 失败不会单独触发 HTML fallback；主详情成功时，这类缺失只会体现在 enrich 统计和日志里
 
 常用参数：
 

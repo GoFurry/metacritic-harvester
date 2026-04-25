@@ -56,7 +56,12 @@ func newCrawlListCommandWithRunner(runner func(context.Context, config.ListComma
 			if err != nil {
 				fmt.Fprintf(
 					cmd.ErrOrStderr(),
-					"crawl list failed: category=%s metric=%s db=%s error=%v\n",
+					"crawl list failed: run_id=%s requested_source=%s effective_source=%s fallback_used=%t fallback_reason=%s category=%s metric=%s db=%s error=%v\n",
+					result.RunID,
+					result.RequestedSource,
+					result.EffectiveSource,
+					result.FallbackUsed,
+					result.FallbackReason,
 					cfg.Task.Category,
 					cfg.Task.Metric,
 					cfg.DBPath,
@@ -67,8 +72,12 @@ func newCrawlListCommandWithRunner(runner func(context.Context, config.ListComma
 
 			fmt.Fprintf(
 				cmd.OutOrStdout(),
-				"crawl list completed: run_id=%s category=%s metric=%s pages=%d pages_scheduled=%d pages_succeeded=%d pages_written=%d works=%d list_entries=%d latest_entries=%d failures=%d db=%s\n",
+				"crawl list completed: run_id=%s requested_source=%s effective_source=%s fallback_used=%t fallback_reason=%s category=%s metric=%s pages=%d pages_scheduled=%d pages_succeeded=%d pages_written=%d works=%d list_entries=%d latest_entries=%d failures=%d db=%s\n",
 				result.RunID,
+				result.RequestedSource,
+				result.EffectiveSource,
+				result.FallbackUsed,
+				result.FallbackReason,
 				cfg.Task.Category,
 				cfg.Task.Metric,
 				result.PagesVisited,
@@ -83,8 +92,12 @@ func newCrawlListCommandWithRunner(runner func(context.Context, config.ListComma
 			)
 			fmt.Fprintf(
 				cmd.ErrOrStderr(),
-				"crawl list finished successfully: run_id=%s category=%s metric=%s db=%s\n",
+				"crawl list finished successfully: run_id=%s requested_source=%s effective_source=%s fallback_used=%t fallback_reason=%s category=%s metric=%s db=%s\n",
 				result.RunID,
+				result.RequestedSource,
+				result.EffectiveSource,
+				result.FallbackUsed,
+				result.FallbackReason,
 				cfg.Task.Category,
 				cfg.Task.Metric,
 				cfg.DBPath,

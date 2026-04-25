@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -19,7 +20,24 @@ type ComposerAPI struct {
 	maxRetries int
 }
 
-func NewComposerAPI(baseURL string, transport *http.Transport, timeout time.Duration, maxRetries int) *ComposerAPI {
+type composerMissingRequiredFieldsError struct {
+	Field string
+}
+
+func (e *composerMissingRequiredFieldsError) Error() string {
+	return fmt.Sprintf("composer response missing required fields: %s", e.Field)
+}
+
+func isComposerMissingRequiredFieldsError(err error) bool {
+	var target *composerMissingRequiredFieldsError
+	return errors.As(err, &target)
+}
+
+func IsComposerMissingRequiredFieldsError(err error) bool {
+	return isComposerMissingRequiredFieldsError(err)
+}
+
+func NewComposerAPI(baseURL string, transport http.RoundTripper, timeout time.Duration, maxRetries int) *ComposerAPI {
 	var roundTripper http.RoundTripper
 	if transport != nil {
 		roundTripper = transport
@@ -97,6 +115,10 @@ func (a *ComposerAPI) Fetch(ctx context.Context, work domain.Work) (domain.WorkD
 		if numberOfSeasons > 0 {
 			detail.Details.NumberOfSeasons = fmt.Sprintf("%d", numberOfSeasons)
 		}
+	}
+
+	if strings.TrimSpace(detail.Title) == "" {
+		return domain.WorkDetail{}, &composerMissingRequiredFieldsError{Field: "title"}
 	}
 
 	return detail, nil

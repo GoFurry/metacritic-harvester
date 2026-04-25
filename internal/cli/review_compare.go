@@ -29,6 +29,16 @@ func newReviewCompareCommand() *cobra.Command {
 		Use:   "compare",
 		Short: "Compare two review crawl runs using snapshot rows",
 		RunE: func(cmd *cobra.Command, _ []string) (err error) {
+			scope := buildReadScope(
+				scopePart("db", dbPath),
+				scopePart("from_run_id", fromRunID),
+				scopePart("to_run_id", toRunID),
+				scopePart("category", category),
+				scopePart("review_type", reviewType),
+				scopePart("platform", platform),
+				scopePart("work_href", workHref),
+				scopePart("format", format),
+			)
 			if err := validateOptionalCategoryMetric(category, ""); err != nil {
 				return err
 			}
@@ -46,7 +56,7 @@ func newReviewCompareCommand() *cobra.Command {
 
 			repo, closeFn, err := openRepository(cmd.Context(), dbPath, checkpoint)
 			if err != nil {
-				return err
+				return wrapReadCommandError("review compare", err, scope)
 			}
 			defer func() {
 				err = finishReadRepository(err, closeFn)
@@ -62,7 +72,7 @@ func newReviewCompareCommand() *cobra.Command {
 				IncludeUnchanged: includeUnchanged,
 			})
 			if err != nil {
-				return err
+				return wrapReadCommandError("review compare", err, scope)
 			}
 
 			mapped := mapReviewCompareRows(rows)

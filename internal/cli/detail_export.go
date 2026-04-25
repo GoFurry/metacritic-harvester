@@ -26,6 +26,14 @@ func newDetailExportCommand() *cobra.Command {
 		Use:   "export",
 		Short: "Export current work_details rows",
 		RunE: func(cmd *cobra.Command, _ []string) (err error) {
+			scope := buildReadScope(
+				scopePart("db", dbPath),
+				scopePart("category", category),
+				scopePart("work_href", workHref),
+				scopePart("run_id", runID),
+				scopePart("profile", profile),
+				scopePart("format", format),
+			)
 			if err := validateOptionalCategoryMetric(category, ""); err != nil {
 				return err
 			}
@@ -42,7 +50,7 @@ func newDetailExportCommand() *cobra.Command {
 
 			repo, closeFn, err := openRepository(cmd.Context(), dbPath, checkpoint)
 			if err != nil {
-				return err
+				return wrapReadCommandError("detail export", err, scope)
 			}
 			defer func() {
 				err = finishReadRepository(err, closeFn)
@@ -57,26 +65,26 @@ func newDetailExportCommand() *cobra.Command {
 			if runID == "" {
 				rows, err := repo.ListWorkDetailsForExport(cmd.Context(), filter)
 				if err != nil {
-					return err
+					return wrapReadCommandError("detail export", err, scope)
 				}
 				records, err = mapWorkDetailsForExport(rows)
 				if err != nil {
-					return err
+					return wrapReadCommandError("detail export", err, scope)
 				}
 			} else {
 				rows, err := repo.ListWorkDetailSnapshotsByRun(cmd.Context(), runID, filter)
 				if err != nil {
-					return err
+					return wrapReadCommandError("detail export", err, scope)
 				}
 				records, err = mapWorkDetailSnapshots(rows)
 				if err != nil {
-					return err
+					return wrapReadCommandError("detail export", err, scope)
 				}
 			}
 
 			file, err := createOutputFile(output)
 			if err != nil {
-				return err
+				return wrapReadCommandError("detail export", err, scope, scopePart("output", output))
 			}
 			defer file.Close()
 

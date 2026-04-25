@@ -24,6 +24,14 @@ func newLatestCompareCommand() *cobra.Command {
 		Use:   "compare",
 		Short: "Compare two crawl runs using snapshot rows",
 		RunE: func(cmd *cobra.Command, _ []string) (err error) {
+			scope := buildReadScope(
+				scopePart("db", dbPath),
+				scopePart("from_run_id", fromRunID),
+				scopePart("to_run_id", toRunID),
+				scopePart("category", category),
+				scopePart("metric", metric),
+				scopePart("format", format),
+			)
 			if err := validateOptionalCategoryMetric(category, metric); err != nil {
 				return err
 			}
@@ -35,7 +43,7 @@ func newLatestCompareCommand() *cobra.Command {
 
 			repo, closeFn, err := openRepository(cmd.Context(), dbPath, checkpoint)
 			if err != nil {
-				return err
+				return wrapReadCommandError("latest compare", err, scope)
 			}
 			defer func() {
 				err = finishReadRepository(err, closeFn)
@@ -49,7 +57,7 @@ func newLatestCompareCommand() *cobra.Command {
 				IncludeUnchanged: includeUnchanged,
 			})
 			if err != nil {
-				return err
+				return wrapReadCommandError("latest compare", err, scope)
 			}
 
 			mapped := mapCompareRows(rows)

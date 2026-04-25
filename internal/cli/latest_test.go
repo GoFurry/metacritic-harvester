@@ -67,6 +67,9 @@ func TestLatestQueryCommandRequiresExistingDB(t *testing.T) {
 	if err := cmd.Execute(); err == nil {
 		t.Fatal("expected Execute() to fail for missing database")
 	}
+	if output := out.String(); !strings.Contains(output, "latest query failed") || !strings.Contains(output, "db=") {
+		t.Fatalf("expected wrapped latest query error, got %q", output)
+	}
 	if _, err := os.Stat(dbPath); !os.IsNotExist(err) {
 		t.Fatalf("expected database file not to be created, stat err=%v", err)
 	}

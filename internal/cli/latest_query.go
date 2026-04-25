@@ -24,6 +24,14 @@ func newLatestQueryCommand() *cobra.Command {
 		Use:   "query",
 		Short: "Query current latest_list_entries rows",
 		RunE: func(cmd *cobra.Command, _ []string) (err error) {
+			scope := buildReadScope(
+				scopePart("db", dbPath),
+				scopePart("category", category),
+				scopePart("metric", metric),
+				scopePart("work_href", workHref),
+				scopePart("filter_key", filterKey),
+				scopePartInt("limit", limit),
+			)
 			if err := validateOptionalCategoryMetric(category, metric); err != nil {
 				return err
 			}
@@ -33,7 +41,7 @@ func newLatestQueryCommand() *cobra.Command {
 
 			repo, closeFn, err := openRepository(cmd.Context(), dbPath, checkpoint)
 			if err != nil {
-				return err
+				return wrapReadCommandError("latest query", err, scope)
 			}
 			defer func() {
 				err = finishReadRepository(err, closeFn)
@@ -47,7 +55,7 @@ func newLatestQueryCommand() *cobra.Command {
 				Limit:     limit,
 			})
 			if err != nil {
-				return err
+				return wrapReadCommandError("latest query", err, scope)
 			}
 
 			mapped := mapLatestEntries(entries)

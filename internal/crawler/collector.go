@@ -14,7 +14,7 @@ type Config struct {
 	Debug          bool
 	ProxyURLs      []string
 	MaxRetries     int
-	Transport      *http.Transport
+	Transport      http.RoundTripper
 	ProxyRotator   *ProxyRotator
 }
 
