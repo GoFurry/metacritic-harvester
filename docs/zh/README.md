@@ -1,6 +1,6 @@
 # metacritic-harvester 中文说明
 
-[English README](../../README.md) | [使用方式](./usage.md) | [Serve](./serve.md) | [路线图](./roadmap.md)
+[English README](../../README.md) | [使用方式](./usage.md) | [Serve](./serve.md)
 
 ![Go Version](https://img.shields.io/badge/Go-1.26+-00ADD8?logo=go&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
@@ -9,22 +9,22 @@
 
 一个本地优先的 Go 工具集，用来采集公开的 Metacritic 榜单、详情和评论数据，并写入 SQLite。
 
-## 项目状态
+## 它能做什么
 
-按当前 roadmap 范围来看，项目已经完成到 Phase 6 的第一版，主能力已经闭环。
+`metacritic-harvester` 主要用于本地采集、保存和使用公开的 Metacritic 数据。
 
-落到实际上，意味着这些都已经具备：
+当前已经支持：
 
-- 榜单、详情、评论三条抓取链路都已完成
-- 当前态视图与不可变快照都已实现
-- `latest`、`detail`、`review` 的查询、导出、对比都已实现
-- `API-first` 已落地，并在合适的地方保留 HTML / Nuxt fallback
-- `batch` 和 `schedule` 已在 CLI 中可用
-- 本地 `serve` 运行时与嵌入式控制台已可用
+- 采集游戏、电影、电视剧榜单
+- 采集作品详情页
+- 采集评论家与用户评论
+- 使用 SQLite 保存当前态视图和不可变快照
+- 为 `latest`、`detail`、`review` 提供查询、导出和对比命令
+- 默认采用 `API-first` 抓取，在仍有价值的地方保留 HTML fallback
+- 通过 CLI 执行本地 batch 和 schedule
+- 运行本地 `serve` 服务和嵌入式运维控制台
 
-后续重点主要是产品打磨和服务端体验增强，而不是补核心功能。
-
-## 当前能力
+## 核心命令
 
 - `crawl list`
 - `crawl detail`
@@ -53,10 +53,10 @@
 
 - `crawl list` 和 `crawl detail` 支持 `--source=api|html|auto`
 - 默认 source 是 `api`
-- `auto` 表示“先 API，失败后回退”
-- detail 的 enrich 只在 API 路径没完全覆盖的字段上保留 HTML / Nuxt
-- `serve` 支持浏览器直接下载导出
-- 即使开启 web 控制台，batch 和 schedule 依然保持 CLI 驱动
+- `auto` 表示“先尝试 API，失败后再回退”
+- detail 的 enrich 仅在 API 路径没有完全覆盖字段时才使用 HTML / Nuxt
+- `serve` 支持浏览器直接下载导出结果
+- 即使启用 web 控制台，batch 和 schedule 仍然由 CLI 驱动
 
 ## 快速开始
 
@@ -68,17 +68,54 @@ go run ./cmd/metacritic-harvester detail query --db=output/metacritic.db --categ
 go run ./cmd/metacritic-harvester serve --db=output/metacritic.db --full-stack --enable-write
 ```
 
+默认抓取语义：
+
+- `pages=0` 表示抓取全部榜单页
+- `limit=0` 表示处理全部详情或评论候选作品
+
+## Release 构建
+
+使用仓库根目录的构建脚本生成预编译二进制：
+
+```bat
+build.bat
+```
+
+构建产物会输出到：
+
+- `output/releases`
+
+当前包含这些目标平台：
+
+- `windows/amd64`
+- `windows/arm64`
+- `linux/amd64`
+- `linux/arm64`
+- `darwin/amd64`
+- `darwin/arm64`
+
+产物命名遵循下面的格式：
+
+- `metacritic-harvester_windows_amd64.exe`
+- `metacritic-harvester_linux_arm64`
+
+构建脚本使用了偏向减小体积的 Go 参数：
+
+- `-trimpath`
+- `-ldflags "-s -w -buildid="`
+- `CGO_ENABLED=0`
+
 ## Serve 亮点
 
-内置本地服务目前支持：
+内置本地服务当前支持：
 
 - 本地 JSON API
 - 嵌入式 Vue 控制台
 - 基于 SSE 的实时采集日志
 - 直接发起 `list / detail / reviews` 任务
-- `latest / detail / review` 的浏览器导出下载
+- `latest / detail / review` 的浏览器下载导出
 
-当前 serve 边界：
+当前 serve 的边界：
 
 - 默认绑定 `127.0.0.1`
 - 默认只读
@@ -93,7 +130,6 @@ go run ./cmd/metacritic-harvester serve --db=output/metacritic.db --full-stack -
 - [调度说明](./scheduling.md)
 - [过滤参数](./filters.md)
 - [榜单读侧](./latest.md)
-- [路线图](./roadmap.md)
 
 ## 工具链
 
