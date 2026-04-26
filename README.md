@@ -2,29 +2,29 @@
 
 A local-first Go toolkit for collecting public Metacritic list, detail, and review data into SQLite.
 
-[中文说明](./docs/zh/README.md) | [Roadmap](./docs/roadmap.md) | [Usage](./docs/usage.md) | [Serve](./docs/serve.md)
+[中文说明](./docs/zh/README.md) | [Usage](./docs/usage.md) | [Serve](./docs/serve.md)
 
 ![Go Version](https://img.shields.io/badge/Go-1.26+-00ADD8?logo=go&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![Release](https://img.shields.io/github/v/release/GoFurry/metacritic-harvester?style=flat&color=blue)
 [![Go Report Card](https://goreportcard.com/badge/github.com/GoFurry/metacritic-harvester)](https://goreportcard.com/report/github.com/GoFurry/metacritic-harvester)
 
-## Project status
+## What it does
 
-For the current roadmap scope, the project is feature-complete through the first edition of Phase 6.
+`metacritic-harvester` is built for collecting and working with public Metacritic data locally.
 
-What that means in practice:
+It currently supports:
 
-- list, detail, and review crawling are all implemented
-- current-state views and immutable snapshots are implemented
-- query, export, and compare flows are implemented for `latest`, `detail`, and `review`
-- `API-first` is implemented, with HTML/Nuxt fallback where it still makes sense
-- batch and schedule execution are available from the CLI
-- a local `serve` runtime and embedded operations console are available
+- list crawling for games, movies, and TV
+- work detail crawling
+- critic and user review crawling
+- SQLite-backed current-state views and immutable snapshots
+- query, export, and compare commands for `latest`, `detail`, and `review`
+- `API-first` crawling with HTML fallback where it still helps
+- local batch and schedule execution from the CLI
+- a local `serve` runtime with an embedded operations console
 
-The remaining work is mostly product polish and service-runtime refinement, not missing core capability.
-
-## Current feature set
+## Core commands
 
 - `crawl list`
 - `crawl detail`
@@ -53,7 +53,7 @@ Runtime behavior:
 
 - `crawl list` and `crawl detail` support `--source=api|html|auto`
 - default source is `api`
-- `auto` means “try API first, then fall back on failure”
+- `auto` means "try API first, then fall back on failure"
 - detail enrich keeps HTML/Nuxt only for fields the API path does not fully cover yet
 - browser download exports are available in `serve`
 - batch and schedule remain CLI-driven even when the web console is enabled
@@ -67,6 +67,43 @@ go run ./cmd/metacritic-harvester crawl reviews --db=output/metacritic.db --cate
 go run ./cmd/metacritic-harvester detail query --db=output/metacritic.db --category=game
 go run ./cmd/metacritic-harvester serve --db=output/metacritic.db --full-stack --enable-write
 ```
+
+Default crawl semantics:
+
+- `pages=0` means crawl all list pages
+- `limit=0` means process all detail or review candidates
+
+## Release builds
+
+Use the root-level build script to create precompiled binaries:
+
+```bat
+build.bat
+```
+
+Artifacts are written to:
+
+- `output/releases`
+
+Targets included:
+
+- `windows/amd64`
+- `windows/arm64`
+- `linux/amd64`
+- `linux/arm64`
+- `darwin/amd64`
+- `darwin/arm64`
+
+Build output names follow this pattern:
+
+- `metacritic-harvester_windows_amd64.exe`
+- `metacritic-harvester_linux_arm64`
+
+The script uses size-focused Go build flags:
+
+- `-trimpath`
+- `-ldflags "-s -w -buildid="`
+- `CGO_ENABLED=0`
 
 ## Serve highlights
 
@@ -93,7 +130,6 @@ Current serve boundary:
 - [Scheduling](./docs/scheduling.md)
 - [Filters](./docs/filters.md)
 - [Latest commands](./docs/latest.md)
-- [Roadmap](./docs/roadmap.md)
 
 ## Tooling
 
