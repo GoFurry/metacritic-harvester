@@ -6,6 +6,7 @@ import (
 	"errors"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/GoFurry/metacritic-harvester/internal/app"
 	"github.com/GoFurry/metacritic-harvester/internal/config"
@@ -41,6 +42,8 @@ func TestCrawlDetailCommandParsesFlags(t *testing.T) {
 		"--force",
 		"--concurrency=4",
 		"--db=output/detail.db",
+		"--timeout=90m",
+		"--continue-on-error=false",
 		"--retries=4",
 		"--proxies=http://127.0.0.1:7897",
 	})
@@ -64,11 +67,14 @@ func TestCrawlDetailCommandParsesFlags(t *testing.T) {
 	if captured.Task.Concurrency != 4 || captured.Concurrency != 4 {
 		t.Fatalf("unexpected concurrency: task=%d config=%d", captured.Task.Concurrency, captured.Concurrency)
 	}
+	if captured.Timeout != 90*time.Minute || captured.ContinueOnError {
+		t.Fatalf("unexpected runtime config: timeout=%s continue_on_error=%t", captured.Timeout, captured.ContinueOnError)
+	}
 	if captured.MaxRetries != 4 || len(captured.ProxyURLs) != 1 {
 		t.Fatalf("unexpected network options: retries=%d proxies=%+v", captured.MaxRetries, captured.ProxyURLs)
 	}
 	normalizedOutput := strings.ReplaceAll(out.String(), "\\", "/")
-	if !strings.Contains(normalizedOutput, "crawl detail starting: category=game work_href=https://www.metacritic.com/game/test-game source=auto limit=3 force=true concurrency=4 db=output/detail.db") {
+	if !strings.Contains(normalizedOutput, "crawl detail starting: category=game work_href=https://www.metacritic.com/game/test-game source=auto limit=3 force=true concurrency=4 timeout=1h30m0s continue_on_error=false db=output/detail.db") {
 		t.Fatalf("unexpected start output: %q", out.String())
 	}
 	if !strings.Contains(normalizedOutput, "crawl detail completed: run_id=detail-run-1 requested_source=auto effective_source=api fallback_used=false fallback_reason= total=3 processed=3 fetched=2 skipped=1 failed=0 recovered_running=1 details_upserted=2") {

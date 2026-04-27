@@ -49,14 +49,15 @@ const (
 )
 
 type DetailServiceConfig struct {
-	BaseURL        string
-	BackendBaseURL string
-	Source         config.CrawlSource
-	RuntimePolicy  *crawler.HTTPRuntimePolicy
-	DBPath         string
-	Debug          bool
-	MaxRetries     int
-	ProxyURLs      []string
+	BaseURL         string
+	BackendBaseURL  string
+	Source          config.CrawlSource
+	RuntimePolicy   *crawler.HTTPRuntimePolicy
+	DBPath          string
+	Debug           bool
+	ContinueOnError bool
+	MaxRetries      int
+	ProxyURLs       []string
 }
 
 type DetailRunResult struct {
@@ -226,13 +227,33 @@ sendJobs:
 			result.EffectiveSource = string(source)
 		}
 	}
-	if err := state.firstError(); err != nil {
-		finalErr = fmt.Errorf("detail crawl run %s completed with %d failure(s): %w", runID, result.Failures, err)
-		return result, finalErr
-	}
-
 	if err := ctx.Err(); err != nil {
 		finalErr = detailFailuref(detailErrorTypeContext, detailErrorStageContext, err, "detail crawl canceled: run_id=%s scope=%s", runID, scope.Label)
+		return result, finalErr
+	}
+	if err := state.firstError(); err != nil {
+		if s.cfg.ContinueOnError {
+			log.Printf(
+				"crawl detail finished with ignored failures: run_id=%s requested_source=%s effective_source=%s fallback_used=%t fallback_reason=%s processed=%d/%d fetched=%d skipped=%d failed=%d recovered_running=%d enrich_ok=%d enrich_failed=%d enrich_skipped=%d db=%s",
+				runID,
+				result.RequestedSource,
+				result.EffectiveSource,
+				result.FallbackUsed,
+				result.FallbackReason,
+				result.Processed,
+				result.Total,
+				result.Fetched,
+				result.Skipped,
+				result.Failed,
+				result.RecoveredRunning,
+				result.EnrichSucceeded,
+				result.EnrichFailed,
+				result.EnrichSkipped,
+				s.cfg.DBPath,
+			)
+			return result, nil
+		}
+		finalErr = fmt.Errorf("detail crawl run %s completed with %d failure(s): %w", runID, result.Failures, err)
 		return result, finalErr
 	}
 

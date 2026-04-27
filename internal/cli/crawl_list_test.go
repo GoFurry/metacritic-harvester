@@ -5,6 +5,7 @@ import (
 	"context"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/GoFurry/metacritic-harvester/internal/app"
 	"github.com/GoFurry/metacritic-harvester/internal/config"
@@ -40,6 +41,8 @@ func TestCrawlListCommandParsesFlags(t *testing.T) {
 		"--release-type=coming-soon",
 		"--pages=2",
 		"--db=output/test.db",
+		"--timeout=2h",
+		"--continue-on-error=false",
 		"--retries=4",
 		"--proxies=http://127.0.0.1:7897,http://127.0.0.1:7898",
 	})
@@ -60,6 +63,9 @@ func TestCrawlListCommandParsesFlags(t *testing.T) {
 	if captured.Source != "auto" {
 		t.Fatalf("expected source auto, got %q", captured.Source)
 	}
+	if captured.Timeout != 2*time.Hour || captured.ContinueOnError {
+		t.Fatalf("unexpected runtime config: timeout=%s continue_on_error=%t", captured.Timeout, captured.ContinueOnError)
+	}
 	if captured.Task.Filter.ReleaseYearMin == nil || *captured.Task.Filter.ReleaseYearMin != 2011 {
 		t.Fatalf("expected year min 2011, got %+v", captured.Task.Filter.ReleaseYearMin)
 	}
@@ -77,6 +83,9 @@ func TestCrawlListCommandParsesFlags(t *testing.T) {
 	}
 	if !strings.Contains(out.String(), "source=auto") {
 		t.Fatalf("expected source in start output, got %q", out.String())
+	}
+	if !strings.Contains(out.String(), "timeout=2h0m0s continue_on_error=false") {
+		t.Fatalf("expected runtime flags in output, got %q", out.String())
 	}
 	if !strings.Contains(out.String(), "pages=1 pages_scheduled=2 pages_succeeded=1 pages_written=1") {
 		t.Fatalf("expected page stats in output, got %q", out.String())

@@ -251,6 +251,77 @@ func TestReviewServiceRunFailureAndScopeRerunRemainConsistent(t *testing.T) {
 	}
 }
 
+func TestReviewServiceRunContinueOnErrorCompletesRun(t *testing.T) {
+	t.Parallel()
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case "/composer/metacritic/pages/movies-critic-reviews/pk/web":
+			_, _ = w.Write([]byte(readReviewServiceFixture(t, "composer_game_critic.json")))
+		case "/composer/metacritic/pages/movies-critic-reviews/bad/web":
+			_, _ = w.Write([]byte(readReviewServiceFixture(t, "composer_game_critic.json")))
+		case "/reviews/metacritic/critic/movies/pk/web":
+			_, _ = w.Write([]byte(readReviewServiceFixture(t, "list_critic.json")))
+		case "/reviews/metacritic/critic/movies/bad/web":
+			http.Error(w, "boom", http.StatusInternalServerError)
+		default:
+			http.NotFound(w, r)
+		}
+	}))
+	defer server.Close()
+
+	ctx := context.Background()
+	dbPath := filepath.Join(t.TempDir(), "review-continue.db")
+	repo := seedReviewServiceDB(t, ctx, dbPath, []domain.Work{
+		{Name: "PK", Href: "https://www.metacritic.com/movie/pk/", Category: domain.CategoryMovie},
+		{Name: "Bad", Href: "https://www.metacritic.com/movie/bad/", Category: domain.CategoryMovie},
+	})
+
+	service := NewReviewService(ReviewServiceConfig{
+		BaseURL:         server.URL,
+		DBPath:          dbPath,
+		ContinueOnError: true,
+		MaxRetries:      0,
+	})
+	service.sleep = func(time.Duration) {}
+
+	result, err := service.Run(ctx, domain.ReviewTask{
+		Category:    domain.CategoryMovie,
+		ReviewType:  domain.ReviewTypeCritic,
+		Sentiment:   domain.ReviewSentimentAll,
+		Concurrency: 1,
+		PageSize:    20,
+	})
+	if err != nil {
+		t.Fatalf("expected continue-on-error run to succeed, got %v", err)
+	}
+	if result.ScopesScheduled != 2 || result.ScopesFetched != 1 || result.ScopesFailed != 1 || result.Failures != 1 {
+		t.Fatalf("unexpected result: %+v", result)
+	}
+
+	latestCount, countErr := repo.CountLatestReviews(ctx)
+	if countErr != nil {
+		t.Fatalf("CountLatestReviews() error = %v", countErr)
+	}
+	if latestCount == 0 {
+		t.Fatal("expected successful scope writes to remain persisted")
+	}
+
+	runDB, openErr := storage.Open(ctx, dbPath)
+	if openErr != nil {
+		t.Fatalf("Open() error = %v", openErr)
+	}
+	defer runDB.Close()
+	runRepo := storage.NewRepository(runDB)
+	run, runErr := runRepo.GetCrawlRun(ctx, result.RunID)
+	if runErr != nil {
+		t.Fatalf("GetCrawlRun() error = %v", runErr)
+	}
+	if run.Status != "completed" {
+		t.Fatalf("expected completed crawl run, got %+v", run)
+	}
+}
+
 func TestReviewServiceRunRecoversStaleRunningAndSkipsFreshRunning(t *testing.T) {
 	t.Parallel()
 

@@ -284,6 +284,63 @@ func TestListServiceRunTracksFailedPageStats(t *testing.T) {
 	}
 }
 
+func TestListServiceRunContinueOnErrorCompletesRun(t *testing.T) {
+	t.Parallel()
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case "/browse/game/":
+			if r.URL.Query().Get("page") == "2" {
+				http.Error(w, "nope", http.StatusInternalServerError)
+				return
+			}
+			_, _ = w.Write([]byte(pageOneHTML))
+		default:
+			http.NotFound(w, r)
+		}
+	}))
+	defer server.Close()
+
+	dbPath := filepath.Join(t.TempDir(), "partial-continue.db")
+	service := NewListService(ListServiceConfig{
+		BaseURL:         server.URL,
+		Source:          config.CrawlSourceHTML,
+		DBPath:          dbPath,
+		ContinueOnError: true,
+		MaxRetries:      0,
+	})
+
+	result, err := service.Run(context.Background(), domain.ListTask{
+		Category: "game",
+		Metric:   "metascore",
+		MaxPages: 2,
+	})
+	if err != nil {
+		t.Fatalf("expected continue-on-error run to succeed, got %v", err)
+	}
+	if result.PagesScheduled != 2 || result.PagesSucceeded != 1 || result.PagesWritten != 1 || result.PagesVisited != 1 {
+		t.Fatalf("unexpected page stats: %+v", result)
+	}
+	if result.WorksUpserted != 1 || result.ListEntriesInserted != 1 || result.LatestEntriesUpserted != 1 || result.Failures != 1 {
+		t.Fatalf("unexpected partial-write stats: %+v", result)
+	}
+
+	db, openErr := storage.Open(context.Background(), dbPath)
+	if openErr != nil {
+		t.Fatalf("Open() error = %v", openErr)
+	}
+	defer db.Close()
+
+	repo := storage.NewRepository(db)
+	run, runErr := repo.GetCrawlRun(context.Background(), result.RunID)
+	if runErr != nil {
+		t.Fatalf("GetCrawlRun() error = %v", runErr)
+	}
+	if run.Status != "completed" {
+		t.Fatalf("expected crawl run status completed, got %q", run.Status)
+	}
+}
+
 func TestListServiceRunWithAPISource(t *testing.T) {
 	t.Parallel()
 

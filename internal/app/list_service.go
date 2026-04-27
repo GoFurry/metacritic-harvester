@@ -22,16 +22,17 @@ import (
 )
 
 type ListServiceConfig struct {
-	BaseURL        string
-	BackendBaseURL string
-	Source         config.CrawlSource
-	RuntimePolicy  *crawler.HTTPRuntimePolicy
-	DBPath         string
-	Debug          bool
-	MaxRetries     int
-	ProxyURLs      []string
-	RunSource      string
-	TaskName       string
+	BaseURL         string
+	BackendBaseURL  string
+	Source          config.CrawlSource
+	RuntimePolicy   *crawler.HTTPRuntimePolicy
+	DBPath          string
+	Debug           bool
+	ContinueOnError bool
+	MaxRetries      int
+	ProxyURLs       []string
+	RunSource       string
+	TaskName        string
 }
 
 type ListRunResult struct {
@@ -118,7 +119,25 @@ func (s *ListService) Run(ctx context.Context, task domain.ListTask) (ListRunRes
 			result.EffectiveSource = string(requestedSource)
 		}
 	}
+	if ctx.Err() != nil {
+		finalErr = fmt.Errorf("list crawl completed with %d failure(s): %w", result.Failures, ctx.Err())
+		return result, finalErr
+	}
 	if err != nil {
+		if s.cfg.ContinueOnError && result.Failures > 0 {
+			log.Printf(
+				"crawl list finished with ignored failures: run_id=%s requested_source=%s effective_source=%s fallback_used=%t fallback_reason=%s category=%s metric=%s failures=%d",
+				runID,
+				result.RequestedSource,
+				result.EffectiveSource,
+				result.FallbackUsed,
+				result.FallbackReason,
+				task.Category,
+				task.Metric,
+				result.Failures,
+			)
+			return result, nil
+		}
 		finalErr = fmt.Errorf("list crawl completed with %d failure(s): %w", result.Failures, err)
 		return result, finalErr
 	}
@@ -269,7 +288,10 @@ func (s *ListService) runAPI(ctx context.Context, repo *storage.Repository, task
 					pageErr,
 				)
 			}
-			return state.snapshotResult(), pageErr
+			if ctx.Err() != nil || !s.cfg.ContinueOnError {
+				return state.snapshotResult(), pageErr
+			}
+			continue
 		}
 
 		if pageData.LastPage > 0 && page == 1 {
@@ -318,7 +340,10 @@ func (s *ListService) runAPI(ctx context.Context, repo *storage.Repository, task
 						pageErr,
 					)
 				}
-				return state.snapshotResult(), pageErr
+				if ctx.Err() != nil || !s.cfg.ContinueOnError {
+					return state.snapshotResult(), pageErr
+				}
+				continue
 			}
 		}
 

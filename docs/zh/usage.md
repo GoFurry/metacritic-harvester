@@ -41,6 +41,7 @@ go run ./cmd/metacritic-harvester serve --help
 go run ./cmd/metacritic-harvester crawl list --category=game --metric=metascore --pages=0 --db=output/metacritic.db
 go run ./cmd/metacritic-harvester crawl list --category=movie --metric=userscore --year=2011:2014 --network=netflix,max --genre=drama,thriller
 go run ./cmd/metacritic-harvester crawl list --category=tv --metric=newest --source=auto --pages=2
+go run ./cmd/metacritic-harvester crawl list --category=game --metric=newest --timeout=4h --continue-on-error=false
 ```
 
 常用参数：
@@ -55,6 +56,8 @@ go run ./cmd/metacritic-harvester crawl list --category=tv --metric=newest --sou
 - `--release-type=...` 仅 `game|movie`
 - `--pages`
 - `--db`
+- `--timeout`
+- `--continue-on-error`
 - `--retries`
 - `--proxies`
 - `--debug`
@@ -62,10 +65,14 @@ go run ./cmd/metacritic-harvester crawl list --category=tv --metric=newest --sou
 说明：
 
 - 默认 source 是 `api`
+- 默认超时是 `3h`
+- `--continue-on-error=true` 默认开启，单页失败会记录在统计里并继续抓取，不会让整次 run 直接失败
 - `--pages=0` 表示抓取全部榜单页
 - `--source=html` 会强制使用旧的 HTML 路径
 - `--source=auto` 表示先尝试 API，失败后回退到 HTML
 - list 的 fallback 粒度是整次 run
+- 传入 `--continue-on-error=false` 可以恢复遇错即停
+- 上下文取消或 `--timeout` 超时仍然会让整次 run 失败
 
 ## crawl detail
 
@@ -74,6 +81,7 @@ go run ./cmd/metacritic-harvester crawl detail --db=output/metacritic.db
 go run ./cmd/metacritic-harvester crawl detail --db=output/metacritic.db --category=game --limit=20
 go run ./cmd/metacritic-harvester crawl detail --db=output/metacritic.db --work-href=https://www.metacritic.com/game/baldurs-gate-3/ --source=auto
 go run ./cmd/metacritic-harvester crawl detail --db=output/metacritic.db --category=tv --force
+go run ./cmd/metacritic-harvester crawl detail --db=output/metacritic.db --category=movie --timeout=2h --continue-on-error=false
 ```
 
 常用参数：
@@ -85,6 +93,8 @@ go run ./cmd/metacritic-harvester crawl detail --db=output/metacritic.db --categ
 - `--concurrency`
 - `--source=api|html|auto`
 - `--db`
+- `--timeout`
+- `--continue-on-error`
 - `--retries`
 - `--proxies`
 - `--debug`
@@ -92,11 +102,15 @@ go run ./cmd/metacritic-harvester crawl detail --db=output/metacritic.db --categ
 说明：
 
 - detail 默认走 `api`
+- 默认超时是 `3h`
+- `--continue-on-error=true` 默认开启，单作品失败会记录在统计里并继续处理，不会让整次 run 直接失败
 - `--limit=0` 表示处理全部详情候选作品
 - `--work-href` 支持绝对 URL，也支持 `/game/...` 这种相对路径
 - detail 的 `auto` fallback 粒度是单作品
 - API 路径会在需要时用 HTML/Nuxt 补 `where_to_buy`、`where_to_watch`
 - enrich 失败不会把主详情成功的作品记成失败
+- 传入 `--continue-on-error=false` 可以恢复遇错即停
+- 上下文取消或 `--timeout` 超时仍然会让整次 run 失败
 
 ## crawl reviews
 
@@ -104,6 +118,7 @@ go run ./cmd/metacritic-harvester crawl detail --db=output/metacritic.db --categ
 go run ./cmd/metacritic-harvester crawl reviews --db=output/metacritic.db --category=game --review-type=critic --limit=10
 go run ./cmd/metacritic-harvester crawl reviews --db=output/metacritic.db --category=movie --review-type=user --limit=10
 go run ./cmd/metacritic-harvester crawl reviews --db=output/metacritic.db --work-href=https://www.metacritic.com/tv/shogun-2024/ --review-type=all --force
+go run ./cmd/metacritic-harvester crawl reviews --db=output/metacritic.db --category=game --review-type=critic --timeout=90m --continue-on-error=false
 ```
 
 常用参数：
@@ -118,6 +133,8 @@ go run ./cmd/metacritic-harvester crawl reviews --db=output/metacritic.db --work
 - `--concurrency`
 - `--force`
 - `--db`
+- `--timeout`
+- `--continue-on-error`
 - `--retries`
 - `--proxies`
 - `--debug`
@@ -125,10 +142,14 @@ go run ./cmd/metacritic-harvester crawl reviews --db=output/metacritic.db --work
 说明：
 
 - reviews 采用 `API-first`
+- 默认超时是 `3h`
+- `--continue-on-error=true` 默认开启，单 scope 失败会记录在统计里并继续处理，不会让整次 run 直接失败
 - `--limit=0` 表示处理全部评论候选作品
 - 评论快照写入 `review_snapshots`
 - 当前视图写入 `latest_reviews`
 - 恢复粒度是 `work_href + review_type + platform_key`
+- 传入 `--continue-on-error=false` 可以恢复遇错即停
+- 上下文取消或 `--timeout` 超时仍然会让整次 run 失败
 
 ## crawl batch
 

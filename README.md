@@ -52,7 +52,11 @@ Storage and history:
 Runtime behavior:
 
 - `crawl list` and `crawl detail` support `--source=api|html|auto`
+- `crawl list`, `crawl detail`, and `crawl reviews` support `--timeout`
+- `crawl list`, `crawl detail`, and `crawl reviews` support `--continue-on-error`
 - default source is `api`
+- default crawl timeout is `3h`
+- `--continue-on-error=true` by default for list, detail, and reviews
 - `auto` means "try API first, then fall back on failure"
 - detail enrich keeps HTML/Nuxt only for fields the API path does not fully cover yet
 - browser download exports are available in `serve`
@@ -72,6 +76,8 @@ Default crawl semantics:
 
 - `pages=0` means crawl all list pages
 - `limit=0` means process all detail or review candidates
+- partial crawl failures are counted in the summary without failing the command unless `--continue-on-error=false`
+- command-level timeout is `3h` unless overridden with `--timeout`
 
 ## Release builds
 
