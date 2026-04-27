@@ -46,12 +46,13 @@ const (
 )
 
 type ReviewServiceConfig struct {
-	BaseURL       string
-	RuntimePolicy *crawler.HTTPRuntimePolicy
-	DBPath        string
-	Debug         bool
-	MaxRetries    int
-	ProxyURLs     []string
+	BaseURL         string
+	RuntimePolicy   *crawler.HTTPRuntimePolicy
+	DBPath          string
+	Debug           bool
+	ContinueOnError bool
+	MaxRetries      int
+	ProxyURLs       []string
 }
 
 type ReviewRunResult struct {
@@ -160,13 +161,32 @@ func (s *ReviewService) Run(ctx context.Context, task domain.ReviewTask) (Review
 	pageAPI := reviewapi.NewReviewPageAPI(s.cfg.BaseURL, transport, policy.Timeout, s.cfg.MaxRetries)
 	listAPI := reviewapi.NewReviewListAPI(s.cfg.BaseURL, transport, policy.Timeout, s.cfg.MaxRetries)
 
-	scopeTasks, err := s.planReviewScopes(ctx, pageAPI, candidates, task)
+	state := &reviewRunState{
+		result: ReviewRunResult{
+			RunID:           runID,
+			RequestedSource: string(config.CrawlSourceAPI),
+			EffectiveSource: string(config.CrawlSourceAPI),
+			Candidates:      len(candidates),
+		},
+	}
+
+	scopeTasks, err := s.planReviewScopes(ctx, pageAPI, candidates, task, runID, state)
 	if err != nil {
 		finalErr = err
 		return result, finalErr
 	}
+	state.addScopesScheduled(len(scopeTasks))
 	result.ScopesScheduled = len(scopeTasks)
 	if len(scopeTasks) == 0 {
+		result = state.snapshot()
+		if err := ctx.Err(); err != nil {
+			finalErr = reviewFailuref(reviewErrorTypeContext, reviewErrorStageContext, err, "review crawl canceled: run_id=%s", runID)
+			return result, finalErr
+		}
+		if err := state.firstError(); err != nil && !s.cfg.ContinueOnError {
+			finalErr = fmt.Errorf("review crawl run %s completed with %d failure(s): %w", runID, result.Failures, err)
+			return result, finalErr
+		}
 		log.Printf("crawl reviews finished without scopes: run_id=%s", runID)
 		return result, nil
 	}
@@ -179,15 +199,6 @@ func (s *ReviewService) Run(ctx context.Context, task domain.ReviewTask) (Review
 	jobs := make(chan reviewJob)
 	var wg sync.WaitGroup
 	var dbWriteMu sync.Mutex
-	state := &reviewRunState{
-		result: ReviewRunResult{
-			RunID:           runID,
-			RequestedSource: string(config.CrawlSourceAPI),
-			EffectiveSource: string(config.CrawlSourceAPI),
-			Candidates:      len(candidates),
-			ScopesScheduled: len(scopeTasks),
-		},
-	}
 
 	for worker := 0; worker < workerCount; worker++ {
 		wg.Add(1)
@@ -212,12 +223,33 @@ sendJobs:
 	wg.Wait()
 
 	result = state.snapshot()
-	if err := state.firstError(); err != nil {
-		finalErr = fmt.Errorf("review crawl run %s completed with %d failure(s): %w", runID, result.Failures, err)
-		return result, finalErr
-	}
 	if err := ctx.Err(); err != nil {
 		finalErr = reviewFailuref(reviewErrorTypeContext, reviewErrorStageContext, err, "review crawl canceled: run_id=%s", runID)
+		return result, finalErr
+	}
+	if err := state.firstError(); err != nil {
+		if s.cfg.ContinueOnError {
+			log.Printf(
+				"crawl reviews finished with ignored failures: run_id=%s requested_source=%s effective_source=%s fallback_used=%t fallback_reason=%s candidates=%d scopes=%d fetched=%d skipped=%d failed=%d reviews=%d snapshots=%d latest=%d failures=%d db=%s",
+				runID,
+				result.RequestedSource,
+				result.EffectiveSource,
+				result.FallbackUsed,
+				result.FallbackReason,
+				result.Candidates,
+				result.ScopesScheduled,
+				result.ScopesFetched,
+				result.ScopesSkipped,
+				result.ScopesFailed,
+				result.ReviewsFetched,
+				result.ReviewSnapshotsSaved,
+				result.LatestReviewsUpserted,
+				result.Failures,
+				s.cfg.DBPath,
+			)
+			return result, nil
+		}
+		finalErr = fmt.Errorf("review crawl run %s completed with %d failure(s): %w", runID, result.Failures, err)
 		return result, finalErr
 	}
 
@@ -243,10 +275,7 @@ sendJobs:
 }
 
 func (s *ReviewService) runtimePolicy(concurrency int) crawler.HTTPRuntimePolicy {
-	if s.cfg.RuntimePolicy != nil {
-		return *s.cfg.RuntimePolicy
-	}
-	return reviewRuntimePolicy(concurrency)
+	return applyRuntimePolicyOverride(reviewRuntimePolicy(concurrency), s.cfg.RuntimePolicy)
 }
 
 type reviewScopeTask struct {
@@ -257,18 +286,29 @@ type reviewScopeTask struct {
 	PageContext reviewapi.ReviewPageContext
 }
 
-func (s *ReviewService) planReviewScopes(ctx context.Context, pageAPI *reviewapi.ReviewPageAPI, candidates []domain.Work, task domain.ReviewTask) ([]reviewScopeTask, error) {
+func (s *ReviewService) planReviewScopes(ctx context.Context, pageAPI *reviewapi.ReviewPageAPI, candidates []domain.Work, task domain.ReviewTask, runID string, state *reviewRunState) ([]reviewScopeTask, error) {
 	types := reviewTypesForTask(task.ReviewType)
 	scopes := make([]reviewScopeTask, 0, len(candidates))
 
 	for _, work := range candidates {
+		if err := ctx.Err(); err != nil {
+			return scopes, reviewFailuref(reviewErrorTypeContext, reviewErrorStageContext, err, "review crawl canceled: run_id=%s", runID)
+		}
 		pageContextType := task.ReviewType
 		if pageContextType == domain.ReviewTypeAll {
 			pageContextType = domain.ReviewTypeCritic
 		}
 		pageCtx, err := pageAPI.FetchContext(ctx, work, pageContextType)
 		if err != nil {
-			return nil, reviewFailuref(reviewErrorTypeNetwork, reviewErrorStagePlan, err, "fetch review page context failed: href=%s", work.Href)
+			failureType := classifyReviewFetchError(err).Type
+			failure := reviewFailuref(failureType, reviewErrorStagePlan, err, "fetch review page context failed: href=%s", work.Href)
+			snapshot := state.recordPlannedFailure(failure)
+			log.Printf("review planning failed: run_id=%s href=%s error_type=%s error_stage=%s error=%v", runID, work.Href, failure.Type, failure.Stage, failure)
+			logReviewProgress(runID, snapshot)
+			if !s.cfg.ContinueOnError {
+				return scopes, failure
+			}
+			continue
 		}
 
 		platformKeys := reviewPlatformKeys(task, work, pageCtx)
@@ -631,6 +671,15 @@ type reviewRunState struct {
 	firstErr error
 }
 
+func (s *reviewRunState) addScopesScheduled(count int) {
+	if count <= 0 {
+		return
+	}
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.result.ScopesScheduled += count
+}
+
 func (s *reviewRunState) recordPageSuccess(reviewCount int) ReviewRunResult {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -653,6 +702,19 @@ func (s *reviewRunState) recordSkip() ReviewRunResult {
 	defer s.mu.Unlock()
 	s.result.ScopesProcessed++
 	s.result.ScopesSkipped++
+	return s.result
+}
+
+func (s *reviewRunState) recordPlannedFailure(err error) ReviewRunResult {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.result.ScopesScheduled++
+	s.result.ScopesProcessed++
+	s.result.ScopesFailed++
+	s.result.Failures++
+	if s.firstErr == nil && err != nil {
+		s.firstErr = err
+	}
 	return s.result
 }
 

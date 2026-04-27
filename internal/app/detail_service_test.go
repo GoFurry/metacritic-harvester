@@ -186,6 +186,58 @@ func TestDetailServiceRunFailureMarksCrawlRunFailed(t *testing.T) {
 	}
 }
 
+func TestDetailServiceRunContinueOnErrorCompletesRun(t *testing.T) {
+	t.Parallel()
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.Contains(r.URL.Path, "bad") {
+			http.Error(w, "nope", http.StatusInternalServerError)
+			return
+		}
+		_, _ = w.Write([]byte(detailServiceGameHTML("Good Game")))
+	}))
+	defer server.Close()
+
+	ctx := context.Background()
+	dbPath := filepath.Join(t.TempDir(), "detail-service-continue.db")
+	seedDetailServiceDB(t, ctx, dbPath, []domain.Work{
+		{Name: "Bad Game", Href: server.URL + "/game/bad", Category: domain.CategoryGame},
+		{Name: "Good Game", Href: server.URL + "/game/good", Category: domain.CategoryGame},
+	})
+
+	service := NewDetailService(DetailServiceConfig{
+		BaseURL:         server.URL,
+		Source:          config.CrawlSourceHTML,
+		DBPath:          dbPath,
+		ContinueOnError: true,
+		MaxRetries:      0,
+	})
+	service.now = func() time.Time { return time.Date(2026, 4, 24, 13, 0, 0, 0, time.UTC) }
+	service.sleep = func(time.Duration) {}
+
+	result, err := service.Run(ctx, domain.DetailTask{Category: domain.CategoryGame})
+	if err != nil {
+		t.Fatalf("expected continue-on-error run to succeed, got %v", err)
+	}
+	if result.Total != 2 || result.Processed != 2 || result.Fetched != 1 || result.Failed != 1 || result.Failures != 1 {
+		t.Fatalf("unexpected result: %+v", result)
+	}
+
+	db, openErr := storage.Open(ctx, dbPath)
+	if openErr != nil {
+		t.Fatalf("Open() error = %v", openErr)
+	}
+	defer db.Close()
+	repo := storage.NewRepository(db)
+	run, runErr := repo.GetCrawlRun(ctx, result.RunID)
+	if runErr != nil {
+		t.Fatalf("GetCrawlRun() error = %v", runErr)
+	}
+	if run.Status != "completed" {
+		t.Fatalf("expected completed crawl run, got %+v", run)
+	}
+}
+
 func TestDetailServiceRunRecoversStaleAndSkipsFreshRunning(t *testing.T) {
 	t.Parallel()
 

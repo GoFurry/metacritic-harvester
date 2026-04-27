@@ -30,8 +30,30 @@ func BuildListCommandConfig(opts ListCommandOptions) (ListCommandConfig, error) 
 	if opts.Pages < 0 {
 		return ListCommandConfig{}, fmt.Errorf("pages must be greater than or equal to 0")
 	}
+	if opts.Timeout < 0 {
+		return ListCommandConfig{}, fmt.Errorf("timeout must not be negative")
+	}
+	if opts.RPS < 0 {
+		return ListCommandConfig{}, fmt.Errorf("rps must not be negative")
+	}
+	if opts.Burst < 0 {
+		return ListCommandConfig{}, fmt.Errorf("burst must not be negative")
+	}
 	if opts.MaxRetries < 0 {
 		return ListCommandConfig{}, fmt.Errorf("retries must be greater than or equal to 0")
+	}
+
+	timeout := opts.Timeout
+	if timeout == 0 {
+		timeout = DefaultCrawlCommandTimeout
+	}
+	rps := opts.RPS
+	if rps == 0 {
+		rps = DefaultCrawlRateRPS
+	}
+	burst := opts.Burst
+	if burst == 0 {
+		burst = DefaultCrawlRateBurst
 	}
 
 	filter, err := buildFilter(category, opts)
@@ -57,11 +79,15 @@ func BuildListCommandConfig(opts ListCommandOptions) (ListCommandConfig, error) 
 			MaxPages: opts.Pages,
 			Debug:    opts.Debug,
 		},
-		Source:     source,
-		DBPath:     filepath.Clean(dbPath),
-		Debug:      opts.Debug,
-		MaxRetries: opts.MaxRetries,
-		ProxyURLs:  proxies,
+		Source:          source,
+		DBPath:          filepath.Clean(dbPath),
+		Debug:           opts.Debug,
+		Timeout:         timeout,
+		ContinueOnError: opts.ContinueOnError,
+		RPS:             rps,
+		Burst:           burst,
+		MaxRetries:      opts.MaxRetries,
+		ProxyURLs:       proxies,
 	}, nil
 }
 
@@ -81,8 +107,30 @@ func BuildDetailCommandConfig(opts DetailCommandOptions) (DetailCommandConfig, e
 	if opts.Concurrency <= 0 {
 		return DetailCommandConfig{}, fmt.Errorf("concurrency must be greater than 0")
 	}
+	if opts.Timeout < 0 {
+		return DetailCommandConfig{}, fmt.Errorf("timeout must not be negative")
+	}
+	if opts.RPS < 0 {
+		return DetailCommandConfig{}, fmt.Errorf("rps must not be negative")
+	}
+	if opts.Burst < 0 {
+		return DetailCommandConfig{}, fmt.Errorf("burst must not be negative")
+	}
 	if opts.MaxRetries < 0 {
 		return DetailCommandConfig{}, fmt.Errorf("retries must be greater than or equal to 0")
+	}
+
+	timeout := opts.Timeout
+	if timeout == 0 {
+		timeout = DefaultCrawlCommandTimeout
+	}
+	rps := opts.RPS
+	if rps == 0 {
+		rps = DefaultCrawlRateRPS
+	}
+	burst := opts.Burst
+	if burst == 0 {
+		burst = DefaultCrawlRateBurst
 	}
 
 	source, err := ParseCrawlSource(opts.Source)
@@ -111,12 +159,16 @@ func BuildDetailCommandConfig(opts DetailCommandOptions) (DetailCommandConfig, e
 			Debug:       opts.Debug,
 			Concurrency: opts.Concurrency,
 		},
-		Source:      source,
-		DBPath:      filepath.Clean(dbPath),
-		Debug:       opts.Debug,
-		MaxRetries:  opts.MaxRetries,
-		ProxyURLs:   proxies,
-		Concurrency: opts.Concurrency,
+		Source:          source,
+		DBPath:          filepath.Clean(dbPath),
+		Debug:           opts.Debug,
+		Timeout:         timeout,
+		ContinueOnError: opts.ContinueOnError,
+		RPS:             rps,
+		Burst:           burst,
+		MaxRetries:      opts.MaxRetries,
+		ProxyURLs:       proxies,
+		Concurrency:     opts.Concurrency,
 	}, nil
 }
 
@@ -157,8 +209,30 @@ func BuildReviewCommandConfig(opts ReviewCommandOptions) (ReviewCommandConfig, e
 	if opts.MaxPages < 0 {
 		return ReviewCommandConfig{}, fmt.Errorf("max-pages must be greater than or equal to 0")
 	}
+	if opts.Timeout < 0 {
+		return ReviewCommandConfig{}, fmt.Errorf("timeout must not be negative")
+	}
+	if opts.RPS < 0 {
+		return ReviewCommandConfig{}, fmt.Errorf("rps must not be negative")
+	}
+	if opts.Burst < 0 {
+		return ReviewCommandConfig{}, fmt.Errorf("burst must not be negative")
+	}
 	if opts.MaxRetries < 0 {
 		return ReviewCommandConfig{}, fmt.Errorf("retries must be greater than or equal to 0")
+	}
+
+	timeout := opts.Timeout
+	if timeout == 0 {
+		timeout = DefaultCrawlCommandTimeout
+	}
+	rps := opts.RPS
+	if rps == 0 {
+		rps = DefaultCrawlRateRPS
+	}
+	burst := opts.Burst
+	if burst == 0 {
+		burst = DefaultCrawlRateBurst
 	}
 
 	platform := strings.TrimSpace(opts.Platform)
@@ -193,11 +267,15 @@ func BuildReviewCommandConfig(opts ReviewCommandOptions) (ReviewCommandConfig, e
 			MaxPages:    opts.MaxPages,
 			Debug:       opts.Debug,
 		},
-		DBPath:      filepath.Clean(dbPath),
-		Debug:       opts.Debug,
-		MaxRetries:  opts.MaxRetries,
-		ProxyURLs:   proxies,
-		Concurrency: opts.Concurrency,
+		DBPath:          filepath.Clean(dbPath),
+		Debug:           opts.Debug,
+		Timeout:         timeout,
+		ContinueOnError: opts.ContinueOnError,
+		RPS:             rps,
+		Burst:           burst,
+		MaxRetries:      opts.MaxRetries,
+		ProxyURLs:       proxies,
+		Concurrency:     opts.Concurrency,
 	}, nil
 }
 

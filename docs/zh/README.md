@@ -52,7 +52,13 @@
 运行时行为：
 
 - `crawl list` 和 `crawl detail` 支持 `--source=api|html|auto`
+- `crawl list`、`crawl detail` 和 `crawl reviews` 都支持 `--timeout`
+- `crawl list`、`crawl detail` 和 `crawl reviews` 都支持 `--continue-on-error`
+- `crawl list`、`crawl detail` 和 `crawl reviews` 都支持 `--rps` 和 `--burst`
 - 默认 source 是 `api`
+- 默认抓取超时是 `3h`
+- 默认抓取速率限制是 `2 RPS`，`burst=2`
+- `crawl list`、`crawl detail` 和 `crawl reviews` 默认都是 `--continue-on-error=true`
 - `auto` 表示“先尝试 API，失败后再回退”
 - detail 的 enrich 仅在 API 路径没有完全覆盖字段时才使用 HTML / Nuxt
 - `serve` 支持浏览器直接下载导出结果
@@ -72,6 +78,9 @@ go run ./cmd/metacritic-harvester serve --db=output/metacritic.db --full-stack -
 
 - `pages=0` 表示抓取全部榜单页
 - `limit=0` 表示处理全部详情或评论候选作品
+- `--concurrency` 控制 worker 数，`--rps` / `--burst` 控制共享请求限流
+- 默认会把部分失败计入 summary 并继续运行；只有传入 `--continue-on-error=false` 才会恢复遇错即停
+- 默认命令级超时是 `3h`，可以用 `--timeout` 覆盖
 
 ## Release 构建
 

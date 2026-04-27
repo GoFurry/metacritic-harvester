@@ -6,21 +6,25 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+	"golang.org/x/time/rate"
 
 	"github.com/GoFurry/metacritic-harvester/internal/app"
 	"github.com/GoFurry/metacritic-harvester/internal/config"
+	"github.com/GoFurry/metacritic-harvester/internal/crawler"
 )
 
 func newCrawlDetailCommand() *cobra.Command {
 	return newCrawlDetailCommandWithRunner(func(ctx context.Context, cfg config.DetailCommandConfig) (app.DetailRunResult, error) {
 		service := app.NewDetailService(app.DetailServiceConfig{
-			BaseURL:        config.DefaultBaseURL,
-			BackendBaseURL: config.DefaultBackendBaseURL,
-			Source:         cfg.Source,
-			DBPath:         cfg.DBPath,
-			Debug:          cfg.Debug,
-			MaxRetries:     cfg.MaxRetries,
-			ProxyURLs:      cfg.ProxyURLs,
+			BaseURL:         config.DefaultBaseURL,
+			BackendBaseURL:  config.DefaultBackendBaseURL,
+			Source:          cfg.Source,
+			RuntimePolicy:   &crawler.HTTPRuntimePolicy{RateLimit: rate.Limit(cfg.RPS), RateBurst: cfg.Burst},
+			DBPath:          cfg.DBPath,
+			Debug:           cfg.Debug,
+			ContinueOnError: cfg.ContinueOnError,
+			MaxRetries:      cfg.MaxRetries,
+			ProxyURLs:       cfg.ProxyURLs,
 		})
 		return service.Run(ctx, cfg.Task)
 	})
@@ -39,17 +43,21 @@ func newCrawlDetailCommandWithRunner(runner func(context.Context, config.DetailC
 			}
 			fmt.Fprintf(
 				cmd.ErrOrStderr(),
-				"crawl detail starting: category=%s work_href=%s source=%s limit=%d force=%t concurrency=%d db=%s\n",
+				"crawl detail starting: category=%s work_href=%s source=%s limit=%d force=%t concurrency=%d timeout=%s continue_on_error=%t rps=%.2f burst=%d db=%s\n",
 				cfg.Task.Category,
 				cfg.Task.WorkHref,
 				cfg.Source,
 				cfg.Task.Limit,
 				cfg.Task.Force,
 				cfg.Concurrency,
+				cfg.Timeout,
+				cfg.ContinueOnError,
+				cfg.RPS,
+				cfg.Burst,
 				cfg.DBPath,
 			)
 
-			ctx, cancel := context.WithTimeout(cmd.Context(), 30*time.Minute)
+			ctx, cancel := context.WithTimeout(cmd.Context(), cfg.Timeout)
 			defer cancel()
 
 			result, err := runner(ctx, cfg)
@@ -99,25 +107,47 @@ func newCrawlDetailCommandWithRunner(runner func(context.Context, config.DetailC
 				result.EnrichSkipped,
 				cfg.DBPath,
 			)
-			fmt.Fprintf(
-				cmd.ErrOrStderr(),
-				"crawl detail finished successfully: run_id=%s requested_source=%s effective_source=%s fallback_used=%t fallback_reason=%s processed=%d/%d fetched=%d skipped=%d failed=%d recovered_running=%d enrich_ok=%d enrich_failed=%d enrich_skipped=%d db=%s\n",
-				result.RunID,
-				result.RequestedSource,
-				result.EffectiveSource,
-				result.FallbackUsed,
-				result.FallbackReason,
-				result.Processed,
-				result.Total,
-				result.Fetched,
-				result.Skipped,
-				result.Failed,
-				result.RecoveredRunning,
-				result.EnrichSucceeded,
-				result.EnrichFailed,
-				result.EnrichSkipped,
-				cfg.DBPath,
-			)
+			if result.Failures > 0 {
+				fmt.Fprintf(
+					cmd.ErrOrStderr(),
+					"crawl detail finished with ignored failures: run_id=%s requested_source=%s effective_source=%s fallback_used=%t fallback_reason=%s processed=%d/%d fetched=%d skipped=%d failed=%d recovered_running=%d enrich_ok=%d enrich_failed=%d enrich_skipped=%d db=%s\n",
+					result.RunID,
+					result.RequestedSource,
+					result.EffectiveSource,
+					result.FallbackUsed,
+					result.FallbackReason,
+					result.Processed,
+					result.Total,
+					result.Fetched,
+					result.Skipped,
+					result.Failed,
+					result.RecoveredRunning,
+					result.EnrichSucceeded,
+					result.EnrichFailed,
+					result.EnrichSkipped,
+					cfg.DBPath,
+				)
+			} else {
+				fmt.Fprintf(
+					cmd.ErrOrStderr(),
+					"crawl detail finished successfully: run_id=%s requested_source=%s effective_source=%s fallback_used=%t fallback_reason=%s processed=%d/%d fetched=%d skipped=%d failed=%d recovered_running=%d enrich_ok=%d enrich_failed=%d enrich_skipped=%d db=%s\n",
+					result.RunID,
+					result.RequestedSource,
+					result.EffectiveSource,
+					result.FallbackUsed,
+					result.FallbackReason,
+					result.Processed,
+					result.Total,
+					result.Fetched,
+					result.Skipped,
+					result.Failed,
+					result.RecoveredRunning,
+					result.EnrichSucceeded,
+					result.EnrichFailed,
+					result.EnrichSkipped,
+					cfg.DBPath,
+				)
+			}
 			return nil
 		},
 	}
@@ -130,6 +160,10 @@ func newCrawlDetailCommandWithRunner(runner func(context.Context, config.DetailC
 	cmd.Flags().IntVar(&opts.Concurrency, "concurrency", 1, "Maximum number of detail pages to fetch concurrently")
 	cmd.Flags().StringVar(&opts.DBPath, "db", "output/metacritic.db", "SQLite database path")
 	cmd.Flags().BoolVar(&opts.Debug, "debug", false, "Enable debug logging")
+	cmd.Flags().DurationVar(&opts.Timeout, "timeout", 3*time.Hour, "Maximum total runtime for this crawl, e.g. 30m, 90m, 3h")
+	cmd.Flags().BoolVar(&opts.ContinueOnError, "continue-on-error", true, "Continue crawling after recoverable work-level failures and report them in the summary")
+	cmd.Flags().Float64Var(&opts.RPS, "rps", config.DefaultCrawlRateRPS, "Maximum sustained request rate across this crawl")
+	cmd.Flags().IntVar(&opts.Burst, "burst", config.DefaultCrawlRateBurst, "Maximum burst size for the request rate limiter")
 	cmd.Flags().IntVar(&opts.MaxRetries, "retries", 3, "Maximum retries per request")
 	cmd.Flags().StringVar(&opts.Proxies, "proxies", "", "Comma-separated proxy URLs")
 
