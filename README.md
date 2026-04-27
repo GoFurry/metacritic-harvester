@@ -54,8 +54,10 @@ Runtime behavior:
 - `crawl list` and `crawl detail` support `--source=api|html|auto`
 - `crawl list`, `crawl detail`, and `crawl reviews` support `--timeout`
 - `crawl list`, `crawl detail`, and `crawl reviews` support `--continue-on-error`
+- `crawl list`, `crawl detail`, and `crawl reviews` support `--rps` and `--burst`
 - default source is `api`
 - default crawl timeout is `3h`
+- default crawl rate limit is `2 RPS` with `burst=2`
 - `--continue-on-error=true` by default for list, detail, and reviews
 - `auto` means "try API first, then fall back on failure"
 - detail enrich keeps HTML/Nuxt only for fields the API path does not fully cover yet
@@ -76,6 +78,7 @@ Default crawl semantics:
 
 - `pages=0` means crawl all list pages
 - `limit=0` means process all detail or review candidates
+- `--concurrency` controls worker count while `--rps` / `--burst` control the shared request limiter
 - partial crawl failures are counted in the summary without failing the command unless `--continue-on-error=false`
 - command-level timeout is `3h` unless overridden with `--timeout`
 

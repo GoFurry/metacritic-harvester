@@ -21,6 +21,8 @@ func TestBuildListCommandConfig(t *testing.T) {
 		Debug:           true,
 		Timeout:         3 * time.Hour,
 		ContinueOnError: true,
+		RPS:             4.5,
+		Burst:           7,
 		MaxRetries:      2,
 		Proxies:         "http://127.0.0.1:7897",
 	})
@@ -39,6 +41,9 @@ func TestBuildListCommandConfig(t *testing.T) {
 	}
 	if cfg.Timeout != 3*time.Hour || !cfg.ContinueOnError {
 		t.Fatalf("unexpected runtime config: %+v", cfg)
+	}
+	if cfg.RPS != 4.5 || cfg.Burst != 7 {
+		t.Fatalf("unexpected rate config: %+v", cfg)
 	}
 	if cfg.Task.Filter.ReleaseYearMin == nil || *cfg.Task.Filter.ReleaseYearMin != 2011 {
 		t.Fatalf("expected release year min 2011, got %+v", cfg.Task.Filter.ReleaseYearMin)
@@ -74,6 +79,9 @@ func TestBuildListCommandConfigAllowsZeroPagesForAll(t *testing.T) {
 	if cfg.Timeout != DefaultCrawlCommandTimeout {
 		t.Fatalf("expected default timeout %s, got %s", DefaultCrawlCommandTimeout, cfg.Timeout)
 	}
+	if cfg.RPS != DefaultCrawlRateRPS || cfg.Burst != DefaultCrawlRateBurst {
+		t.Fatalf("expected default rate settings, got rps=%v burst=%d", cfg.RPS, cfg.Burst)
+	}
 }
 
 func TestBuildListCommandConfigRejectsInvalidValues(t *testing.T) {
@@ -84,6 +92,8 @@ func TestBuildListCommandConfigRejectsInvalidValues(t *testing.T) {
 		{Category: "game", Metric: "bad", Pages: 1, Timeout: 3 * time.Hour, DBPath: "output/test.db"},
 		{Category: "game", Metric: "metascore", Pages: -1, Timeout: 3 * time.Hour, DBPath: "output/test.db"},
 		{Category: "game", Metric: "metascore", Pages: 1, Timeout: -1 * time.Second, DBPath: "output/test.db"},
+		{Category: "game", Metric: "metascore", Pages: 1, RPS: -1, Timeout: 3 * time.Hour, DBPath: "output/test.db"},
+		{Category: "game", Metric: "metascore", Pages: 1, Burst: -1, Timeout: 3 * time.Hour, DBPath: "output/test.db"},
 		{Category: "game", Metric: "metascore", Pages: 1, Timeout: 3 * time.Hour, DBPath: " ", Proxies: "http://127.0.0.1:7897"},
 		{Category: "game", Metric: "metascore", Pages: 1, Timeout: 3 * time.Hour, DBPath: "output/test.db", Proxies: "bad-proxy"},
 		{Category: "game", Metric: "metascore", Pages: 1, Timeout: 3 * time.Hour, DBPath: "output/test.db", Year: "2014:2011"},
@@ -122,6 +132,8 @@ func TestBuildReviewCommandConfigParsesSentimentAndSort(t *testing.T) {
 		DBPath:          "output/test.db",
 		Timeout:         3 * time.Hour,
 		ContinueOnError: true,
+		RPS:             3.5,
+		Burst:           4,
 		MaxRetries:      1,
 	})
 	if err != nil {
@@ -137,6 +149,9 @@ func TestBuildReviewCommandConfigParsesSentimentAndSort(t *testing.T) {
 	if cfg.Timeout != 3*time.Hour || !cfg.ContinueOnError {
 		t.Fatalf("unexpected runtime config: %+v", cfg)
 	}
+	if cfg.RPS != 3.5 || cfg.Burst != 4 {
+		t.Fatalf("unexpected rate config: %+v", cfg)
+	}
 }
 
 func TestBuildDetailCommandConfigParsesSource(t *testing.T) {
@@ -151,6 +166,8 @@ func TestBuildDetailCommandConfigParsesSource(t *testing.T) {
 		DBPath:          "output/test.db",
 		Timeout:         3 * time.Hour,
 		ContinueOnError: true,
+		RPS:             6,
+		Burst:           5,
 	})
 	if err != nil {
 		t.Fatalf("BuildDetailCommandConfig() error = %v", err)
@@ -160,6 +177,9 @@ func TestBuildDetailCommandConfigParsesSource(t *testing.T) {
 	}
 	if cfg.Task.WorkHref != "https://www.metacritic.com/game/baldurs-gate-3" {
 		t.Fatalf("unexpected normalized work href: %q", cfg.Task.WorkHref)
+	}
+	if cfg.RPS != 6 || cfg.Burst != 5 {
+		t.Fatalf("unexpected rate config: %+v", cfg)
 	}
 }
 
@@ -184,6 +204,26 @@ func TestBuildReviewCommandConfigRejectsInvalidSentimentAndSort(t *testing.T) {
 			Sort:        "newest-first",
 			PageSize:    20,
 			Timeout:     3 * time.Hour,
+			DBPath:      "output/test.db",
+		},
+		{
+			Category:    "movie",
+			Concurrency: 1,
+			ReviewType:  "critic",
+			Sentiment:   "all",
+			PageSize:    20,
+			Timeout:     3 * time.Hour,
+			RPS:         -1,
+			DBPath:      "output/test.db",
+		},
+		{
+			Category:    "movie",
+			Concurrency: 1,
+			ReviewType:  "critic",
+			Sentiment:   "all",
+			PageSize:    20,
+			Timeout:     3 * time.Hour,
+			Burst:       -1,
 			DBPath:      "output/test.db",
 		},
 	}

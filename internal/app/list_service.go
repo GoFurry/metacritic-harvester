@@ -379,10 +379,7 @@ func (s *ListService) runAPI(ctx context.Context, repo *storage.Repository, task
 }
 
 func (s *ListService) runtimePolicy() crawler.HTTPRuntimePolicy {
-	if s.cfg.RuntimePolicy != nil {
-		return *s.cfg.RuntimePolicy
-	}
-	return listRuntimePolicy()
+	return applyRuntimePolicyOverride(listRuntimePolicy(), s.cfg.RuntimePolicy)
 }
 
 func (s *ListService) backendBaseURL() string {

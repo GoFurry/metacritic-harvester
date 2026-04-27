@@ -9,6 +9,8 @@ import (
 const DefaultBaseURL = "https://www.metacritic.com"
 const DefaultBackendBaseURL = "https://backend.metacritic.com"
 const DefaultCrawlCommandTimeout = 3 * time.Hour
+const DefaultCrawlRateRPS = 2.0
+const DefaultCrawlRateBurst = 2
 
 type ListCommandOptions struct {
 	Category        string
@@ -24,6 +26,8 @@ type ListCommandOptions struct {
 	Debug           bool
 	Timeout         time.Duration
 	ContinueOnError bool
+	RPS             float64
+	Burst           int
 	MaxRetries      int
 	Proxies         string
 }
@@ -35,6 +39,8 @@ type ListCommandConfig struct {
 	Debug           bool
 	Timeout         time.Duration
 	ContinueOnError bool
+	RPS             float64
+	Burst           int
 	MaxRetries      int
 	ProxyURLs       []string
 }
@@ -49,6 +55,8 @@ type DetailCommandOptions struct {
 	Debug           bool
 	Timeout         time.Duration
 	ContinueOnError bool
+	RPS             float64
+	Burst           int
 	MaxRetries      int
 	Proxies         string
 	Concurrency     int
@@ -61,6 +69,8 @@ type DetailCommandConfig struct {
 	Debug           bool
 	Timeout         time.Duration
 	ContinueOnError bool
+	RPS             float64
+	Burst           int
 	MaxRetries      int
 	ProxyURLs       []string
 	Concurrency     int
@@ -82,6 +92,8 @@ type ReviewCommandOptions struct {
 	Debug           bool
 	Timeout         time.Duration
 	ContinueOnError bool
+	RPS             float64
+	Burst           int
 	MaxRetries      int
 	Proxies         string
 }
@@ -92,6 +104,8 @@ type ReviewCommandConfig struct {
 	Debug           bool
 	Timeout         time.Duration
 	ContinueOnError bool
+	RPS             float64
+	Burst           int
 	MaxRetries      int
 	ProxyURLs       []string
 	Concurrency     int

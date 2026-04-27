@@ -6,9 +6,11 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+	"golang.org/x/time/rate"
 
 	"github.com/GoFurry/metacritic-harvester/internal/app"
 	"github.com/GoFurry/metacritic-harvester/internal/config"
+	"github.com/GoFurry/metacritic-harvester/internal/crawler"
 )
 
 func newCrawlListCommand() *cobra.Command {
@@ -17,6 +19,7 @@ func newCrawlListCommand() *cobra.Command {
 			BaseURL:         config.DefaultBaseURL,
 			BackendBaseURL:  config.DefaultBackendBaseURL,
 			Source:          cfg.Source,
+			RuntimePolicy:   &crawler.HTTPRuntimePolicy{RateLimit: rate.Limit(cfg.RPS), RateBurst: cfg.Burst},
 			DBPath:          cfg.DBPath,
 			Debug:           cfg.Debug,
 			ContinueOnError: cfg.ContinueOnError,
@@ -42,13 +45,15 @@ func newCrawlListCommandWithRunner(runner func(context.Context, config.ListComma
 			}
 			fmt.Fprintf(
 				cmd.ErrOrStderr(),
-				"crawl list starting: category=%s metric=%s source=%s pages=%d timeout=%s continue_on_error=%t db=%s\n",
+				"crawl list starting: category=%s metric=%s source=%s pages=%d timeout=%s continue_on_error=%t rps=%.2f burst=%d db=%s\n",
 				cfg.Task.Category,
 				cfg.Task.Metric,
 				cfg.Source,
 				cfg.Task.MaxPages,
 				cfg.Timeout,
 				cfg.ContinueOnError,
+				cfg.RPS,
+				cfg.Burst,
 				cfg.DBPath,
 			)
 
@@ -138,6 +143,8 @@ func newCrawlListCommandWithRunner(runner func(context.Context, config.ListComma
 	cmd.Flags().BoolVar(&opts.Debug, "debug", false, "Enable debug logging")
 	cmd.Flags().DurationVar(&opts.Timeout, "timeout", 3*time.Hour, "Maximum total runtime for this crawl, e.g. 30m, 90m, 3h")
 	cmd.Flags().BoolVar(&opts.ContinueOnError, "continue-on-error", true, "Continue crawling after recoverable page-level failures and report them in the summary")
+	cmd.Flags().Float64Var(&opts.RPS, "rps", config.DefaultCrawlRateRPS, "Maximum sustained request rate across this crawl")
+	cmd.Flags().IntVar(&opts.Burst, "burst", config.DefaultCrawlRateBurst, "Maximum burst size for the request rate limiter")
 	cmd.Flags().IntVar(&opts.MaxRetries, "retries", 3, "Maximum retries per request")
 	cmd.Flags().StringVar(&opts.Proxies, "proxies", "", "Comma-separated proxy URLs")
 

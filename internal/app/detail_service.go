@@ -444,10 +444,7 @@ func (s *DetailService) buildDetailFetchers(workerCount int) ([]detailFetcher, e
 }
 
 func (s *DetailService) runtimePolicy(concurrency int) crawler.HTTPRuntimePolicy {
-	if s.cfg.RuntimePolicy != nil {
-		return *s.cfg.RuntimePolicy
-	}
-	return detailRuntimePolicy(concurrency)
+	return applyRuntimePolicyOverride(detailRuntimePolicy(concurrency), s.cfg.RuntimePolicy)
 }
 
 type detailFetcher interface {

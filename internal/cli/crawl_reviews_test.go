@@ -50,6 +50,8 @@ func TestCrawlReviewsCommandParsesFlags(t *testing.T) {
 		"--db=output/reviews.db",
 		"--timeout=45m",
 		"--continue-on-error=false",
+		"--rps=3.5",
+		"--burst=6",
 		"--retries=4",
 		"--proxies=http://127.0.0.1:7897",
 	})
@@ -73,10 +75,13 @@ func TestCrawlReviewsCommandParsesFlags(t *testing.T) {
 	if captured.Timeout != 45*time.Minute || captured.ContinueOnError {
 		t.Fatalf("unexpected runtime config: timeout=%s continue_on_error=%t", captured.Timeout, captured.ContinueOnError)
 	}
+	if captured.RPS != 3.5 || captured.Burst != 6 {
+		t.Fatalf("unexpected rate config: rps=%v burst=%d", captured.RPS, captured.Burst)
+	}
 	if captured.MaxRetries != 4 || len(captured.ProxyURLs) != 1 {
 		t.Fatalf("unexpected network config: %+v", captured)
 	}
-	if !strings.Contains(out.String(), "timeout=45m0s continue_on_error=false") {
+	if !strings.Contains(out.String(), "timeout=45m0s continue_on_error=false rps=3.50 burst=6") {
 		t.Fatalf("expected runtime flags in output, got %q", out.String())
 	}
 	if !strings.Contains(out.String(), "reviews summary: run_id=review-run-1") {

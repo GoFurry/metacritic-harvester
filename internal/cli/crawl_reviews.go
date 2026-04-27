@@ -6,15 +6,18 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+	"golang.org/x/time/rate"
 
 	"github.com/GoFurry/metacritic-harvester/internal/app"
 	"github.com/GoFurry/metacritic-harvester/internal/config"
+	"github.com/GoFurry/metacritic-harvester/internal/crawler"
 )
 
 func newCrawlReviewsCommand() *cobra.Command {
 	return newCrawlReviewsCommandWithRunner(func(ctx context.Context, cfg config.ReviewCommandConfig) (app.ReviewRunResult, error) {
 		service := app.NewReviewService(app.ReviewServiceConfig{
 			BaseURL:         config.DefaultBackendBaseURL,
+			RuntimePolicy:   &crawler.HTTPRuntimePolicy{RateLimit: rate.Limit(cfg.RPS), RateBurst: cfg.Burst},
 			DBPath:          cfg.DBPath,
 			Debug:           cfg.Debug,
 			ContinueOnError: cfg.ContinueOnError,
@@ -38,7 +41,7 @@ func newCrawlReviewsCommandWithRunner(runner func(context.Context, config.Review
 			}
 			fmt.Fprintf(
 				cmd.ErrOrStderr(),
-				"crawl reviews starting: category=%s work_href=%s source=api review_type=%s sentiment=%s sort=%s platform=%s limit=%d page_size=%d max_pages=%d force=%t concurrency=%d timeout=%s continue_on_error=%t db=%s\n",
+				"crawl reviews starting: category=%s work_href=%s source=api review_type=%s sentiment=%s sort=%s platform=%s limit=%d page_size=%d max_pages=%d force=%t concurrency=%d timeout=%s continue_on_error=%t rps=%.2f burst=%d db=%s\n",
 				cfg.Task.Category,
 				cfg.Task.WorkHref,
 				cfg.Task.ReviewType,
@@ -52,6 +55,8 @@ func newCrawlReviewsCommandWithRunner(runner func(context.Context, config.Review
 				cfg.Task.Concurrency,
 				cfg.Timeout,
 				cfg.ContinueOnError,
+				cfg.RPS,
+				cfg.Burst,
 				cfg.DBPath,
 			)
 
@@ -138,6 +143,8 @@ func newCrawlReviewsCommandWithRunner(runner func(context.Context, config.Review
 	cmd.Flags().BoolVar(&opts.Debug, "debug", false, "Enable debug logging")
 	cmd.Flags().DurationVar(&opts.Timeout, "timeout", 3*time.Hour, "Maximum total runtime for this crawl, e.g. 30m, 90m, 3h")
 	cmd.Flags().BoolVar(&opts.ContinueOnError, "continue-on-error", true, "Continue crawling after recoverable scope-level failures and report them in the summary")
+	cmd.Flags().Float64Var(&opts.RPS, "rps", config.DefaultCrawlRateRPS, "Maximum sustained request rate across this crawl")
+	cmd.Flags().IntVar(&opts.Burst, "burst", config.DefaultCrawlRateBurst, "Maximum burst size for the request rate limiter")
 	cmd.Flags().IntVar(&opts.MaxRetries, "retries", 3, "Maximum retry attempts for HTTP requests")
 	cmd.Flags().StringVar(&opts.Proxies, "proxies", "", "Comma-separated proxy URLs")
 

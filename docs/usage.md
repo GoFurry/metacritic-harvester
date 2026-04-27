@@ -42,6 +42,7 @@ go run ./cmd/metacritic-harvester crawl list --category=game --metric=metascore 
 go run ./cmd/metacritic-harvester crawl list --category=movie --metric=userscore --year=2011:2014 --network=netflix,max --genre=drama,thriller
 go run ./cmd/metacritic-harvester crawl list --category=tv --metric=newest --source=auto --pages=2
 go run ./cmd/metacritic-harvester crawl list --category=game --metric=newest --timeout=4h --continue-on-error=false
+go run ./cmd/metacritic-harvester crawl list --category=game --metric=metascore --rps=4 --burst=8
 ```
 
 Common flags:
@@ -58,6 +59,8 @@ Common flags:
 - `--db`
 - `--timeout`
 - `--continue-on-error`
+- `--rps`
+- `--burst`
 - `--retries`
 - `--proxies`
 - `--debug`
@@ -66,11 +69,13 @@ Notes:
 
 - default source is `api`
 - default timeout is `3h`
+- default rate limit is `2 RPS` with `burst=2`
 - `--continue-on-error=true` by default, so page-level failures are counted and logged but do not fail the whole run
 - `--pages=0` means crawl all available list pages
 - `--source=html` forces the legacy HTML path
 - `--source=auto` means “API first, fallback to HTML on failure”
 - list fallback happens at the run level
+- `--rps` controls sustained request rate, while `--burst` controls short spikes above that rate
 - set `--continue-on-error=false` to restore fail-fast behavior
 - context cancellation or `--timeout` expiration still fails the run
 
@@ -82,6 +87,7 @@ go run ./cmd/metacritic-harvester crawl detail --db=output/metacritic.db --categ
 go run ./cmd/metacritic-harvester crawl detail --db=output/metacritic.db --work-href=https://www.metacritic.com/game/baldurs-gate-3/ --source=auto
 go run ./cmd/metacritic-harvester crawl detail --db=output/metacritic.db --category=tv --force
 go run ./cmd/metacritic-harvester crawl detail --db=output/metacritic.db --category=movie --timeout=2h --continue-on-error=false
+go run ./cmd/metacritic-harvester crawl detail --db=output/metacritic.db --category=game --concurrency=6 --rps=6 --burst=12
 ```
 
 Common flags:
@@ -95,6 +101,8 @@ Common flags:
 - `--db`
 - `--timeout`
 - `--continue-on-error`
+- `--rps`
+- `--burst`
 - `--retries`
 - `--proxies`
 - `--debug`
@@ -103,12 +111,14 @@ Notes:
 
 - detail source defaults to `api`
 - default timeout is `3h`
+- default rate limit is `2 RPS` with `burst=2`
 - `--continue-on-error=true` by default, so per-work failures are counted and logged but do not fail the whole run
 - `--limit=0` means process all detail candidates
 - `--work-href` accepts normalized absolute URLs and relative `/game/...` style paths
 - detail fallback happens per work when `--source=auto`
 - the API path can enrich from HTML/Nuxt for fields such as `where_to_buy` and `where_to_watch`
 - enrich failure does not turn a successful detail fetch into a failed one
+- `--concurrency` controls worker count; `--rps` and `--burst` control the shared HTTP rate limiter
 - set `--continue-on-error=false` to stop the run on the first recorded work failure
 - context cancellation or `--timeout` expiration still fails the run
 
@@ -119,6 +129,7 @@ go run ./cmd/metacritic-harvester crawl reviews --db=output/metacritic.db --cate
 go run ./cmd/metacritic-harvester crawl reviews --db=output/metacritic.db --category=movie --review-type=user --limit=10
 go run ./cmd/metacritic-harvester crawl reviews --db=output/metacritic.db --work-href=https://www.metacritic.com/tv/shogun-2024/ --review-type=all --force
 go run ./cmd/metacritic-harvester crawl reviews --db=output/metacritic.db --category=game --review-type=critic --timeout=90m --continue-on-error=false
+go run ./cmd/metacritic-harvester crawl reviews --db=output/metacritic.db --category=game --review-type=all --concurrency=3 --rps=4 --burst=8
 ```
 
 Common flags:
@@ -135,6 +146,8 @@ Common flags:
 - `--db`
 - `--timeout`
 - `--continue-on-error`
+- `--rps`
+- `--burst`
 - `--retries`
 - `--proxies`
 - `--debug`
@@ -143,11 +156,13 @@ Notes:
 
 - reviews are `API-first`
 - default timeout is `3h`
+- default rate limit is `2 RPS` with `burst=2`
 - `--continue-on-error=true` by default, so scope-level failures are counted and logged but do not fail the whole run
 - `--limit=0` means process all review candidates
 - review snapshots are written to `review_snapshots`
 - current-state rows are written to `latest_reviews`
 - recovery is scoped by `work_href + review_type + platform_key`
+- `--concurrency` controls scope workers; `--rps` and `--burst` control the shared HTTP rate limiter
 - set `--continue-on-error=false` to stop the run on the first recorded scope failure
 - context cancellation or `--timeout` expiration still fails the run
 

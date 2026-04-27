@@ -275,10 +275,7 @@ sendJobs:
 }
 
 func (s *ReviewService) runtimePolicy(concurrency int) crawler.HTTPRuntimePolicy {
-	if s.cfg.RuntimePolicy != nil {
-		return *s.cfg.RuntimePolicy
-	}
-	return reviewRuntimePolicy(concurrency)
+	return applyRuntimePolicyOverride(reviewRuntimePolicy(concurrency), s.cfg.RuntimePolicy)
 }
 
 type reviewScopeTask struct {
